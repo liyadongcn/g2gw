@@ -128,6 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <!-- 相关品牌结束 -->
 
+<!-- 评论开始 -->
 <div id="comments">
 	<div class="page-header">
 		<h2>
