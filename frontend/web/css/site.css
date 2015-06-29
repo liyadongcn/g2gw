@@ -1,0 +1,334 @@
+html,
+body {
+    height: 100%;
+/*  
+    Added by wintermalon
+    
+    font-family: 'Microsoft Yahei';
+    font-size: 16px;
+*/
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';      
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* ÁÐ±íÒ³¿ªÊ¼ */
+.media-list .media { border-bottom: #eee solid 1px; padding-bottom: 15px; }
+.media-list .media .media-object { width: 48px; height: 48px; border-radius: 4px; }
+.media-list .media .media-right a { border-radius: 4px; box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1); font-size: 12px; line-height: 22px; background: #ddd; width: 45px; display: block; height: 48px; text-align: center; color: #999; text-decoration: none;}
+.media-list .media .media-right a em { font-size: 14px; font-weight: 500; background: #eee; display: block; line-height: 26px; font-style: normal; }
+.media-list .media-body { word-break: break-all; }
+.media-list .media-body .media-heading { font-size: 12px; color: #999; line-height: 1.5em; }
+.media-list .media-body h2.media-heading { font-size: 14px; }
+.media-list .media-body h2.media-heading a:first-child { color: #999; text-decoration: none; }
+.media-list .media-body h2.media-heading a:first-child:hover { color: #666; }
+.media-list .media-body h2.media-heading small { margin-left: 10px; font-size: 12px; color: #999; }
+.media-list .media-body h2.media-heading small a { color: #999; }
+.media-list .media-body h2.media-heading small span { color: orange; }
+.media-list .media-body h2.media-heading small em { font-style: normal; color: #D8582B; }
+.media-list .media-body .hint { color: #999; font-size: 12px; }
+.media-list .media-body .hint em { color: #D8582B; font-style: normal; }
+.media-list .media-body .media { margin-bottom: 10px; }
+.media-list .media-action { margin-top: 10px; font-size: 12px; color: #999; }
+.media-list .media-action a { color: #888; }
+.media-list .media-action .dot { margin: 0 10px; }
+/* ÁÐ±íÒ³½áÊø */
+
+/* Ò³Ãæ±êÌâ¿ªÊ¼ */
+.page-header { margin-top: 0; }
+.page-header h1 { font-size: 24px; margin: 4px 0; display: inline-block; }
+.page-header h1 small { font-size: 14px; }
+.page-header h2 { font-size: 16px; margin: 1px 0; display: inline-block; }
+.page-header h2 em { font-style: normal; color: #D8582B; }
+.page-header .nav-tabs { border-bottom: #eee solid 1px; float: right; }
+.page-header .nav-main li a { padding: 8px 12px; }
+.page-header .nav-sub li a { font-size: 12px; padding: 6px 10px; }
+/* Ò³Ãæ±êÌâ½áÊø */
+
+/* ÏêÏ¸Ò³¿ªÊ¼ */
+.action { border-bottom: #eee solid 1px; padding-bottom: 10px; margin-bottom: 20px; color: #999; }
+.action a { color: #999; text-decoration: none; }
+.action em {font-style: normal;}
+.action .user, .action .time, .action .views, .action .favourites, .action .comments, .action .answers, .action .replies { margin-right:15px; }
+.action .money { float: right; }
+.best { background: #DFF0D8; padding: 10px; }
+/* ÏêÏ¸Ò³½áÊø */
+
+/* Í¶Æ±¿ªÊ¼ */
+.vote { float:right; }
+.vote a { margin-left: 10px; text-decoration: none; }
+.vote em { font-style: normal; }
+.vote a.up:hover { color: #16A314; }
+.vote a.down:hover { color: #D8582B; }
+/* Í¶Æ±½áÊø */
+
+/* ·ÖÀà²Ëµ¥¿ªÊ¼*/
+        .topmenu
+        {
+            display: block;
+            width: 220px;
+            border: 2px solid #e4393c;
+            margin: 0;
+            padding: 0;
+        }
+        .toptitle
+        {
+            height: 40px;
+            line-height: 40px;
+            text-align: left;
+            font-size: 11pt;
+            font-weight: bold;
+            color: White;
+            background: #e4393c;
+            padding-left: 20px;
+        }
+        .topmenu li
+        {
+            height: 30px;
+            line-height: 30px;
+            font-size: 11pt;
+            list-style-type: none;
+            text-align: left;
+            padding-left: 8px;
+            z-index: 3;
+            background-image: url(1.png);
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        .topmenu li a
+        {
+            text-decoration: none;
+            color: #313131;
+        }
+        .topmenu li a:hover
+        {
+            text-decoration: underline;
+            font-weight: bold;
+            color: #e4393c;
+        }
+        .topmenu .lihover /*Êó±êÒÆ¶¯µ½ÉÏÃæÊ±£¬Ó¦ÓÃµÄÑùÊ½*/
+        {
+            border: 1px solid #DDD;
+            border-right: 0;
+            box-shadow: 0 0 8px #DDD;
+            -moz-box-shadow: 0 0 8px #DDD;
+            -webkit-box-shadow: 0 0 8px #DDD;
+            background-image: none;
+            height:60px;
+            border-left:4px solid #e4393c;
+        }
+         .topmenu .lihover .submenu /*Ðü¸¡²ã*/
+        {
+            display: block;
+        }
+        
+        .topmenu .lihover span /*°×É«Ð¡·½¿ò*/
+        {
+            background: white;
+            display: inline-block;
+            z-index: 20;
+            width: 20px;
+            height: 60px;
+            float: right;
+            position: relative;
+            
+        }
+        
+        .topmenu .lihover b
+        {
+            display:block;
+            height:30px;
+            line-height:30px;
+            font-weight:normal;
+            font-size:10pt;
+            }
+        .submenu
+        {
+            display: none;
+            width: 715px;
+            left: 220px;
+            position: absolute;
+            top: 40px;
+            border: 1px solid #DDD;
+            z-index: 4;
+            background: white;
+            box-shadow: 0 0 8px #DDD;
+            -moz-box-shadow: 0 0 8px #DDD;
+            -webkit-box-shadow: 0 0 8px #DDD;
+        }
+        .leftdiv
+        {
+            float: left;
+            width: 490px;
+            margin: 5px;
+        }
+        .rightdiv
+        {
+            float: left;
+            width: 200px;
+            margin: 5px;
+        }
+       
+        .leftdiv dl
+        {
+            display: block;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 6px;
+            overflow: hidden;
+        }
+        .leftdiv dl dt
+        {
+            display: block;
+            float: left;
+            width: 60px;
+            text-align: right;
+            height: 22px;
+            line-height: 22px;
+            padding-right: 6px;
+        }
+        
+        .leftdiv dl dt a
+        {
+            color: #e4393c;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 10pt;
+        }
+        .leftdiv dl dd
+        {
+            display: block;
+            overflow: hidden;
+        }
+        .leftdiv dl dd a
+        {
+            display: block;
+            float: left;
+            border-left: 1px solid #CCC;
+            color: #737373;
+            font-size: 9pt;
+            padding: 0 8px;
+            height: 14px;
+            line-height: 14px;
+            margin: 4px 0;
+        }
+        
+        .rightdiv dl dd
+        {
+            margin: 3px 0;
+        }
+        
+        .rightdiv dl dt
+        {
+            color: #e4393c;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+        
+        .rightdiv dl dd a
+        {
+            font-size: 9pt;
+            color: #737373;
+            line-height: 22px;
+        }
+        .rightdiv dl dd a:hover
+        {
+            color: #737373;
+            font-weight: normal;
+        }
+        
+        .topmenu li b
+        {
+            display:none;
+            }
+            
+       .rightPic
+       {
+           position:relative;
+           right:-35px;
+           bottom:-20px;
+           }    
+/* ·ÖÀà²Ëµ¥½áÊø*/

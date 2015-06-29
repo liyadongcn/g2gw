@@ -1,0 +1,67 @@
+<li class="dropdown open">
+	<a class="avatar dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="true">
+		<img src="/uploads/avatar/000/03/03/49_avatar_small.jpg" alt="liyadong"> <b class="caret"></b>
+	</a>
+	<ul id="w6" class="dropdown-menu">
+		<li>
+			<a href="/user" tabindex="-1">
+				<span class="glyphicon glyphicon-user"></span>
+				个人主页
+			</a>
+		</li>
+		<li class="divider"></li>
+		<li>
+			<a href="/user/site/index" tabindex="-1">
+				<span class="glyphicon glyphicon-cog"></span>
+				帐户设置
+			</a>
+		</li>
+		<li>
+			<a href="/user/registration" tabindex="-1">
+				<span class="glyphicon glyphicon-calendar"></span>
+				我的签到
+			</a>
+		</li>
+		<li>
+			<a href="/user/post" tabindex="-1">
+				<span class="glyphicon glyphicon-list"></span>
+				我的发布
+			</a>
+		</li>
+		<li>
+			<a href="/user/favourite" tabindex="-1">
+				<span class="glyphicon glyphicon-star"></span>
+				我的收藏
+			</a>
+		</li>
+		<li>
+			<a href="/user/score" tabindex="-1">
+				<span class="glyphicon glyphicon-piggy-bank"></span>
+				我的积分
+			</a>
+		</li>
+		<li class="divider"></li>
+		<li>
+			<a href="/logout" data-method="post" tabindex="-1">
+				<span class="glyphicon glyphicon-log-out"></span>
+				退出
+			</a>
+		</li>
+	</ul>
+</li>
+
+ $menuItems[] = [
+                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ];
+
+ $menuItems[] = [
+ 	             'label' => 'Dropdown',
+            	 'items' => [
+                   	['label' => '<span class="glyphicon glyphicon-user"></span>个人主页', 'url' => '#'],
+                   '<li class="divider"></li>',
+                   '<li class="dropdown-header">Dropdown Header</li>',
+                   	['label' => 'Level 1 - Dropdown B', 'url' => '#'],
+             	  ]
+          		];
