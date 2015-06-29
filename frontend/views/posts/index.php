@@ -122,6 +122,7 @@ echo LinkPager::widget([
 	<?php $user=User::findIdentity(yii::$app->user->id);?>
 	<?php if($user):?>
 	<?php $starPostsProvider=$user->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_POST);?>
+	<?php if($starPostsProvider->totalCount!=0):?>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">收藏的帖子<span class="badge pull-right"><?= html::encode($starPostsProvider->totalCount)?></span></h3>
@@ -148,6 +149,7 @@ echo LinkPager::widget([
     	</span>
     </div>
 </div>
+	<?php endif;?>
 	<?php endif;?>
 	<?php endif;?>
 <!-- 用户收藏的帖子结束 -->

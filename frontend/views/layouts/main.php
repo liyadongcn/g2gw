@@ -45,9 +45,12 @@ AppAsset::register($this);
                 //['label' => 'Contact', 'url' => ['/site/contact']],                
             ];
             if (Yii::$app->user->isGuest) {
-            	$signupUrl=Url::to('index.php?r=site/signup');
-                $menuItems[] = ['label' => '注册', 
-                	'linkOptions'=>['onclick'=>'signup("'.$signupUrl.'")','class' => 'active']                		
+//             	$signupUrl=Url::to('index.php?r=site/signup');
+//                 $menuItems[] = ['label' => '注册', 
+//                 	'linkOptions'=>['onclick'=>'signup("'.$signupUrl.'")','class' => 'active']                		
+//                 ];
+                $menuItems[] = [
+                		'label' => '注册','url' => ['/site/signup']
                 ];
                 $menuItems[] = ['label' => '登录', 'url' => ['/site/login'],'linkOptions' => ['class' => 'active']];
             } else {
