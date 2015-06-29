@@ -122,6 +122,7 @@ echo LinkPager::widget([
 	<?php $user=User::findIdentity(yii::$app->user->id);?>
 	<?php if($user):?>
 	<?php $starGoodsProvider=$user->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_GOODS);?>
+	<?php if($starGoodsProvider->totalCount!=0):?>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">收藏的商品<span class="badge pull-right"><?= html::encode($starGoodsProvider->totalCount)?></span></h3>
@@ -148,6 +149,7 @@ echo LinkPager::widget([
     	</span>
     </div>
 </div>
+	<?php endif;?>
 	<?php endif;?>
 	<?php endif;?>
 <!-- 用户收藏的商品结束 -->
