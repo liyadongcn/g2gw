@@ -11,6 +11,9 @@ CREATE TABLE `brand` (
 `company_id` int(11) NULL COMMENT '运营公司',
 `comment_count` int(11) NULL DEFAULT 0 COMMENT '评论数量',
 `view_count` int(11) NULL DEFAULT 0 COMMENT '浏览次数',
+`created_date` datetime NULL,
+`updated_date` datetime NULL,
+`star_count` int NULL,
 PRIMARY KEY (`id`) 
 )
 ENGINE=InnoDB
@@ -19,9 +22,11 @@ AUTO_INCREMENT=24
 COMMENT='品牌信息表';
 
 CREATE TABLE `category` (
-`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
 `parent_id` int(11) UNSIGNED NULL COMMENT '分类的父分类',
 `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类名称',
+`model_type` varchar(20) NULL,
+`order` tinyint(5) NULL,
 PRIMARY KEY (`id`) 
 )
 ENGINE=InnoDB
@@ -68,7 +73,7 @@ CREATE TABLE `user` (
 `updated_at` int(11) NULL COMMENT '修改时间',
 `password_hash` varchar(255) NULL,
 `password_reset_token` varchar(255) NULL,
-`status` smallint(5) NULL,
+`status` smallint(5) NULL COMMENT '用户状态',
 `role` smallint(5) NULL,
 PRIMARY KEY (`id`) 
 )
@@ -90,7 +95,7 @@ CREATE TABLE `goods` (
 `comment_count` int(11) NULL DEFAULT 0,
 `created_date` datetime NULL,
 `updated_date` datetime NULL,
-`interested_count` int(11) NULL DEFAULT 0,
+`star_count` int(11) NULL DEFAULT 0,
 `recomended_count` int(11) NULL DEFAULT 0,
 `view_count` int(11) NULL DEFAULT 0 COMMENT '浏览次数',
 `status` smallint(5) NOT NULL DEFAULT 1,
@@ -160,15 +165,19 @@ CREATE TABLE `album` (
 `model_type` varchar(20) NOT NULL COMMENT '图片类型\r\n1、评论类图片const COMMENT_TYPE = 0;\r\n2、商品信息类图片const GOODS_TYPE=10;\r\n3、一般类购物信息图片类const GENERALINFO_TYPE=20;\r\n4、用户头像类 const USER_TYPE=30;',
 `model_id` int(11) NOT NULL COMMENT '当图片类型type为评论类时modelid对应评论ID\r\n当图片类型type为商品信息类图片时modelid对应商品ID\r\n当图片类型为一般类信息类时modelid对应一般信息类ID\r\n当图片类型为用户头像时modelid对应用户ID\r\n',
 `filename` varchar(255) NULL,
+`created_date` datetime NULL,
+`updated_date` datetime NULL,
+`is_default` tinyint(5) NULL,
 PRIMARY KEY (`id`) 
 );
 
 CREATE TABLE `relationships_map` (
-`id` int(11) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
 `relationship_id` int(11) NULL COMMENT '关系ID',
 `userid` int(11) NULL COMMENT '用户ID',
 `model_type` varchar(20) NULL COMMENT '数据类型',
 `model_id` int(11) NULL COMMENT '数据ID',
+`created_date` datetime NULL,
 PRIMARY KEY (`id`) 
 )
 COMMENT='用户与数据对象的关系表 例如：用户喜欢某一商品 某一品牌 都是一种关系';
@@ -196,6 +205,7 @@ CREATE TABLE `posts` (
 `effective_date` datetime NULL,
 `expired_date` datetime NULL,
 `view_count` int(11) NULL DEFAULT 0 COMMENT '浏览次数',
+`star_count` int(11) NULL,
 PRIMARY KEY (`id`) 
 );
 
@@ -203,6 +213,7 @@ CREATE TABLE `tag` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(20) NULL,
 `count` int(11) NULL,
+`model_type` varchar(20) NULL,
 PRIMARY KEY (`id`) 
 );
 
@@ -213,4 +224,62 @@ CREATE TABLE `tagmap` (
 `model_id` int(11) NULL,
 PRIMARY KEY (`id`) 
 );
+
+CREATE TABLE `category_map` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`model_id` int(11) NOT NULL COMMENT '商品唯一ID',
+`model_type` varchar(20) NULL,
+`category_id` int(11) NOT NULL COMMENT '商品分类ID',
+PRIMARY KEY (`id`) 
+)
+COMMENT='商品与商品分类对应表';
+
+CREATE TABLE `auth_assignment` (
+`item_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+`user_id` int(11) NOT NULL,
+`created_at` int(11) NULL DEFAULT NULL,
+PRIMARY KEY (`item_name`, `user_id`) 
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `auth_item` (
+`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+`type` int(11) NOT NULL,
+`description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+`rule_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+`data` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+`created_at` int(11) NULL DEFAULT NULL,
+`updated_at` int(11) NULL DEFAULT NULL,
+PRIMARY KEY (`name`) ,
+INDEX `rule_name` (`rule_name`),
+INDEX `idx-auth_item-type` (`type`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `auth_item_child` (
+`parent` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+`child` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+PRIMARY KEY (`parent`, `child`) ,
+INDEX `child` (`child`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `auth_rule` (
+`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+`data` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+`created_at` int(11) NULL DEFAULT NULL,
+`updated_at` int(11) NULL DEFAULT NULL,
+PRIMARY KEY (`name`) 
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_unicode_ci;
+
+
+ALTER TABLE `auth_assignment` ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`);
+ALTER TABLE `auth_item` ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`);
+ALTER TABLE `auth_item_child` ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`);
+ALTER TABLE `auth_item_child` ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`);
 
