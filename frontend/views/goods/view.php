@@ -241,7 +241,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -275,7 +275,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 //use common\models\Brand;
 //use common\models\Album;
+use common\models\Category;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\Select2;
 use kartik\widgets\FileInput;
@@ -161,13 +162,14 @@ use kartik\widgets\FileInput;
     <?php //echo $form->field($model, 'recomended_count')->textInput() ?>
 
     <?php //echo $form->field($model, 'view_count')->textInput() ?>
+<!-- 标签开始 -->
     <div class="panel panel-default">
   		<div class="panel-heading">
    			<h3 class="panel-title">标签</h3>
   		</div>
   		<div class="panel-body">
   			<?php 
-  				$tagMaps=$model->getTagMaps();
+  				$tagMaps=$model->getTagMaps()->all();
   				foreach ($tagMaps as $tagMap)
   			:?>
   				<span class="label label-success"><?= $tagMap->tag->name?></span>
@@ -180,6 +182,19 @@ use kartik\widgets\FileInput;
   			<?= $form->field($model, 'tag_string')->label('')->textInput(['placeholder'=>'增加新标签，以空格为分割可以同时增加多个标签']) ?>
   		</div>
 	</div>
+<!-- 标签结束 -->
+	
+<!-- 品牌分类开始 -->
+	 <div class="panel panel-default">
+  		<div class="panel-heading">
+   			<h3 class="panel-title">分类</h3>
+  		</div>
+  		<div class="panel-body">
+		<?php $categories =ArrayHelper::map(Category::findAll(['model_type'=>$model->modelType()]),'id','name')?>
+   		<?= $form->field($model, 'categories')->checkboxlist($categories) ?>
+      	</div>
+	</div>
+<!-- 品牌分类结束 -->
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

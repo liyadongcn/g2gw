@@ -8,6 +8,7 @@ use common\models\Company;
 use common\models\Ecommerce;
 use kartik\widgets\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
+use common\models\Category;
 
 
 /* @var $this yii\web\View */
@@ -127,7 +128,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
    			<h3 class="panel-title">标签</h3>
   		</div>
   		<div class="panel-body">
-  			<?php $tagMaps=$model->getTagMaps();?>
+  			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
   					<span class="label label-success"><?= $tagMap->tag->name?></span>
@@ -142,6 +143,18 @@ use wbraganca\dynamicform\DynamicFormWidget;
   		</div>
 	</div>
 <!--  标签编辑结束 -->
+	
+<!-- 品牌分类开始 -->
+	 <div class="panel panel-default">
+  		<div class="panel-heading">
+   			<h3 class="panel-title">分类</h3>
+  		</div>
+  		<div class="panel-body">
+		<?php $categories =ArrayHelper::map(Category::findAll(['model_type'=>$model->modelType()]),'id','name')?>
+   		<?= $form->field($model, 'categories')->checkboxlist($categories) ?>
+      	</div>
+	</div>
+<!-- 品牌分类结束 -->
 	
 <!--  电商网站开始 -->
  
@@ -218,7 +231,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 <!--  电商网站结束 -->
 	
     <div class="form-group">
-        <?= Html::submitButton($modelEcommerce->isNewRecord ? 'Create' : 'Update', ['class' => $modelEcommerce->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

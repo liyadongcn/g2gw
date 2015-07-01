@@ -33,7 +33,8 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id', 'order'], 'integer'],
-            [['parent_id'], 'default','value'=>0],            
+            [['parent_id'], 'default','value'=>0], 
+        	[['count'], 'default','value'=>0],
             [['name'], 'string', 'max' => 30],
         	[['name','model_type'], 'unique','targetAttribute' => ['name', 'model_type'],'message'=>'已经有该分类了'],
         	[['model_type'], 'string', 'max' => 20]

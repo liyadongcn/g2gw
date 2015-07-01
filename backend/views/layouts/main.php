@@ -1,6 +1,7 @@
 <?php
 use backend\assets\AppAsset;
 use yii\helpers\Html;
+use yii\helpers\url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -54,24 +55,24 @@ AppAsset::register($this);
      <div class="row">
         <div class="col-lg-2"><!--left part-->
         	<div class="list-group">
-        		<a class="list-group-item list-group-item-success" href="/index.php?r=goods">商品管理（Goods）</a>
-        		<a class="list-group-item " href="/index.php?r=pricehistory">&nbsp;&nbsp;--商品价格（PriceHistory）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=brand">品牌管理（Brand）</a>
-				<a class="list-group-item " href="/index.php?r=ecommerce">&nbsp;&nbsp;--品牌电商网站管理（Ecommerce）</a>
-				<a class="list-group-item " href="/index.php?r=country">&nbsp;&nbsp;--品牌所属国家（Country）</a>
-				<a class="list-group-item " href="/index.php?r=company">&nbsp;&nbsp;--品牌运营公司管理（Company）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=posts">发帖管理（Posts）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=comment">评论管理（Comment）</a>
-                <a class="list-group-item list-group-item-success" href="/index.php?r=category">分类管理（Category）</a>
-                <a class="list-group-item " href="/index.php?r=category-map">&nbsp;&nbsp;--分类映射（CategoryMap）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=album">相册管理（Album）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=tag">标签（Tag）</a>
-				<a class="list-group-item " href="/index.php?r=tagmap">&nbsp;&nbsp;--标签映射管理（Tagmap）</a>
-				<a class="list-group-item list-group-item-success" href="/index.php?r=user">用户管理（User）</a>
-				<a class="list-group-item " href="/index.php?r=relationships">&nbsp;&nbsp;--用户关系管理（Relationships）</a>
-				<a class="list-group-item " href="/index.php?r=relationships-map">&nbsp;&nbsp;--用户关系映射管理（RelationshipsMap）</a>
-                <a class="list-group-item list-group-item-success" href="/index.php?r=auth-item">用户权限管理（AuthItem）</a>
-                <a class="list-group-item " href="/index.php?r=auth-assignment">&nbsp;&nbsp;--分配用户权限（AuthAssignment）</a>
+        		<a class="list-group-item list-group-item-success" href=<?= url::to(['/goods'])?>>商品管理（Goods）</a>
+        		<a class="list-group-item " href=<?= url::to(['/pricehistory'])?>>&nbsp;&nbsp;--商品价格（PriceHistory）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/brand'])?>>品牌管理（Brand）</a>
+				<a class="list-group-item " href=<?= url::to(['/ecommerce'])?>>&nbsp;&nbsp;--品牌电商网站管理（Ecommerce）</a>
+				<a class="list-group-item " href=<?= url::to(['/country'])?>>&nbsp;&nbsp;--品牌所属国家（Country）</a>
+				<a class="list-group-item " href=<?= url::to(['/company'])?>>&nbsp;&nbsp;--品牌运营公司管理（Company）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/posts'])?>>发帖管理（Posts）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/comment'])?>>评论管理（Comment）</a>
+                <a class="list-group-item list-group-item-success" href=<?= url::to(['/category'])?>>分类管理（Category）</a>
+                <a class="list-group-item " href=<?= url::to(['/category-map'])?>>&nbsp;&nbsp;--分类映射（CategoryMap）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/album'])?>>相册管理（Album）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/tag'])?>>标签（Tag）</a>
+				<a class="list-group-item " href=<?= url::to(['/tagmap'])?>>&nbsp;&nbsp;--标签映射管理（Tagmap）</a>
+				<a class="list-group-item list-group-item-success" href=<?= url::to(['/user'])?>>用户管理（User）</a>
+				<a class="list-group-item " href=<?= url::to(['/relationships'])?>>&nbsp;&nbsp;--用户关系管理（Relationships）</a>
+				<a class="list-group-item " href=<?= url::to(['/relationships-map'])?>>&nbsp;&nbsp;--用户关系映射管理（RelationshipsMap）</a>
+                <a class="list-group-item list-group-item-success" href=<?= url::to(['/auth-item'])?>>用户权限管理（AuthItem）</a>
+                <a class="list-group-item " href=<?= url::to(['/auth-assignment'])?>>&nbsp;&nbsp;--分配用户权限（AuthAssignment）</a>
         	</div>
         </div>
         <div class="col-lg-10"><!--right part  -->

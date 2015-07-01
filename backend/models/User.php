@@ -4,8 +4,10 @@ namespace backend\models;
 use yii\base\Model;
 use Yii;
 use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
 use common\models\RelationshipsMap;
 use common\models\AuthAssignment;
+
 
 /**
  * 
@@ -51,6 +53,7 @@ class User extends \common\models\User
 
             [['file'], 'file'],
         	
+        	[['permissions'], 'safe'],
         ]);
     }
     
@@ -80,6 +83,40 @@ class User extends \common\models\User
         return $this->hasMany(AuthAssignment::className(), ['user_id'=>'id']);
         //->where(['model_type'=>$this->modelType(),'parent_id'=>0]);
         //->all();
+    }
+    
+    /**
+     * This function is to get the all auth_assignments of the user.
+     *
+     *
+     * @author Wintermelon
+     * @since  1.0
+     */
+    public function setAuthAssignments()
+    {
+    	//Compare the difference of the permissions to get the deleted auth;
+    	$oldPermissions = ArrayHelper::map($this->authAssignments,'item_name','item_name');
+    	if($this->permissions)
+    	{
+    		$deletedPermissions = array_diff($oldPermissions, $this->permissions);
+    	}
+    	
+    	else
+    	{
+    		$deletedPermissions = array_diff($oldPermissions, []);
+    	}
+    	if(!empty($deletedPermissions)){
+    		AuthAssignment::deleteAll(['item_name'=>$deletedPermissions,'user_id'=>$this->id]);
+    	}
+        if($this->permissions)
+ 		{
+           foreach ($this->permissions as $permission) {
+               $authAssignment=new AuthAssignment();
+               $authAssignment->item_name=$permission;
+               $authAssignment->user_id=$this->id;
+               $authAssignment->save();
+           }
+       	}
     }
     
     /**

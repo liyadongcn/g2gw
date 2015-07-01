@@ -102,6 +102,8 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php endforeach;?>
   </li>
 </ul>
+<?php else:?>
+	<div class="alert alert-danger" role="alert">抱歉！啥也没找到！</div>
 <?php endif;?>
 
 <?php 

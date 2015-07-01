@@ -15,12 +15,14 @@ use common\models\User;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 use backend\models\CommentSearch;
+use yii\helpers\ArrayHelper;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
 		
-	public $tag_string;
-	public $comment;
+	public $tag_string; //String of the tags together
+	public $comment;    //Obj of the comment model
+	public $categories; //Array of the model categories. including category_id category_name. 
 		
 	/**
 	 * @inheritdoc
@@ -44,7 +46,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	{
 		return [
 				[['tag_string'], 'string'],
-				[['tag_string'], 'default','value'=>'']
+				[['tag_string'], 'default','value'=>''],
+				[['categories'],'safe'],
 		];
 	}
 	
@@ -58,6 +61,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
 			$this->deleteComments();
 			$this->deleteAlbum();
 			$this->deleteAllTagMaps();
+			//Delete the category_map records
+			$this->deleteAllCategoryMap();
+			//Delete the relationships_map records
 		}
 		catch (\Exception $e)
 		{
@@ -207,6 +213,27 @@ class ActiveRecord extends \yii\db\ActiveRecord
 		return false;
 	}
 	
+	/**
+	 * This function is to delete  all tagmap records of this model.
+	 * In the mean while reduce the tag count.
+	 * 删除数据模型所有的标签映射记录
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function deleteAllCategoryMap()
+	{
+		//DeleteAll 不触发afterDelete和befroreDelete事件,所以改为逐条记录删除触发删除事件
+		$categoryMaps=$this->getCategoryMap()->all();
+		if($categoryMaps)
+		{
+			foreach ($categoryMaps as $categoryMap)
+			{
+				$categoryMap->delete();
+			}
+		}
+	}
+	
 
 	/**
 	 * This function is to delete  all tagmap records of this model.
@@ -218,7 +245,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 */
 	public function deleteAllTagMaps()
 	{
-		$tagMaps=$this->getTagMaps();
+		//DeleteAll 不触发afterDelete和befroreDelete事件,所以改为逐条记录删除触发删除事件
+		$tagMaps=$this->getTagMaps()->all();
 		if($tagMaps)
 		{
 			foreach ($tagMaps as $tagMap)
@@ -226,7 +254,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 				$tagMap->delete();
 			}
 		}
-		//DeleteAll 不触发afterDelete和befroreDelete事件
+		
 		//return Tagmap::deleteAll(['model_type'=>$this->modelType(),'model_id'=>$this->id]);
 	}
 	
@@ -341,9 +369,57 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 */
 	public function getCategories()
 	{
-		return $this->hasMany(Category::className(), ['id' => 'category_id'])
+		return $this->hasMany(Category::className(), ['id' => 'category_id','model_type'=>'model_type'])
 		->viaTable('category_map', ['model_id' => 'id']);
 	}
+	
+	/**
+	 * This function is to set the model categories .
+	 * 给数据模型增加分类
+	 *
+	 * 
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function setCategories()
+	{
+		//Compare the difference of the categories to get the deleted categories;
+		$oldCategories = ArrayHelper::map($this->getCategories()->all(),'name','id');
+		if(empty($this->categories))
+		{
+			$deletedCategories = array_diff($oldCategories,[]);
+		}
+		else
+		{
+			$deletedCategories = array_diff($oldCategories,$this->categories);
+		}
+		if(!empty($deletedCategories)){
+			//CategoryMap::deleteAll(['category_id'=>$deletedCategories,'model_id'=>$this->id,'model_type'=>$this->modelType()]);
+			$models=CategoryMap::findAll(['category_id'=>$deletedCategories,'model_id'=>$this->id,'model_type'=>$this->modelType()]);
+			foreach ($models as $model)
+			{
+				$model->delete();
+			}
+		}
+// 		var_dump($oldCategories);
+// 		var_dump($this->categories);
+		if($this->categories)
+		{
+			foreach ($this->categories as $category)
+			{
+				$categoryMap =new CategoryMap();
+				$categoryMap->category_id=$category;
+				$categoryMap->model_id=$this->id;
+				$categoryMap->model_type=$this->modelType();
+				if($categoryMap->validate())
+				{
+					$categoryMap->save();
+					
+				}
+			}
+		}
+	}
+	
 	
 	/**
 	 * This function is to get the category map to the related to the model.

@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
 <!-- 商品分类列表开始 -->
     <div class='goods-category'>
-	<?php $categoryMaps=$model->getCategoryMaps();?>
+	<?php $categoryMaps=$model->getCategoryMap()->all();?>
 		<?php if($categoryMaps):?>
 			<?php foreach ($categoryMaps as $categoryMap): ?>
 <!-- 			echo $this->renderAjax('@app/views/category-map/view.php',['model'=>$categoryMap]); -->
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
   		</div>
   		<div class="panel-body">
   			<?php 
-  				$tagMaps=$model->getTagMaps();
+  				$tagMaps=$model->getTagMaps()->all();
   				foreach ($tagMaps as $tagMap)
   			:?>
   				<span class="label label-success"><?= $tagMap->tag->name?></span>

@@ -83,20 +83,12 @@ class UserController extends Controller
         	$model->setPassword($model->password);
         	$model->generateAuthKey();
         	//$model->password='';
-            $model->permissions=$_POST['User']['permissions'];
+            //$model->permissions=$_POST['User']['permissions'];
         
         	if($model->save())
         	{
 
-                if($model->permissions)
-                {
-                    foreach ($model->permissions as $permission) {
-                        $authAssignment=new AuthAssignment();
-                        $authAssignment->item_name=$permission;
-                        $authAssignment->user_id=$model->id;
-                        $authAssignment->save();
-                    }
-                }
+                $model->setAuthAssignments();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
         	
@@ -129,28 +121,11 @@ class UserController extends Controller
         	$model->generateAuthKey();
         	//$model->password='';
         	
-        	//Compare the difference of the permissions to get the deleted auth;
-        	$oldPermissions = $model->permissions;
-        	$model->permissions = $_POST['User']['permissions'];
-        	$deletedPermissions = array_diff($oldPermissions, $model->permissions);
-        	if(!empty($deletedPermissions)){
-        		AuthAssignment::deleteAll(['item_name'=>$deletedPermissions,'user_id'=>$model->id]);
-        	}
+        	
         	
        		if($model->save())
         	{
-        		if($model->permissions)
-        		{
-        			foreach ($model->permissions as $permission) {
-        				if(!$model->findAuthAssignmentByItemName($permission))
-        				{
-        					$authAssignment=new AuthAssignment();
-        					$authAssignment->item_name=$permission;
-        					$authAssignment->user_id=$model->id;
-        					$authAssignment->save();
-        				}        				
-        			}
-        		}
+        		$model->setAuthAssignments();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
         	

@@ -37,7 +37,8 @@ class CategoryMap extends \yii\db\ActiveRecord
         return [
            [['model_id', 'category_id'], 'required'],
            [['model_id', 'category_id'], 'integer'],
-           [['model_type'], 'string', 'max' => 20]
+           [['model_type'], 'string', 'max' => 20],
+           [['category_id', 'model_type','model_id'], 'unique', 'targetAttribute' => ['category_id', 'model_type','model_id']],
         ];
     }
 
@@ -106,5 +107,40 @@ class CategoryMap extends \yii\db\ActiveRecord
     public function getCategory()
     {
     	return Category::findOne(['id'=>$this->category_id]);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+    	if (parent::beforeDelete()) {
+    		// ...custom code here...
+    		$category=$this->category;
+    		if($category)
+    		{
+    			$category->updateCounters(['count'=>-1]);
+    		}
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+    	if (parent::beforeSave($insert)) {
+    		// ...custom code here...
+    		$category=$this->category;
+    		if($category){
+    			$category->updateCounters(['count'=>1]);
+    		}
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 }

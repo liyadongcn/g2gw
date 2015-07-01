@@ -92,6 +92,8 @@ class GoodsController extends Controller
         				$model->saveToAlbum($file);
         			}
         		}
+        		//set the categories of this model.
+        		$model->setCategories();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
             
@@ -111,6 +113,7 @@ class GoodsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
         
         if ($model->load(Yii::$app->request->post())) {
         	// Get the goods pictures and save to the album
@@ -121,6 +124,8 @@ class GoodsController extends Controller
         				$model->saveToAlbum($file);
         			}
         		}
+        		//set the categories of this model.
+        		$model->setCategories();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
         	else{

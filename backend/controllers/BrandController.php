@@ -122,6 +122,8 @@ class BrandController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
+                        //set the categories of this model.
+                        $model->setCategories();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
                 } catch (Exception $e) {
@@ -150,6 +152,10 @@ class BrandController extends Controller
     {
  
         $model = $this->findModel($id);
+        //var_dump($model->getCategories()->all());
+        //die();
+        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
+        //var_dump($model->categories);
         $modelEcommerces = $model->ecommerces;
 
         if ($model->load(Yii::$app->request->post())) {
@@ -197,6 +203,8 @@ class BrandController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
+                        //set the categories of this model.
+                        $model->setCategories();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
                 } catch (Exception $e) {
