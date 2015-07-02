@@ -250,32 +250,12 @@ $this->params['breadcrumbs'][] = $this->title;
     
      <?php $form = ActiveForm::begin(['options'=>['class' => 'reply-form hidden']]); ?>
 
-    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput() ?>
+    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
 
-    <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'model_id')->textInput() ?>
-
-    <?php // echo $form->field($model, 'approved')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'thumbsup')->textInput() ?>
-
-    <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
-
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3]) ?>
-
-    <?php // echo $form->field($model, 'created_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'updated_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'userid')->textInput() ?>
-
-    <?php // echo $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('回复评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -41,18 +41,19 @@ $this->params['breadcrumbs'] [] = $this->title;
 						<div class="media">
 							<div class="media-left media-middle">
 								<a href="<?= Url::to(['brand/view','id'=>$model->id])?>"> <img
-									class=" media-object img-rounded"
-									src="<?= html::encode($model->logo)?>" alt="..." width="200">
+									class="media-object"
+									src="<?= html::encode($model->logo)?>" alt="..." width="120">
 								</a>
 							</div>
 							<div class="media-body">
 								<h1 class="media-heading"><?= html::encode($model->en_name)?></h1>
 								<p>
-							<?= html::encode($model->introduction)?>
-						</p>
+								<?= html::encode($model->introduction)?>
+								</p>
 								<p class="text-right">
 							<?php $ecommerces=$model->ecommerces;?>
 							<?php if ($ecommerces) :?>
+								<div class="btn-group pull-right" role="group" aria-label="...">
 							<?php foreach ($ecommerces as $ecommerce) :?>
 								<?php if($ecommerce->accept_order):?>
 								<a class="btn btn-success"
@@ -62,6 +63,7 @@ $this->params['breadcrumbs'] [] = $this->title;
 										href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 								<?php endif;?>
 							<?php endforeach;?>
+								</div>
 							<?php endif;?>
 						</p>
 							</div>

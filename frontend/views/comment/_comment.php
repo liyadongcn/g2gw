@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<div class="media-left">
 				<a href=<?=Url::to(['/user/view','id'=>$comment->userid])?> rel="author" data-original-title="" title="">
 				<?php if($comment->user):?>
-					<img class="media-object" src=<?= html::encode($comment->user->face)?> alt="yeless"></a>
+					<img class="media-object" src=<?= html::encode($comment->user->face)?> alt=""></a>
 				<?php endif;?>
 			</div>
 			<div class="media-body">

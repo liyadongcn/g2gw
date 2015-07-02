@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<div class="media">
 					<div class="media-left">
 						<a href=<?=Url::to(['/user/view','id'=>$comment->userid])?> rel="author" data-original-title="" title="">
-							<img class="media-object" src="/uploads/avatar/000/02/76/46_avatar_small.jpg" alt="webclz"></a>
+							<img class="media-object" src=<?= html::encode($comment->user->face)?> alt=""></a>
 					</div>
 					<div class="media-body">
 						<div class="media-heading">

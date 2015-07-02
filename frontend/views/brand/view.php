@@ -128,6 +128,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <!-- 相关品牌结束 -->
 
+<!-- 百度分享功能开始 -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享到：</a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16},"image":{"viewList":["weixin","qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享功能结束 -->
+
 <!-- 评论开始 -->
 <div id="comments">
 	<div class="page-header">
@@ -191,7 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
      <?php $form = ActiveForm::begin(['options'=>['class' => 'reply-form hidden']]); ?>
 
-    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput() ?>
+    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
 
     <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
 
@@ -203,7 +208,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
 
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3]) ?>
+    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3])->label(false) ?>
 
     <?php // echo $form->field($model, 'created_date')->textInput() ?>
 
@@ -216,7 +221,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('回复评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
