@@ -49,12 +49,13 @@ AppAsset::register($this);
 //                 $menuItems[] = ['label' => '注册', 
 //                 	'linkOptions'=>['onclick'=>'signup("'.$signupUrl.'")','class' => 'active']                		
 //                 ];
+            	//$menuItems[] = ['label' => 'Solr Testing', 'url' => ['/site/comment']];
                 $menuItems[] = [
                 		'label' => '注册','url' => ['/site/signup']
                 ];
                 $menuItems[] = ['label' => '登录', 'url' => ['/site/login'],'linkOptions' => ['class' => 'active']];
             } else {
-				//$menuItems[] = ['label' => 'Comment', 'url' => ['/site/comment']];
+				//$menuItems[] = ['label' => 'Solr Testing', 'url' => ['/site/comment']];
 //                 $menuItems[] = [
 //                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
 //                     'url' => ['/site/logout'],
@@ -79,7 +80,7 @@ AppAsset::register($this);
             }
          ?>
 			<p class="navbar-text">最新的官网购物信息</p>
-			
+<!-- 分类菜单开始 -->			
 			<?php  $catMenuItems=Category::getCategoryAsMenuItems1( 0, yii::$app->session->get('SEARCH_MODEL_TYPE'));?>
 			<?php echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-left'],
@@ -87,7 +88,7 @@ AppAsset::register($this);
 				'encodeLabels' => false,
             ]);
             ?>
-			
+<!-- 分类菜单结束 -->			
             
             <?php echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -104,25 +105,35 @@ AppAsset::register($this);
 			 <select name="Search[model_type]">
 <?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>
 <?php switch($searchModelType):?>
-<?php case Search::MODEL_TYPE_BRAND:?>
+<?php case MODEL_TYPE_BRAND:?>
 			  <option value="brand" selected="selected">品牌</option>
 			  <option value="goods">商品</option>
 			  <option value="posts">发帖</option>	
+			  <option value="solr">官网商品</option>	
 			  <?php break;?>
-<?php case Search::MODEL_TYPE_GOODS:?>
+<?php case MODEL_TYPE_GOODS:?>
 			  <option value="brand">品牌</option>
 			  <option value="goods" selected="selected">商品</option>
 			  <option value="posts">发帖</option>	
+			  <option value="solr">官网商品</option>	
 			  <?php break;?>
-<?php case Search::MODEL_TYPE_POSTS:?>
+<?php case MODEL_TYPE_POSTS:?>
 			  <option value="brand">品牌</option>
 			  <option value="goods">商品</option>
 			  <option value="posts" selected="selected">发帖</option>	
+			  <option value="solr">官网商品</option>	
+			  <?php break;?>
+<?php case MODEL_TYPE_SOLR:?>
+			  <option value="brand">品牌</option>
+			  <option value="goods">商品</option>
+			  <option value="posts">发帖</option>	
+			  <option value="solr" selected="selected">官网商品</option>	
 			  <?php break;?>
 <?php default:?>
 			  <option value="brand" selected="selected">品牌</option>
 			  <option value="goods">商品</option>
 			  <option value="posts">发帖</option>	
+			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php endswitch;?>		
 			</select>

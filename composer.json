@@ -21,7 +21,8 @@
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-widget-select2": "*",
         "kartik-v/yii2-grid": "*",
-        "wbraganca/yii2-dynamicform": "*"           
+        "wbraganca/yii2-dynamicform": "*",
+        "kartik-v/yii2-popover-x": "*"           
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

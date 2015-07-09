@@ -57,6 +57,9 @@ $this->title = 'My Yii Application';
 <?php case Search::MODEL_TYPE_POSTS: ?>
 	<?php echo $this->render('@app/views/posts/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
 	<?php break;?>
+<?php case Search::MODEL_TYPE_SOLR: ?>
+	<?php echo $this->render('@app/views/solr/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
+	<?php break;?>
 <?php default:?>
 <?php endswitch;?>
 </div>

@@ -16,6 +16,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use SolrClient;
+use SolrQuery;
+use SolrInputDocument;
+use common\models\solr\SolrDataProvider;
+use common\models\solr\common\models\solr;
 
 
 /**
@@ -203,13 +208,113 @@ class SiteController extends Controller
     public function actionComment()
     {
     	
-    	$model = new CommentForm();
-    	if ($model->load(Yii::$app->request->post()) && $model->saveComment()) {
-    		return $this->goHome();
-    	} else {
-    		return $this->render('comment', [
-    				'model' => $model,
-    				]);
-    	}
-    }
+    	// $model = new CommentForm();
+    	// if ($model->load(Yii::$app->request->post()) && $model->saveComment()) {
+    	// 	return $this->goHome();
+    	// } else {
+    	// 	return $this->render('comment', [
+    	// 			'model' => $model,
+    	// 			]);
+    	// }
+		//echo solr_get_version();
+		$options = array
+		(
+		    'hostname' => SOLR_SERVER_HOSTNAME,
+		    'login'    => SOLR_SERVER_USERNAME,
+		    'password' => SOLR_SERVER_PASSWORD,
+		    'port'     => SOLR_SERVER_PORT,
+			'path'     => SOLR_SERVER_PATH,
+			'wt'       => 'json',
+		
+		);
+				
+		$client = new SolrClient($options);
+		
+		$query = new SolrQuery();
+		
+		$query->setQuery('*:*');
+		
+		$query->addField('id');
+		
+		//$query->addField('tstamp');
+		
+		//$query->addField('title');
+		
+		//$query->addField('content');
+
+		//$query->addField('url');
+		
+// 		$query->addField('id')->addField('title');
+		
+// 		$query->setStart(0);
+		
+// 		$query->setRows(10);
+		
+		$dataProvider=new SolrDataProvider([
+				'solr' => $client,
+				'query' => $query,
+				'pagination' => [
+        				'pagesize' => '5',
+        		],
+				'sort' => [
+						'defaultOrder' => [
+								'id' => SolrQuery::ORDER_DESC,
+						]
+				],
+		]);
+		
+// 		$dataProvider->solr=$client;
+		
+// 		$dataProvider->query=$query;
+		
+		//$dataProvider->pagination->pagesize=5;
+		
+		//var_dump($dataProvider);
+		
+// 		echo $query;
+		
+// 		die();
+		
+		return $this->render('solr_response',['dataProvider'=>$dataProvider]);
+		
+		/* $models=$dataProvider->models;
+		
+		echo $dataProvider->getTotalCount();
+		
+		foreach ($models as $doc)
+		{
+			echo "id:".$doc->id."</br>";
+			echo "titles:"."</br>";
+			foreach ($doc->title as $title)
+			{
+				echo "&nbsp&nbsp".$title."</br>";
+			}
+		} */
+		
+		
+		
+/* 		$query_response = $client->query($query);
+		
+		$response = $query_response->getResponse();
+		
+		print_r($response);
+		
+		echo "////////////////////////////////////";
+		
+		var_dump($response['responseHeader']);
+		
+		foreach ($response->response->docs as $doc)
+		{
+			echo "id:".$doc->id."</br>";
+			echo "titles:"."</br>";
+			foreach ($doc->title as $title)
+			{
+				echo "&nbsp&nbsp".$title."</br>";
+			}
+				
+		}
+		 */
+
+				
+		}
 }

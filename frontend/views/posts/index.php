@@ -52,12 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
 						<p>
 							<?= html::encode($model->post_content)?>
 						</p>
-						<p class="text-right">
+						
+					</div>
+					<p class="text-right">
 							<?php if ($model->url) :?>
 								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button">去购买</a>
 							<?php endif;?>
-						</p>
-					</div>
+					</p>
 				</div>
 			</div>
 			<div class="panel-footer">
@@ -101,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </li>
 </ul>
 <?php else:?>
-	<div class="alert alert-danger" role="alert">抱歉！啥也没找到！</div>
+	<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>
 <?php endif;?>
 
 <?php 

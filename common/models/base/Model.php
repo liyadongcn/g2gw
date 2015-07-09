@@ -9,6 +9,8 @@ class Model extends \yii\base\Model
 {
     /**
      * Creates and populates a set of models.
+     * 
+     * Used by the dynamic form. See the code in the brand controlller create and update action.
      *
      * @param string $modelClass
      * @param array $multipleModels

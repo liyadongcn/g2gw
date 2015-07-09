@@ -181,10 +181,14 @@ class Category extends \yii\db\ActiveRecord
     		default:
     			$label='';
     	}
-    	$menuItems[]=[
-    			'label'=>'<span class="glyphicon glyphicon-th-list"></span>'.$label,
-    			'items' =>$items,
-    	];
+    	if($models)
+    	{
+    		$menuItems[]=[
+    				'label'=>'<span class="glyphicon glyphicon-th-list"></span>'.$label,
+    				'items' =>$items,
+    		];
+    	}
+    	
     	//var_dump($menuItems);
     	//die();
     	return $menuItems;

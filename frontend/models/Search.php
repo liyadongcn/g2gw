@@ -9,6 +9,7 @@ use common\models\Brand;
 use backend\models\PostsSearch;
 use backend\models\GoodsSearch;
 use backend\models\BrandSearch;
+use backend\models\SolrSearch;
 
 /**
  * BrandSearch represents the model behind the search form about `common\models\Brand`.
@@ -18,6 +19,7 @@ class Search extends Model
 	const MODEL_TYPE_BRAND='brand';
 	const MODEL_TYPE_GOODS='goods';
 	const MODEL_TYPE_POSTS='posts';
+	const MODEL_TYPE_SOLR='solr';
 	
 	public $keyWords;
 	public $model_type;
@@ -71,6 +73,9 @@ class Search extends Model
     			break;
     		case self::MODEL_TYPE_POSTS:
     			$searchModel = new PostsSearch();
+    			break;
+    		case self::MODEL_TYPE_SOLR:
+    			$searchModel = new SolrSearch();
     			break;
     		default:
     			return null;

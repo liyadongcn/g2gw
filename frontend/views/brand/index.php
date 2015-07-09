@@ -34,7 +34,7 @@ $this->params['breadcrumbs'] [] = $this->title;
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
 <ul class="list-group">
-			<li class="list-group-item">
+	<li class="list-group-item">
   	<?php foreach ($models as $model):?>
   		<div class="panel panel-default">
 					<div class="panel-body">
@@ -50,43 +50,39 @@ $this->params['breadcrumbs'] [] = $this->title;
 								<p>
 								<?= html::encode($model->introduction)?>
 								</p>
-								<p class="text-right">
-							<?php $ecommerces=$model->ecommerces;?>
-							<?php if ($ecommerces) :?>
-								<div class="btn-group pull-right" role="group" aria-label="...">
-							<?php foreach ($ecommerces as $ecommerce) :?>
-								<?php if($ecommerce->accept_order):?>
-								<a class="btn btn-success"
-										href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
-								<?php else :?>
-								<a class="btn btn-warning"
-										href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
-								<?php endif;?>
-							<?php endforeach;?>
-								</div>
-							<?php endif;?>
-						</p>
+								
 							</div>
 						</div>
+						<div class="text-right">
+									<?php $ecommerces=$model->ecommerces;?>
+									<?php if ($ecommerces) :?>
+										<div class="btn-group pull-right" role="group" aria-label="...">
+									<?php foreach ($ecommerces as $ecommerce) :?>
+										<?php if($ecommerce->accept_order):?>
+										<a class="btn btn-success"
+												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+										<?php else :?>
+										<a class="btn btn-warning"
+												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+										<?php endif;?>
+									<?php endforeach;?>
+										</div>
+									<?php endif;?>
+						</div>	
 					</div>
 					<div class="panel-footer">
 						<div class="row">
-							<div class="col-md-6 col-sm-6">
+							<div class="col-md-6 col-sm-12">
 								<div class='text-left'>
-  					<?php $tagMaps=$model->getTagMaps()->all();?>
-  					<?php if($tagMaps):?>
-  					<?php foreach ($tagMaps as $tagMap):?>  			
-  						<a href="<?= Url::to(['brand/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
-  					<?php endforeach;?>	
-  					<?php endif;?>		
-<!-- 			<span class="label label-primary">Primary</span> -->
-									<!-- 			<span class="label label-success">Success</span> -->
-									<!-- 			<span class="label label-info">Info</span> -->
-									<!-- 			<span class="label label-warning">Warning</span> -->
-									<!-- 			<span class="label label-danger">Danger</span> -->
+				  					<?php $tagMaps=$model->getTagMaps()->all();?>
+				  					<?php if($tagMaps):?>
+				  					<?php foreach ($tagMaps as $tagMap):?>  			
+				  						<a href="<?= Url::to(['brand/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
+				  					<?php endforeach;?>	
+				  					<?php endif;?>		
 								</div>
 							</div>
-							<div class="col-md-6 col-sm-6">
+							<div class="col-md-6 col-sm-12">
 								<p class='text-right'>
 									<a href="<?= Url::to(['brand/thumbsup','id' => $model->id])?>">
 										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
@@ -113,7 +109,7 @@ $this->params['breadcrumbs'] [] = $this->title;
   </li>
 </ul>
 <?php else:?>
-	<div class="alert alert-danger" role="alert">抱歉！啥也没找到！</div>
+	<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>
 <?php endif;?>
 
 <?php 
