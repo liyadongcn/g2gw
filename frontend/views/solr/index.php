@@ -24,12 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
 <!-- 搜索结果总数开始 -->
-	<?= html::encode('总计:'.$dataProvider->totalCount)?>
+	<span class="glyphicon glyphicon-search">
+	<?= html::encode('找到'.$dataProvider->totalCount).'条'?>
+	</span>
 <!-- 搜索结果总数结束 -->
 <!-- 排序开始 -->
     <div class="pull-right">
-    <?php //$sort=$dataProvider->sort;?>
-	<?php //echo $sort->link('id');?>
+    <?php $sort=$dataProvider->sort;?>
+	<?php echo $sort->link('id').' | ' .$sort->link('title');?>
     </div>
 <!-- 排序结束     -->
 <ul class="list-group">
@@ -45,11 +47,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <li class="list-group-item">
     					<p>
                         <a href="<?php echo Html::encode($model->url)?>">
-                            <h5 ><?php echo html::encode($model->title)?></h5>
+                        	<?php if($model->offsetExists('title')):?>
+                            	<h5 ><?php echo html::encode($model->title)?></h5>
+                            	<h5 ><?php //echo html::encode('----'.$model['highlighting'][$model->id]['title'])?></h5>
+                            	
+                            <?php else:?>
+                            	<h5 ><?php echo html::encode('无标题')?></h5>
+                            <?php endif;?>
                         </a>
                         </p>
                         <p >
-                            <?php echo html::encode('信息时间:'.$model->tstamp)?>
+                            <?php echo html::encode('信息时间:'.$model->tstamp);?>
+                            <?php //echo html::encode($model->content);?>
                             <?php //$propertyNames=$model->getPropertyNames();?>
                             <?php //foreach ($propertyNames as $property):?>
                             	<?php //echo html::encode('"'.$property.'"-')?>

@@ -7,6 +7,7 @@ use yii\widgets\LinkPager;
 use common\models\goods;
 use common\models\Category;
 use common\models\User;
+use common\models\tag;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 
@@ -157,7 +158,7 @@ echo LinkPager::widget([
 	<?php endif;?>
 <!-- 用户收藏的商品结束 -->
 
-	<!-- 热门商品开始 -->
+<!-- 热门商品开始 -->
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">热门商品</h3>
@@ -174,6 +175,25 @@ echo LinkPager::widget([
 	</div>
 </div>
 <!-- 热门商品结束 -->
+
+<!-- 热门标签开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">热门标签</h3>
+	</div>
+	<div class="panel-body">
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS,10)->all();?>
+	<?php if($hotestTags):?>
+		<?php foreach ($hotestTags as $tag):?>			
+			<a href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">
+			<span class="label label-success"><?= html::encode($tag->name)?></span>
+			</a>
+		<?php endforeach;?>
+	<?php endif;?>
+	</div>
+</div>
+<!-- 热门标签结束 -->
+
 <!-- 最新商品开始 -->
 <div class="panel panel-default">
 	<div class="panel-heading">

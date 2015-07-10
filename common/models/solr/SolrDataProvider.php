@@ -6,7 +6,7 @@ use yii;
 use yii\data\BaseDataProvider;
 use yii\di\Instance;
 use SolrClient;
-use SolrQuery;
+use common\models\solr\SolrQuery;
 
 class SolrDataProvider extends BaseDataProvider
 {
@@ -199,18 +199,18 @@ class SolrDataProvider extends BaseDataProvider
 				if (($sort = $this->getSort()) !== false && $this->query instanceof SolrQuery) {
 					//var_dump($this->getSort());
 					/* @var $model Model */
-					$model = $this->query->getFields();
+					$model = $this->query->getFieldsWithLable();
 					//var_dump($this->query);
 					//var_dump($model);
 					//die();
 					if($model)
 					{
 						if (empty($sort->attributes)) {
-							foreach ($model  as $key=>$attribute) {
-								$sort->attributes[$attribute] = [
-										'asc' => [$attribute => SolrQuery::ORDER_ASC],
-										'desc' => [$attribute => SolrQuery::ORDER_DESC],
-										'label' => $attribute,
+							foreach ($model  as $key=>$lable) {
+								$sort->attributes[$key] = [
+										'asc' => [$key => SolrQuery::ORDER_ASC],
+										'desc' => [$key => SolrQuery::ORDER_DESC],
+										'label' => $lable,
 								];
 							}
 							//var_dump($sort);

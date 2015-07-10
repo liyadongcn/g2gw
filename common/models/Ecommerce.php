@@ -87,4 +87,9 @@ class Ecommerce extends \yii\db\ActiveRecord
     			return [];
     	}
     }
+    
+    public function getBrand()
+    {
+    	return $this->hasOne(Brand::className(), ['id'=>'brand_id']);
+    }
 }

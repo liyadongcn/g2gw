@@ -7,7 +7,7 @@ use Yii;
 use yii\base\Model;
 use common\models\solr\SolrDataProvider;
 use SolrClient;
-use SolrQuery;
+use common\models\solr\SolrQuery;
 
 /**
  * SolrSearch represents the model behind the search form about solr server searching.
@@ -18,6 +18,21 @@ class SolrSearch extends Model
 	 * The searcModelkey words.
 	 */
 	public $keyWords;
+	
+	/**
+	 * @return array | Fields of solr response.
+	 */
+	public static function getSolrResponseFields()
+	{
+		return [
+				'id'=>'唯一标识',
+				'tstamp'=>'时间',
+				'title'=>'标题',
+				'url'=>'url',
+				//'content'=>'content',
+		];
+	}
+	
 
 	/**
 	 * @inheritdoc
@@ -73,15 +88,23 @@ class SolrSearch extends Model
 			$query->setQuery('*:*');
 		}
 		
-		$query->addField('id');
+		$responseFields=self::getSolrResponseFields();
 		
-		$query->addField('tstamp');
+		$query->addFields($responseFields);
 		
-		$query->addField('title');
+// 		$query->setHighlight(0);
 		
-		//$query->addField('content');
+// 		$query->addHighlightField('title');
 		
-		$query->addField('url');
+// 		$query->addField('id');
+		
+// 		$query->addField('tstamp');
+		
+// 		$query->addField('title');
+		
+// 		//$query->addField('content');
+		
+// 		$query->addField('url');
 		
 		// 		$query->addField('id')->addField('title');
 		
@@ -97,7 +120,9 @@ class SolrSearch extends Model
 				],
 				'sort' => [
 						'defaultOrder' => [
-								//'id' => SolrQuery::ORDER_DESC,
+								'title' => SolrQuery::ORDER_ASC,
+								'id' => SolrQuery::ORDER_ASC,
+								//'tstamp' => SolrQuery::ORDER_DESC,
 						]
 				],
 		]);
