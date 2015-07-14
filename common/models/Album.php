@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+
 /**
  * This is the model class for table "album".
  *
@@ -76,4 +77,18 @@ class Album extends \yii\db\ActiveRecord
             'is_default' => 'Is Default',
         ];
     }
+    
+   public function beforeSave($insert)
+   {
+    	if (parent::beforeSave($insert)) {
+    		// ...custom code here...
+    		if($this->model_type=MODEL_TYPE_POSTS)
+    		{
+    			$this->is_default=1;
+    		}
+    		return true;
+    	} else {
+    		return false;
+    	}
+   }
 }

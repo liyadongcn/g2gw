@@ -33,36 +33,27 @@ $this->params['breadcrumbs'][] = $this->title;
 <ul class="list-group">
 	<li class="list-group-item">
   	<?php foreach ($models as $model):?>
-  		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="media">
-					<div class="media-left media-middle">
-						<a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
+  	
+  	<div class="thumbnail">
+      <a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
 						<?php $images=$model->album;?>
 						<?php if($images):?>
 							<?php foreach ($images as $image) :?>
-								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="64">
+								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="...">
 							<?php endforeach;?>
 						<?php else :?>
-								<img class=" media-object img-rounded" src=""	alt="..." width="64">
+								<img class=" media-object img-rounded" src=""	alt="..." >
 						<?php endif;?>
 						</a>
-					</div>
-					<div class="media-body">
-						<h1 class="media-heading"><?= html::encode($model->post_title)?></h1>
-						<p>
-							<?= html::encode($model->post_content)?>
-						</p>
-						
-					</div>
-					<p class="text-right">
+      <div class="caption">
+        <h3 ><?= html::encode($model->post_title)?></h3>
+        <p><?= html::encode($model->post_content)?></p>
+        <p class="text-right">
 							<?php if ($model->url) :?>
 								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button">去购买</a>
 							<?php endif;?>
 					</p>
-				</div>
-			</div>
-			<div class="panel-footer">
+				
 				<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class='text-left'>
@@ -97,8 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
 					</p>
 				</div>
 				</div>
-			</div>
-		</div>
+      </div>
+    </div>
+						
+						
+					
   <?php endforeach;?>
   </li>
 </ul>

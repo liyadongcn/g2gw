@@ -7,6 +7,9 @@ use common\models\Tag;
 use common\models\Album;
 use common\models\CategoryMap;
 use common\models\Category;
+use common\models\Company;
+use common\models\Brand;
+use common\models\Country;
 use yii\helpers\StringHelper;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
@@ -294,6 +297,18 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	}
 	
 	/**
+	 * This function is to get all the default album records related to the model.
+	 * 得到数据模型相关的相册对象列表
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function getAlbumDefault()
+	{
+		return Album::findOne(['model_id'=>$this->id,'model_type'=>$this->modelType(),'is_default'=>1]);
+	}
+	
+	/**
 	 * This function is to delete all the album records related to the model.
 	 * 删除相册表中所有与该数据模型相关的记录
 	 *
@@ -490,6 +505,85 @@ class ActiveRecord extends \yii\db\ActiveRecord
 				$this->updateCounters(['star_count'=>-1]);
 			}
 			
+		}
+	}
+	
+	/**
+	 * This function is to get the user object of this model.
+	 *
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function getUser()
+	{
+		return $this->hasOne(User::className(),['id'=>'userid']);
+		//->where();
+		//self::find()->where(['parent_id'=>$this->id])->count();
+	}
+	
+	/**
+	 * This function is to check if the model belongs to the category.
+	 * 
+	 * @param   integer category id.
+	 * @return  bool 
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function isCategory($categoryID)
+	{
+		$categoryMaps=$this->categoryMap;
+		if($categoryMaps)
+		{
+			foreach ($categoryMaps as $categoryMap)
+			{
+				if($categoryMap->category_id==$category_id)
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;		
+	
+	}
+	
+	/**
+	 * This function is   to get the dropdownlist data for the field in this model.
+	 *
+	 * @param  string      $field   the field name.
+	 * @return array|null           the maping data for the dropdwonlist.
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public static function getDropDownListData($model,$modelType=null)
+	{
+		switch ($model)
+		{
+			case MODEL_TYPE_BRAND:
+				return ArrayHelper::map(Brand::find()->all(),'id','en_name');
+			case MODEL_TYPE_CATEGORY:
+				return ArrayHelper::map(Category::find()->where(['model_type'=>$modelType])->all(),'id','name');
+			case MODEL_TYPE_COMMENT_STATUS:
+				return [
+ 					COMMENT_STATUS_CLOSE=>'禁止评论',
+ 					COMMENT_STATUS_OPEN=>'允许评论'
+				];
+			case MODEL_TYPE_POSTS_STATUS:
+				return [
+					POST_STATUS_PUBLISH=>'直接发布',
+					POST_STATUS_DRAFT=>'保存为草稿',
+				];
+			case MODEL_TYPE_COUNTRY:
+				return ArrayHelper::map(Country::find()->all(),'code','cn_name');
+			case MODEL_TYPE_COMPANY:
+				return ArrayHelper::map(Company::find()->all(),'id','name');
+			//put more fields need to be mapped.
+				
+			default:
+				return [];
 		}
 	}
 }

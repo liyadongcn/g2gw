@@ -6,9 +6,12 @@ use Yii;
 use common\models\Brand;
 use common\models\Comment;
 use common\models\Tag;
+use common\models\Ecommerce;
+use common\models\base\Model;
 use backend\models\BrandSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\filters\AccessControl;
@@ -88,26 +91,69 @@ class BrandController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Brand();
+    	if(yii::$app->user->can('create-brand')){
+    	
+        $model = new Brand;
+        $modelEcommerces = [new Ecommerce()];
 
         if ($model->load(Yii::$app->request->post())) {
-        	
-        	//Get the uploaded file instance
-        	$model->file = UploadedFile::getInstance($model, 'file');
-        	
-        	if ($model->file && $model->validate()) {
-        		$model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
-        		$model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
-        	}
-        	
-        	$model->save();
-        	
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+
+            $modelEcommerces = Model::createMultiple(Ecommerce::classname());
+            Model::loadMultiple($modelEcommerces, Yii::$app->request->post());
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($modelEcommerces),
+                    ActiveForm::validate($model)
+                );
+            }
+
+             //Get the uploaded file instance
+            $model->file = UploadedFile::getInstance($model, 'file');
+            
+            if ($model->file ) {
+                $model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
+                $model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
+            }
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelEcommerces) && $valid;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelEcommerces as $modelEcommerce) {
+                            $modelEcommerce->brand_id = $model->id;
+                            if (! ($flag = $modelEcommerce->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        //set the categories of this model.
+                        $model->setCategories();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+            'modelEcommerces' => (empty($modelEcommerces)) ? [new Ecommerce] : $modelEcommerces
+        ]);
+    	}
+    	else{
+    		throw new ForbiddenHttpException('You are not allow to create a new brand!');
+    	}
     }
 
     /**
@@ -118,27 +164,72 @@ class BrandController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+    $model = $this->findModel($id);
+        //var_dump($model->getCategories()->all());
+        //die();
+        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
+        //var_dump($model->categories);
+        $modelEcommerces = $model->ecommerces;
 
         if ($model->load(Yii::$app->request->post())) {
-        	
-        	//Get the uploaded file instance
-        	$model->file = UploadedFile::getInstance($model, 'file');
-        	
-        	if ($model->file && $model->validate()) {
-        		$model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
-        		$model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
-        	}
-        	
-        	$model->save();
-        	
-            return $this->redirect(['view', 'id' => $model->id]);
+
+            $oldIDs = ArrayHelper::map($modelEcommerces, 'id', 'id');
+            $modelEcommerces = Model::createMultiple(Ecommerce::classname(), $modelEcommerces);
+            Model::loadMultiple($modelEcommerces, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelEcommerces, 'id', 'id')));
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($modelEcommerces),
+                    ActiveForm::validate($model)
+                );
+            }
+
+            //Get the uploaded file instance
+            $model->file = UploadedFile::getInstance($model, 'file');
             
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if ($model->file && $model->validate()) {
+                $model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
+                $model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
+            }
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelEcommerces) && $valid;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            Ecommerce::deleteAll(['id' => $deletedIDs]);
+                        }
+                        foreach ($modelEcommerces as $modelEcommerce) {
+                            $modelEcommerce->brand_id = $model->id;
+                            if (! ($flag = $modelEcommerce->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        //set the categories of this model.
+                        $model->setCategories();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'modelEcommerces' => (empty($modelEcommerces)) ? [new Ecommerce] : $modelEcommerces
+        ]);
     }
 
     /**

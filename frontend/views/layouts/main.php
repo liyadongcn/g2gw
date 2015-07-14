@@ -70,7 +70,7 @@ AppAsset::register($this);
                    		//'<li class="dropdown-header">Dropdown Header</li>',                 		
                     	['label' =>'<span class="glyphicon glyphicon-cog"></span>帐户设置','url' => '#'],
                     	['label' =>'<span class="glyphicon glyphicon-calendar"></span>我的签到','url' => '#'],
-                    	['label' =>'<span class="glyphicon glyphicon-edit"></span>我的发布','url' => '#'],
+                    	['label' =>'<span class="glyphicon glyphicon-edit"></span>报告品牌','url' => ['/brand/create']],
                     	['label' =>'<span class="glyphicon glyphicon-star"></span>我的收藏','url' => '#'],
                     	['label' =>'<span class="glyphicon glyphicon-piggy-bank"></span>我的积分','url' => '#'],
                     	'<li class="divider"></li>',
@@ -108,31 +108,31 @@ AppAsset::register($this);
 <?php case MODEL_TYPE_BRAND:?>
 			  <option value="brand" selected="selected">品牌</option>
 			  <option value="goods">商品</option>
-			  <option value="posts">发帖</option>	
+			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_GOODS:?>
 			  <option value="brand">品牌</option>
 			  <option value="goods" selected="selected">商品</option>
-			  <option value="posts">发帖</option>	
+			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_POSTS:?>
 			  <option value="brand">品牌</option>
 			  <option value="goods">商品</option>
-			  <option value="posts" selected="selected">发帖</option>	
+			  <option value="posts" selected="selected">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_SOLR:?>
 			  <option value="brand">品牌</option>
 			  <option value="goods">商品</option>
-			  <option value="posts">发帖</option>	
+			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr" selected="selected">官网商品</option>	
 			  <?php break;?>
 <?php default:?>
 			  <option value="brand" selected="selected">品牌</option>
 			  <option value="goods">商品</option>
-			  <option value="posts">发帖</option>	
+			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php endswitch;?>		
@@ -161,9 +161,11 @@ AppAsset::register($this);
 <!--     	</div> -->
 <!--     	<div class="col-md-11"> -->
 
-	    	<?= Breadcrumbs::widget([
-	            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-	        ]) ?>
+	    	<?php 
+//	    	echo  Breadcrumbs::widget([
+// 	            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+// 	        ]) 
+?>
 	        <?= Alert::widget() ?>
 	        <?= $content ?>
 <!--     	</div> -->

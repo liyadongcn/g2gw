@@ -14,7 +14,6 @@ use common\models\User;
  * @property integer $id
  * @property string $post_title
  * @property string $post_content
- * @property string $post_type
  * @property string $post_status
  * @property string $url
  * @property string $created_date
@@ -29,12 +28,11 @@ use common\models\User;
  */
 class Posts extends base\ActiveRecord
 {
-	const POST_TYPE_PROMOTION='promotion';
-	const POST_TYPE_ARTICLE='article';
-	const POST_TYPE_OTHER='other';
+	const POST_TYPE_PROMOTION=37;
+	const POST_TYPE_ARTICLE=38;
+//	const POST_TYPE_OTHER='other';
 	
-	const POST_STATUS_PUBLISH='publish';
-	const POST_STATUS_DRAFT='draft';
+
 	
 	/**
 	 * @var UploadedFiles|Null file attribute
@@ -59,11 +57,10 @@ class Posts extends base\ActiveRecord
         [
             [['post_content'], 'string'],
             [['created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
-            [['userid', 'comment_count', 'thumbsup', 'thumbsdown', 'view_count', 'star_count'], 'integer'],
+            [['userid', 'brand_id','comment_count', 'thumbsup', 'thumbsdown', 'view_count', 'star_count'], 'integer'],
             [['post_title', 'url'], 'string', 'max' => 100],
-            [['post_type', 'post_status'], 'string', 'max' => 20],
-        	[['post_type'], 'default', 'value' => self::POST_TYPE_OTHER],
-        	[['post_status'], 'default', 'value' => self::POST_STATUS_PUBLISH],
+            [['post_status'], 'string', 'max' => 20],
+        	[['post_status'], 'default', 'value' => POST_STATUS_PUBLISH],
         	[['comment_count', 'thumbsup', 'thumbsdown', 'view_count', 'star_count'], 'default','value'=>0],
         	
         ]
@@ -82,19 +79,19 @@ class Posts extends base\ActiveRecord
             'id' => 'ID',
             'post_title' => 'Post Title',
             'post_content' => 'Post Content',
-            'post_type' => 'Post Type',
             'post_status' => 'Post Status',
             'url' => 'Url',
             'created_date' => 'Created Date',
-            'updated_date' => 'Updated Date',
+            'updated_date' => '最新',
             'userid' => 'Userid',
-            'comment_count' => 'Comment Count',
-            'thumbsup' => 'Thumbsup',
+            'comment_count' => '评论',
+            'thumbsup' => '口碑',
             'thumbsdown' => 'Thumbsdown',
             'effective_date' => 'Effective Date',
             'expired_date' => 'Expired Date',
-            'view_count' => 'View Count',
-            'star_count' => 'Star Count', 
+            'view_count' => '浏览',
+            'star_count' => '收藏', 
+        	'brand_id' =>'Brand ID',
         ];
     }
     
@@ -107,27 +104,27 @@ class Posts extends base\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public function getDropDownListData($field)
-    {
-    	switch ($field)
-    	{
-    		case 'post_status':
-    			return [
-    				Posts::POST_STATUS_PUBLISH=>'直接发布',
-    				Posts::POST_STATUS_DRAFT=>'保存为草稿',    				
-    		];
-    		case 'post_type':
-    			return [
-    				Posts::POST_TYPE_ARTICLE=>'文章',
-    				Posts::POST_TYPE_PROMOTION=>'促销活动',
-    				Posts::POST_TYPE_OTHER=>'其他',
-    		];
-    			//put more fields need to be mapped.
+//     public function getDropDownListData($field)
+//     {
+//     	switch ($field)
+//     	{
+//     		case 'post_status':
+//     			return [
+//     				Posts::POST_STATUS_PUBLISH=>'直接发布',
+//     				Posts::POST_STATUS_DRAFT=>'保存为草稿',    				
+//     		];
+// //     		case 'post_type':
+// //     			return [
+// //     				Posts::POST_TYPE_ARTICLE=>'文章',
+// //     				Posts::POST_TYPE_PROMOTION=>'促销活动',
+// //     				Posts::POST_TYPE_OTHER=>'其他',
+// //     		];
+//     			//put more fields need to be mapped.
     			
-    		default:
-    			return [];
-    	}
-    }
+//     		default:
+//     			return [];
+//     	}
+//     }
     
     /**
      * This function is to get the user object of this comments.
@@ -199,6 +196,47 @@ class Posts extends base\ActiveRecord
     	$query->orderBy(['updated_date' => SORT_DESC])
     	->limit($n);
     	return $query;
+    
+    }
+    
+    /**
+     * This function is to get the latest promotions.
+     *
+     * @param integer the number of the records needed. the default is 5.
+     * @return array|null the model objects
+     *
+     * @author Wintermelon
+     * @since  1.0
+     */
+    public static function getPromotions($n=5)
+    {
+//     	return $this->hasMany(Posts::className(),['id'=>'model_id'])
+//     	->viaTable('category_map',['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION])
+//     	->orderBy(['updated_date' => SORT_DESC])
+//     	->limit($n);
+    	//$categoryMaps=CategoryMap::find()->where(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
+    	$query=self::find()
+    	->joinWith('categoryMap',['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
+    	$query->orderBy(['updated_date' => SORT_DESC])
+    	->limit($n);
+//     	var_dump($query->all());
+//     	die();
+    	return $query;
+    
+    }
+    
+    /**
+     * This function is to get the brand of this post concerning.
+     *
+     *
+     * @author Wintermelon
+     * @since  1.0
+     */
+    public function getBrand()
+    {
+    	return $this->hasOne(Brand::className(),['id'=>'brand_id']);
+    	//->where();
+    	//self::find()->where(['parent_id'=>$this->id])->count();
     
     }
 }

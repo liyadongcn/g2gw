@@ -25,7 +25,7 @@ use common\models\Category;
     <?php //echo $form->field($model, 'country_code')->textInput(['maxlength' => 3]) ?>
     
     <?= $form->field($model, 'country_code')->dropDownList(
-    												$model->getDropDownListData('country_code'),
+    												$model->getDropDownListData(MODEL_TYPE_COUNTRY),
     		                                        ['prompt' => '选择国家......']
     		
     		); ?>
@@ -112,7 +112,7 @@ use common\models\Category;
     <?php //echo $form->field($model, 'company_id')->textInput() ?>
      
      <?= $form->field($model, 'company_id')->dropDownList(
-    												$model->getDropDownListData('company_id'),
+    												$model->getDropDownListData(MODEL_TYPE_COMPANY),
     		                                        ['prompt' => '选择公司......']
     		
     		); ?>

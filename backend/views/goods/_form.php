@@ -48,7 +48,7 @@ use kartik\widgets\FileInput;
    <?php 
    // Usage with ActiveForm and model
     echo $form->field($model, 'brand_id')->widget(Select2::classname(), [
-   		'data' => $model->getDropDownListData('brand_id'),
+   		'data' => $model->getDropDownListData(MODEL_TYPE_BRAND),
    		'options' => ['placeholder' => '请选择商品品牌 ...'],
    		'pluginOptions' => [
    				'allowClear' => true

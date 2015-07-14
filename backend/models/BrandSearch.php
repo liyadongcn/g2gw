@@ -73,10 +73,10 @@ class BrandSearch extends Brand
         	],
         	'sort' => [
         			'defaultOrder' => [
+                            'updated_date' => SORT_DESC,
         					'view_count' => SORT_DESC,
         					'thumbsup' => SORT_DESC,
-        					'comment_count' =>SORT_DESC,
-        					'updated_date' => SORT_DESC,
+        					'comment_count' =>SORT_DESC,        					
         					'star_count' =>SORT_DESC,
         			]
         	],

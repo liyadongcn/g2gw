@@ -35,8 +35,8 @@ class Goods extends base\ActiveRecord
 {
 	const STATUS_DELETED = 0;
 	const STATUS_ACTIVE = 1;
-	const COMMENT_STATUS_OPEN='open';
-	const COMMENT_STATUS_CLOSE='close';
+// 	const COMMENT_STATUS_OPEN='open';
+// 	const COMMENT_STATUS_CLOSE='close';
 		
 	/**
 	 * @var UploadedFiles|Null file attribute
@@ -68,7 +68,7 @@ class Goods extends base\ActiveRecord
             [['code'], 'string', 'max' => 30],
             [['url', 'title'], 'string', 'max' => 255],
             [['comment_status'], 'string', 'max' => 20],
-        	[['comment_status'], 'default', 'value' =>self::COMMENT_STATUS_OPEN],
+        	[['comment_status'], 'default', 'value' =>COMMENT_STATUS_OPEN],
         	[['status'], 'default', 'value' =>self::STATUS_ACTIVE],
         	[['file'], 'file', 'maxFiles' => 6],        	
         ]);
@@ -99,32 +99,6 @@ class Goods extends base\ActiveRecord
         ];
     }
     
-    /**
-     * This function is   to get the dropdownlist data for the field in this model.
-     *
-     * @param  string      $field   the field name.
-     * @return array|null           the maping data for the dropdwonlist.
-     *
-     * @author Wintermelon
-     * @since  1.0
-     */
-    public function getDropDownListData($field)
-    {
-		switch ($field)
-		{
-			case 'brand_id':
-				return ArrayHelper::map(Brand::find()->all(),'id','en_name');
-			case 'comment_status':
-				return [
-					self::COMMENT_STATUS_CLOSE=>'禁止评论',
-					self::COMMENT_STATUS_OPEN=>'允许评论'
-				];
-			//put more fields need to be mapped.
-			
-			default:
-				return [];
-		}
-    }
     
  
     

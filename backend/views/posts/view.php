@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'post_title',
             'post_content:ntext',
-            'post_type',
+        	'brand_id',
             'post_status',
             'url:url',
             'created_date',
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
    			<h3 class="panel-title">标签</h3>
   		</div>
   		<div class="panel-body">
-  			<?php $tagMaps=$model->getTagMaps();?>
+  			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
   					<span class="label label-success"><?= $tagMap->tag->name?></span>

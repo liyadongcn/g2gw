@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use common\models\Posts;
 use common\models\Comment;
 use common\models\Album;
@@ -73,10 +74,14 @@ class PostsController extends Controller
     public function actionCreate()
     {
         $model = new Posts();
-        $model->post_type=Posts::POST_TYPE_ARTICLE;
-        $model->post_status=Posts::POST_STATUS_PUBLISH;
+        //$model->post_type=Posts::POST_TYPE_ARTICLE;
+        $model->post_status=POST_STATUS_PUBLISH;
 
         if ($model->load(Yii::$app->request->post())) {
+        	
+        	//Get the current user
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+        	 
         	// Get the pictures and save to the album
         	$model->file = UploadedFile::getInstances($model, 'file');
         	if ($model->save() && $model->validate()) {
@@ -85,6 +90,8 @@ class PostsController extends Controller
         				$model->saveToAlbum($file);
         			}
         		}
+        		//set the categories of this model.
+        		$model->setCategories();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
         } else {
@@ -104,8 +111,14 @@ class PostsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
 
         if ($model->load(Yii::$app->request->post())) {
+        	
+        	//Get the current user
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+        
         	// Get the pictures and save to the album
         	$model->file = UploadedFile::getInstances($model, 'file');
         	if ($model->save() && $model->validate()) {
@@ -114,6 +127,8 @@ class PostsController extends Controller
         				$model->saveToAlbum($file);
         			}
         		}
+        		//set the categories of this model.
+        		$model->setCategories();
            	 	return $this->redirect(['view', 'id' => $model->id]);
         	}
         } else {

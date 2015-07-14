@@ -4,8 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\LinkPager;
+use yii\bootstrap\Carousel;
 use common\models\Brand;
 use common\models\Category;
+use common\models\Posts;
 use common\models\User;
 use common\models\Tag;
 use common\models\Relationships;
@@ -29,6 +31,44 @@ $this->params['breadcrumbs'] [] = $this->title;
 		<?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		</div>
+		
+<!-- 品牌促销活动开始 -->
+<?php $promotions=Posts::getPromotions()->all();?>
+<?php if($promotions):?>
+	<?php foreach ($promotions as $promotion):?>
+		<?php $img=$promotion->getAlbumDefault();?>
+		<?php if($img):?>		
+			<?php $items[]=[
+					'content'=>'<a href="'.$promotion->url.'">'.html::img($img->filename).'</a>',
+					'caption'=>'<h4>'.html::encode($promotion->post_title).'</h4>',
+					'options'=>'',
+				];				
+			?>
+		<?php endif;?>
+	<?php endforeach;?>	
+	<?php //var_dump($items);?>
+	<?php //die();?>
+	<?php echo Carousel::widget(['items'=>$items]);?>
+<?php endif;?>
+<?php 
+// echo Carousel::widget([
+// 		'items' => [
+// 				// the item contains only the image
+// 				'<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-01.jpg"/>',
+// 				// equivalent to the above
+// 				['content' => '<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-02.jpg"/>'],
+// 				// the item contains both the image and the caption
+// 				[
+// 						'content' => '<img src="http://twitter.github.io/bootstrap/assets/img/bootstrap-mdo-sfmoma-03.jpg"/>',
+// 						'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
+// 						'options' => [],
+// 				],
+// 		]
+// ]);
+?>		
+
+<!-- 品牌促销活动结束 -->
+
 <?php $sort=$dataProvider->sort;?>
 <?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
 
@@ -47,7 +87,7 @@ $this->params['breadcrumbs'] [] = $this->title;
 								</a>
 							</div>
 							<div class="media-body">
-								<h1 class="media-heading"><?= html::encode($model->en_name)?></h1>
+								<h2 class="media-heading"><?= html::encode($model->en_name.$model->cn_name)?></h2>
 								<p>
 								<?= html::encode($model->introduction)?>
 								</p>
@@ -141,7 +181,7 @@ echo LinkPager::widget([
         <?php if($brands):?>
             <?php foreach ($brands as $brand):?>
             <li class="list-group-item">
-                <a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"><?= html::encode($brand->en_name)?></a>
+                <a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"><?= html::encode($brand->en_name.$brand->cn_name)?></a>
                 <span class="pull-right"><a href="<?= Url::to(['brand/remove-star','id'=>$brand->id])?>">取消收藏</a></span>
             </li>
             <?php endforeach;?>
@@ -160,7 +200,7 @@ echo LinkPager::widget([
 	<?php endif;?>
 	<?php endif;?>
 	<?php endif;?>
-<!-- 用户收藏平拍结束 -->
+<!-- 用户收藏品牌结束 -->
 	
 <!-- 热门品牌开始 -->
 <div class="panel panel-danger">
@@ -174,7 +214,7 @@ echo LinkPager::widget([
 	<?php if($hotestBrands):?>
 		<?php foreach ($hotestBrands as $hotestdBrand):?>
 			<a href="<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?>"
-				class="list-group-item"><?= html::encode($hotestdBrand->en_name)?></a>
+				class="list-group-item"><?= html::encode($hotestdBrand->en_name)?><span class="pull-right"><?= html::encode($hotestdBrand->cn_name)?></span></a>
 		<?php endforeach;?>
 	<?php endif;?>
 	</ul>
@@ -189,7 +229,7 @@ echo LinkPager::widget([
 		<h3 class="panel-title">热门标签</h3>
 	</div>
 	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,10)->all();?>
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,30)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
 			<a href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
@@ -213,7 +253,7 @@ echo LinkPager::widget([
 	<?php if($brands):?>
 		<?php foreach ($brands as $brand):?>
 			<a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"
-				class="list-group-item"><?= html::encode($brand->en_name)?></a>
+				class="list-group-item"><?= html::encode($brand->en_name)?><span class="pull-right"><?= html::encode($brand->cn_name)?></span></a>
 		<?php endforeach;?>
 	<?php endif;?>
 	</ul>

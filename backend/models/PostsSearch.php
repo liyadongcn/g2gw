@@ -39,7 +39,7 @@ use common\models\Posts;
     {
         return [
             [['id', 'userid', 'comment_count', 'thumbsup', 'thumbsdown', 'view_count'], 'integer'],
-            [['post_title', 'post_content', 'post_type', 'post_status', 'url', 'created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
+            [['post_title', 'post_content', 'post_status', 'url', 'created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
         	[['relationship','relationship_userid'],'safe'],
         ];
     }
@@ -116,7 +116,6 @@ use common\models\Posts;
 
         $query->orFilterWhere(['like', 'post_title', $this->keyWords])
             ->orFilterWhere(['like', 'post_content', $this->keyWords])
-            ->orFilterWhere(['like', 'post_type', $this->keyWords])
             ->orFilterWhere(['like', 'post_status', $this->keyWords])
             ->orFilterWhere(['like', 'url', $this->keyWords]);
 

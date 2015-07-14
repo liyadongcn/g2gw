@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?php //echo Html::encode($this->title) ?></h1>
 
     <div class="page-header">
-  		<h1><?= html::encode($model->post_title)?><small></small></h1>
+  		<h3><?= html::encode($model->post_title)?><small></small></h3>
 	</div>
 	
 	<div class="action">

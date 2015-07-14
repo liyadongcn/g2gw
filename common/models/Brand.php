@@ -150,20 +150,20 @@ class Brand extends base\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public function getDropDownListData($field)
-    {
-    	switch ($field)
-    	{
-    		case 'country_code':
-    			return ArrayHelper::map(Country::find()->all(),'code','cn_name');
-    		case 'company_id':
-    			return ArrayHelper::map(Company::find()->all(),'id','name');
-    		//put more fields need to be mapped.
+//     public static function getDropDownListData($field)
+//     {
+//     	switch ($field)
+//     	{
+//     		case 'country_code':
+//     			return ArrayHelper::map(Country::find()->all(),'code','cn_name');
+//     		case 'company_id':
+//     			return ArrayHelper::map(Company::find()->all(),'id','name');
+//     		//put more fields need to be mapped.
     			
-    		default:
-    			return [];
-    	}
-    }
+//     		default:
+//     			return [];
+//     	}
+//     }
     
     /**
      * This function is to get the related of this brand.

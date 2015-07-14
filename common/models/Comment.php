@@ -27,10 +27,10 @@ use yii\helpers\StringHelper;
  */
 class Comment extends \yii\db\ActiveRecord
 {
-	const COMMENT_STATUS_APPROVED='approved';//批准
-	const COMMENT_STATUS_REFUSED='refused';//驳回
-	const COMMENT_STATUS_SPAM='spam';//垃圾评论
-	const COMMENT_STATUS_TRASH='trash';//移至回收站
+// 	const COMMENT_STATUS_APPROVED='approved';//批准
+// 	const COMMENT_STATUS_REFUSED='refused';//驳回
+// 	const COMMENT_STATUS_SPAM='spam';//垃圾评论
+// 	const COMMENT_STATUS_TRASH='trash';//移至回收站
 	
 	const MODEL_TYPE_GOODS='goods';
 	const MODEL_TYPE_COMMENT='comment';
@@ -76,7 +76,7 @@ class Comment extends \yii\db\ActiveRecord
             [['created_date', 'updated_date'], 'safe'],
             [['model_type'], 'string', 'max' => 20],
             [['approved'], 'string', 'max' => 10],
-        	[['approved'], 'default', 'value' => self::COMMENT_STATUS_APPROVED],
+        	[['approved'], 'default', 'value' => COMMENT_STATUS_APPROVED],
             [['author', 'author_ip'], 'string', 'max' => 30]
         ];
     }

@@ -1,11 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use common\models\Posts;
+use common\models\Category;
 use kartik\widgets\datepicker;
 use kartik\widgets\DateTimePicker;
 use kartik\widgets\FileInput;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
@@ -20,15 +23,41 @@ use kartik\widgets\FileInput;
 
     <?= $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'post_type')->dropDownList(
-    		$model->getDropDownListData('post_type'),
-    		[
-    				'prompt'=>'选择类型'
+    <?php 
+//     echo $form->field($model, 'brand_id')->dropDownList(
+//     		$model->getDropDownListData(MODEL_TYPE_BRAND),
+//     		[
+//     				'prompt'=>'选择涉及的品牌......'
     				
-   			 ]) ?>
+//    			 ]) 
+    ?>
+    
+       <?php 
+   // Usage with ActiveForm and model
+    echo $form->field($model, 'brand_id')->widget(Select2::classname(), [
+   		'data' => $model->getDropDownListData(MODEL_TYPE_BRAND),
+   		'options' => ['placeholder' => '请选择商品品牌 ...'],
+   		'pluginOptions' => [
+   				'allowClear' => true
+   		],
+   ]); 
+   
+   ?> 
+   			 
+ <!-- 文章分类开始 -->
+	 <div class="panel panel-default">
+  		<div class="panel-heading">
+   			<h3 class="panel-title">分类</h3>
+  		</div>
+  		<div class="panel-body">
+		<?php $categories =ArrayHelper::map(Category::findAll(['model_type'=>$model->modelType()]),'id','name')?>
+   		<?= $form->field($model, 'categories')->checkboxlist($categories) ?>
+      	</div>
+	</div>
+<!-- 文章分类结束 -->
 
     <?php echo $form->field($model, 'post_status')->dropDownList(
-    		$model->getDropDownListData('post_status'),
+    		$model->getDropDownListData(MODEL_TYPE_POSTS_STATUS),
     		[
     				'prompt'=>'状态'
     				
@@ -40,7 +69,7 @@ use kartik\widgets\FileInput;
 
     <?php //echo $form->field($model, 'updated_date')->textInput() ?>
 
-    <?php echo $form->field($model, 'userid')->textInput() ?>
+    <?php //echo $form->field($model, 'userid')->textInput() ?>
     
     <?php //echo $form->field($model, 'comment_count')->textInput() ?>
 
