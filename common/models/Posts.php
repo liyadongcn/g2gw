@@ -216,11 +216,11 @@ class Posts extends base\ActiveRecord
 //     	->limit($n);
     	//$categoryMaps=CategoryMap::find()->where(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
     	$query=self::find()
-    	->joinWith('categoryMap',['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
+    	->joinWith('categoryMap')->where(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
     	$query->orderBy(['updated_date' => SORT_DESC])
     	->limit($n);
-//     	var_dump($query->all());
-//     	die();
+     	//var_dump($query->all());
+     	//die();
     	return $query;
     
     }
