@@ -8,9 +8,11 @@ use common\models\Tag;
 use common\models\Tagmap;
 use common\models\Country;
 use common\models\Company;
+use backend\models\PostsSearch;
 use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "brand".
@@ -59,8 +61,8 @@ class Brand extends base\ActiveRecord
         array_merge(parent::rules(),
         [
             [['introduction'], 'string'],
-            [['thumbsup', 'thumbsdown', 'company_id', 'comment_count', 'view_count'], 'integer'],
-        	[['thumbsup', 'thumbsdown', 'comment_count', 'view_count'], 'default','value'=>0],
+            [['thumbsup', 'thumbsdown', 'company_id', 'comment_count', 'view_count','star_count'], 'integer'],
+        	[['thumbsup', 'thumbsdown', 'comment_count', 'view_count','star_count'], 'default','value'=>0],
             [['en_name', 'cn_name'], 'string', 'max' => 30],
             [['country_code'], 'string', 'max' => 3],
             [['logo', 'baidubaike'], 'string', 'max' => 255],
@@ -82,12 +84,12 @@ class Brand extends base\ActiveRecord
             'cn_name' => 'Cn Name',
             'introduction' => 'Introduction',
             'baidubaike' => 'Baidubaike',
-            'thumbsup' => '点赞数',
+            'thumbsup' => '点赞',
             'thumbsdown' => 'Thumbsdown',
             'company_id' => 'Company ID',
-            'comment_count' => '评论数',
-            'view_count' => '浏览次数',
-        	'star_count' => '收藏次数',
+            'comment_count' => '评论',
+            'view_count' => '浏览',
+        	'star_count' => '收藏',
         	'file' => '品牌logo',
         	'tag_string'=>'标签',
         	'updated_date'=>'最新',
@@ -166,7 +168,7 @@ class Brand extends base\ActiveRecord
 //     }
     
     /**
-     * This function is to get the related of this brand.
+     * This function is to get the related brands of this brand.
      * 
      * @param integer the number of the records needed. the default is 10.
      * @return array|null the model objects
@@ -185,6 +187,7 @@ class Brand extends base\ActiveRecord
     	return $query;    	
     }
     
+
     /**
      * This function is to get the hotest of this brand.
      *

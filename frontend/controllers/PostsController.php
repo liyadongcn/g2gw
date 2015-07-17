@@ -9,6 +9,7 @@ use common\models\Tag;
 use common\models\Category;
 use backend\models\PostsSearch;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -84,12 +85,27 @@ class PostsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Posts();
-        $model->post_type=Posts::POST_TYPE_ARTICLE;
-        $model->post_status=Posts::POST_STATUS_PUBLISH;
+     	$model = new Posts();
+        //$model->post_type=Posts::POST_TYPE_ARTICLE;
+        $model->post_status=POST_STATUS_PUBLISH;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+        	
+        	//Get the current user
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+        	 
+        	// Get the pictures and save to the album
+        	$model->file = UploadedFile::getInstances($model, 'file');
+        	if ($model->save() && $model->validate()) {
+        		if($model->file){
+        			foreach ($model->file as $file) {
+        				$model->saveToAlbum($file);
+        			}
+        		}
+        		//set the categories of this model.
+        		$model->setCategories();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	}
         } else {
         	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
             return $this->render('create', [

@@ -98,7 +98,7 @@ class GoodsSearch extends Goods
         }
         if($this->category_id)
         {
-        	$query->joinWith('categoryMap')->where(['category_id'=>$this->category_id]);
+        	$query->joinWith('categoryMap')->where(['category_id'=>$this->category_id])->groupBy(['id']);
         }
 
          $query->andFilterWhere([

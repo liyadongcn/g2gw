@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="goods-view">
 
 	<h1><?php //echo  Html::encode($this->title) ?></h1>
-
+<!-- 详情表头开始 -->
 	<div class="action">
 		<span class="user"><span class="glyphicon glyphicon-info-sign"></span>商品编号：<?= html::encode($model->code)?></span>
 		<span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode($model->updated_date)?></span>
@@ -37,117 +37,157 @@ $this->params['breadcrumbs'][] = $this->title;
 			title="" data-toggle="tooltip" data-original-title="踩"><span
 				class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em></a></span>
 	</div>
+<!-- 详情表头结束 -->
 
-	<div class="jumbotron ">
-		<h1 class='text-left'><?= Html::encode($model->title) ?><small></small>
-		</h1>
+<!-- 商品详情展示开始 -->
+<div class="row">
+	<div class="col-md-6">
+	<!-- 商品图片列表开始 -->
+	<?php
+		$album=$model->album;
+		if(!empty($album)){
+			//echo '<div class="row">';			
+			foreach ($album as $image){
+				//echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
+				//echo '<div class="thumbnail">';
+				echo '<img src="'.$image->filename.'" class="img-responsive" alt="Responsive image" >';
+				echo '<div class="caption">';
+				//echo '<h3>Thumbnail label</h3>';
+				//echo '<p>...</p>';
+				//echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
+				echo '</div>';
+				//echo '</div>';
+				//echo '</div>';
+			}		
+			//echo '</div>';
+		}
+	?>
+	<!-- 商品图片列表结束 -->
+	</div>
+	<div class="col-ms-6">
+		<div class="jumbotron ">
+		<h2 class='text-left'><?= Html::encode($model->title) ?><small></small></h2>
 		<p class='text-left'><?= Html::encode($model->description) ?></p>
 		<p class='text-left'>
 			<a class="btn btn-primary btn-lg"
 				href="<?= Html::encode($model->url) ?>" role="button">去购买</a>
 		</p>
 	</div>
+	</div>
+</div>
+	
+<!-- 商品详情展示结束 -->
+
+	<!-- 相关发帖开始 -->
+<?php $postsProvider=$model->getRelatedPosts();?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">相关的促销活动及文章<span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
+    </div>
+    <div class="panel-body">
+    <ul class="list-group">
+        <?php $posts=$postsProvider->models;?>
+        <?php //var_dump($comments);?>
+        <?php if($posts):?>
+            <?php foreach ($posts as $post):?>
+                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
+                class="list-group-item"><?= html::encode($post->post_title)?>
+                <span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+                </a>
+            <?php endforeach;?>
+        <?php endif;?>
+    </ul>
+    </div>
+    <div class="panel-footer">
+    	<span>
+    	<?php echo LinkPager::widget([
+            'pagination' => $postsProvider->getPagination(),
+            ]);
+        ?>
+    	</span>
+    </div>
+</div>
+<!-- 相关发帖结束 -->
 
 	<!-- 商品品牌开始 -->
-	<div>
-	<?= Html::encode($model->brand->en_name)?>
-	</div>
+	<!-- <div> -->
+	<?php //echo  Html::encode($model->brand->en_name)?>
+	<!-- </div> -->
 	<!-- 商品品牌结束 -->
 
 	<!-- 历史价格列表开始 -->
-	<div class="panel panel-default">
+<!-- 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">历史价格</h3>
 		</div>
 		<div class="panel-body">
-			<ul class="list-group">
+			<ul class="list-group"> -->
 			<?php $priceHistory=$model->pricehistory?>
 			<?php if($priceHistory):?>
 			<?php foreach ($priceHistory as $price):?>
-			<div class="list-group-item">
-				<?= html::encode($price->market_price)?>
-				<?= html::encode($price->real_price)?>
-				<?= html::encode($price->quotation_date)?>
-			</div>
+			<!-- <div class="list-group-item"> -->
+				<?php //echo  html::encode($price->market_price)?>
+				<?php //echo  html::encode($price->real_price)?>
+				<?php //echo  html::encode($price->quotation_date)?>
+			<!-- </div> -->
 			<?php endforeach;?>
 			<?php endif;?>
-			</ul>
+	<!-- 		</ul>
 		</div>
-	</div>
+	</div> -->
 	<!-- 历史价格列表结束 -->
 
-	<!-- 商品图片列表开始 -->
-	<?php
-		$album=$model->album;
-		if(!empty($album)){
-			echo '<div class="row">';			
-			foreach ($album as $image){
-				echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
-				echo '<div class="thumbnail">';
-				echo '<img src="'.$image->filename.'" class="img-responsive img-thumbnail" alt="Responsive image" width="200">';
-				echo '<div class="caption">';
-				//echo '<h3>Thumbnail label</h3>';
-				//echo '<p>...</p>';
-				//echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
-				echo '</div>';
-				echo '</div>';
-				echo '</div>';
-			}		
-			echo '</div>';
-		}
-	?>
-<!-- 商品图片列表结束 -->
+
    
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'brand_id',
-            'code',
-            'description:ntext',
-            'thumbsup',
-            'thumbsdown',
-            'url:url',
-            'title',
-            'comment_status',
-            'comment_count',
-            'created_date',
-            'updated_date',
-            'star_count',
-            'recomended_count',
-            'view_count',
-        ],
-    ]) ?>
+    <?php 
+    // echo
+    //  DetailView::widget([
+    //     'model' => $model,
+    //     'attributes' => [
+    //         'id',
+    //         'brand_id',
+    //         'code',
+    //         'description:ntext',
+    //         'thumbsup',
+    //         'thumbsdown',
+    //         'url:url',
+    //         'title',
+    //         'comment_status',
+    //         'comment_count',
+    //         'created_date',
+    //         'updated_date',
+    //         'star_count',
+    //         'recomended_count',
+    //         'view_count',
+    //     ],
+    // ]) 
+    ?>
     
 <!-- 商品分类列表开始 -->
-	<div class='goods-category'>
-	<?php $categoryMaps=$model->getCategoryMap()->all();?>
+<!-- 	<div class='goods-category'>
+ -->	<?php $categoryMaps=$model->getCategoryMap()->all();?>
 		<?php if($categoryMaps):?>
 			<?php foreach ($categoryMaps as $categoryMap): ?>
-<!-- 			echo $this->renderAjax('@app/views/category-map/view.php',['model'=>$categoryMap]); -->
-		<blockquote class="bg-primary">
-			<p><?= $categoryMap->category->name?></p>
-		</blockquote>
+		<!-- <blockquote class="bg-primary"> -->
+			<p><?php //echo $categoryMap->category->name?></p>
+		<!-- </blockquote> -->
 			<?php endforeach;?>
 		<?php endif;?>
-	</div>
+	<!-- </div> -->
 	<!-- 商品分类列表结束	 -->
 
 
-	<div class='goods-comment_status'>
-		<blockquote class="bg-primary">
+<!-- <div class='goods-comment_status'>
+		<blockquote class="bg-primary"> -->
 		<?php 
-			echo $model->getDropDownListData('comment_status')[$model->comment_status];
-		?>
-	  
-	
-	</div>
-	</blockquote>
-
-</div>
+			//echo $model->getDropDownListData('comment_status')[$model->comment_status];
+		?>	  
+	<!-- </div>
+	</blockquote> -->
+<!-- </div> -->
 
 <!-- 商品标签列表开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 class="panel-title">标签</h3>
 	</div>
@@ -168,9 +208,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 商品标签列表结束	 -->
 
 <!-- 相关商品开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">相关</h3>
+		<h3 class="panel-title">相关商品</h3>
 	</div>
 	<div class="panel-body">
 		<ul class="list-group">
@@ -179,7 +219,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php if($relatedGoods):?>
 		<?php foreach ($relatedGoods as $goods):?>
 			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>"
-				class="list-group-item"><?= html::encode($goods->title)?></a>
+				class="list-group-item"><?= html::encode($goods->title)?>
+			<span class='glyphicon glyphicon-time pull-right'><?= html::encode($goods->updated_date)?></span>
+			</a>
 		<?php endforeach;?>
 	<?php endif;?>
 	</ul>

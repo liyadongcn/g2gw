@@ -12,7 +12,7 @@ define('DOCUMENT_RESPONSE_XML_2', ROOT_DIRECTORY . '/files/document.2.xml');
 define('SOLR_SECURE', false);
 
 /* Domain name of the Solr server */
-define('SOLR_SERVER_HOSTNAME', '125.33.65.51');
+define('SOLR_SERVER_HOSTNAME', 'liyadongcn.xicp.net');
 
 /* HTTP Port to connection */
 define('SOLR_SERVER_PORT', ((SOLR_SECURE) ? 8443 : 8983));

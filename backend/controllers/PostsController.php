@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\imagine\Image;
 use common\models\Posts;
 use common\models\Comment;
 use common\models\Album;

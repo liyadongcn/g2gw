@@ -23,10 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 页面左半部分开始 -->
 	<div class="col-lg-9 ">
 	<div class="posts-index">
-
-<?php $sort=$dataProvider->sort;?>
-<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
-
+	
+<!-- 搜索结果数量及排序开始 -->
+<div class="row">
+	<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+	<div class="col-md-6 col-sm-12">
+		<p class="pull-right">
+		<?php $sort=$dataProvider->sort;?>
+		<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
+		<p>
+	</div>
+</div>
+<!-- 搜索结果数量及排序结束 -->
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
@@ -153,9 +161,9 @@ echo LinkPager::widget([
 <!-- 用户收藏的帖子结束 -->
 	
 <!-- 热门文章开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">热门文章</h3>
+		<h3 class="panel-title">热门活动及文章</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">
@@ -189,9 +197,9 @@ echo LinkPager::widget([
 <!-- 热门标签结束 -->
 
 <!-- 最新文章开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">最新文章</h3>
+		<h3 class="panel-title">最新活动及文章</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">

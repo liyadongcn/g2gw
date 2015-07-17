@@ -38,7 +38,7 @@ use common\models\Posts;
     public function rules()
     {
         return [
-            [['id', 'userid', 'comment_count', 'thumbsup', 'thumbsdown', 'view_count'], 'integer'],
+            [['id', 'userid', 'brand_id','comment_count', 'thumbsup', 'thumbsdown', 'view_count'], 'integer'],
             [['post_title', 'post_content', 'post_status', 'url', 'created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
         	[['relationship','relationship_userid'],'safe'],
         ];
@@ -104,6 +104,7 @@ use common\models\Posts;
         $query->andFilterWhere([
             'id' => $this->id,
             'created_date' => $this->created_date,
+        	'brand_id' => $this->brand_id,
             'updated_date' => $this->updated_date,
             'userid' => $this->userid,
             'comment_count' => $this->comment_count,

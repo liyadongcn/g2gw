@@ -150,17 +150,16 @@ class Posts extends base\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public function getRelatedPosts($n=10)
-    {
-    	 $query=$this->find();
+//     public function getRelatedPosts($n=10)
+//     {
+//     	 $query=$this->find();
     	
-    	$query->orFilterWhere(['=','userid',$this->userid])
-    	      ->andFilterWhere(['!=','id',$this->id])
-    		  ->orderBy(['view_count' => SORT_DESC, 'thumbsup' => SORT_DESC])
-    		  ->limit($n);
-    	return $query; 
+//     	$query->andFilterWhere(['!=','id',$this->id])
+//     		  ->orderBy(['view_count' => SORT_DESC, 'thumbsup' => SORT_DESC])
+//     		  ->limit($n);
+//     	return $query; 
     	 
-    }
+//     }
     
     /**
      * This function is to get the hotest of this brand.

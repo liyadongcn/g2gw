@@ -30,27 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
             <span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>" data-toggle="tooltip" data-placement="top" title="收藏" ><span class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?></em></a></span>
             <span class="vote"><a class="up" href="<?= Url::to(['thumbsup','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="顶"><span class="glyphicon glyphicon-thumbs-up"></span> <em><?= Html::encode($model->thumbsup) ?></em></a><a class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="踩"><span class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em></a></span>
     </div>
-	<!-- 商品图片列表开始 -->
-	<?php
-		$album=$model->album;
-		if(!empty($album)){
-			echo '<div class="row">';			
-			foreach ($album as $image){
-				echo '<div class="col-sm-12 col-md-12 col-lg-12"">';
-				//echo '<div class="thumbnail">';
-				echo '<img src="'.$image->filename.'" class="img-responsive" alt="Responsive image">';
-				echo '<div class="caption">';
-				//echo '<h3>Thumbnail label</h3>';
-				//echo '<p>...</p>';
-				//echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
-				//echo '</div>';
-				echo '</div>';
-				echo '</div>';
-			}		
-			echo '</div>';
-		}
-	?>
-<!-- 商品图片列表结束 -->
+	<!-- 文章图片列表开始 -->
+	<?php $album=$model->album;?>
+	<?php if(!empty($album)):?>
+			<div class="center-block">		
+			<?php foreach ($album as $image): ?>
+				<a href=<?= Url::to($model->url)?>>
+				<?= html::img($image->filename,['class'=>'img-responsive'])?>	
+				</a>			
+			</div>
+		<?php endforeach;?>
+	<?php endif;?>
+<!-- 文章图片列表结束 -->
 	<p>
 		<?= html::encode($model->post_content)?>
 	</p>
@@ -76,24 +67,46 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 <!-- 文章标签结束 -->
 	
-<!-- 相关文章开始 -->
-<div class="panel panel-default">
+<!-- 相关同品牌活动及文章开始 -->
+<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">相关</h3>
+		<h3 class="panel-title">相关同品牌活动及文章</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">
-	<?php $relatedPosts=$model->getRelatedPosts(5)->all();?>
+	<?php $relatedPosts=$model->getRelatedPosts()->models;?>
 	<?php if($relatedPosts):?>
 		<?php foreach ($relatedPosts as $post):?>
 			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
-				class="list-group-item"><?= html::encode($post->post_title)?></a>
+				class="list-group-item"><?= html::encode($post->post_title)?>
+				<span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+			</a>
 		<?php endforeach;?>
 	<?php endif;?>
 	</ul>
 	</div>
 </div>
-<!-- 相关文章结束 -->
+<!-- 相关同品牌活动及文章结束 -->
+
+<!-- 最新文章开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">最新活动及文章</h3>
+	</div>
+	<div class="panel-body">
+	<ul class="list-group">
+	<?php $latestPosts=$model->getLatestPosts(5)->all();?>
+	<?php if($latestPosts):?>
+		<?php foreach ($latestPosts as $post):?>
+			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item"><?= html::encode($post->post_title)?>
+			<span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+			</a>
+		<?php endforeach;?>
+	<?php endif;?>
+	</ul>
+	</div>
+</div>
+<!-- 最新文章结束 -->
     
 <div id="comments">
 	<div class="page-header">

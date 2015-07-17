@@ -69,8 +69,19 @@ $this->params['breadcrumbs'] [] = $this->title;
 
 <!-- 品牌促销活动结束 -->
 
+<hr>
+
+<!-- 搜索结果数量及排序开始 -->
 <?php $sort=$dataProvider->sort;?>
+<div class="row">
+<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+<div class="col-md-6 col-sm-12">
+<p class="pull-right">
 <?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
+</p>
+</div>
+</div>
+<!-- 搜索结果数量及排序结束 -->
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
@@ -139,7 +150,12 @@ $this->params['breadcrumbs'] [] = $this->title;
 									&nbsp;| <span class="glyphicon glyphicon-eye-open"></span> <span
 										class="badge"><?= Html::encode($model->view_count) ?></span>
 									&nbsp;| <a href="<?= Url::to(['brand/star','id' => $model->id])?>">
+									<?php if($model->isStared()):?>
 										<span class="glyphicon glyphicon-star"></span>
+									<?php else :?>
+										<span class="glyphicon glyphicon-star-empty"></span>
+									<?php endif;?>
+										
 									</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
 								</p>
 							</div>

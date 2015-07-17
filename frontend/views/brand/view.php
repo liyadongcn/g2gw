@@ -89,6 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
+<!-- 标签开始 -->
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">标签</h3>
@@ -107,11 +108,43 @@ $this->params['breadcrumbs'][] = $this->title;
 		<!-- 			<span class="label label-danger">Danger</span> -->
 	</div>
 </div>
+<!-- 标签结束 -->
+
+<!-- 相关发帖开始 -->
+<?php $postsProvider=$model->getRelatedPosts();?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">相关的促销活动及文章<span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
+    </div>
+    <div class="panel-body">
+    <ul class="list-group">
+        <?php $posts=$postsProvider->models;?>
+        <?php //var_dump($comments);?>
+        <?php if($posts):?>
+            <?php foreach ($posts as $post):?>
+                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
+                class="list-group-item"><?= html::encode($post->post_title)?>
+                <span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+                </a>
+            <?php endforeach;?>
+        <?php endif;?>
+    </ul>
+    </div>
+    <div class="panel-footer">
+    	<span>
+    	<?php echo LinkPager::widget([
+            'pagination' => $postsProvider->getPagination(),
+            ]);
+        ?>
+    	</span>
+    </div>
+</div>
+<!-- 相关发帖结束 -->
 
 <!-- 相关品牌开始 -->
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">相关</h3>
+		<h3 class="panel-title">相关品牌</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">
@@ -129,8 +162,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 相关品牌结束 -->
 
 <!-- 百度分享功能开始 -->
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享到：</a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16},"image":{"viewList":["weixin","qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享到：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <!-- 百度分享功能结束 -->
 
 <!-- 评论开始 -->

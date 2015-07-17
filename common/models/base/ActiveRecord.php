@@ -10,6 +10,7 @@ use common\models\Category;
 use common\models\Company;
 use common\models\Brand;
 use common\models\Country;
+use backend\models\PostsSearch;
 use yii\helpers\StringHelper;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
@@ -509,6 +510,34 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	}
 	
 	/**
+	 * This function is to check if the model is stared by the current user.
+	 * 
+	 * @return bool
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	
+	public function isStared()
+	{
+	
+		if(yii::$app->user->isGuest)
+		{
+			// 匿名用户不能收藏
+			return false;
+		}
+		else
+		{
+			$relationshipMap=RelationshipsMap::findOne(['model_id'=>$this->id,'model_type'=>$this->modelType(),'relationship_id'=>Relationships::RELATIONSHIP_STAR,'userid'=>yii::$app->user->id]);
+			if($relationshipMap)
+			{
+				return true;
+			}
+			return false;				
+		}
+	}
+	
+	/**
 	 * This function is to get the user object of this model.
 	 *
 	 *
@@ -585,5 +614,43 @@ class ActiveRecord extends \yii\db\ActiveRecord
 			default:
 				return [];
 		}
+	}
+	
+	/**
+	 * This function is to get the related promotions posts of this brand.
+	 *
+	 * @return ActiveDataProvider|null the Posts ActiveDataProvider
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function getRelatedPosts()
+	{
+		/*     	$query=Posts::find();
+		 $query->Where(['=','brand_id',$this->id])
+		 ->orderBy(['view_count' => SORT_DESC, 'updated_date' => SORT_DESC])
+		 ->limit($n);
+		 return $query;
+		 */
+		$searchModel=new PostsSearch();
+		switch ($this->modelType())
+		{
+			case MODEL_TYPE_BRAND:
+				$brandid=$this->id;
+				break;
+			case MODEL_TYPE_GOODS:
+				$brandid=$this->brand_id;
+				break;
+			case MODEL_TYPE_POSTS:
+				$brandid=$this->brand_id;
+				break;
+			default:
+				$brandid=-1;
+		}
+		
+		$dataProvider = $searchModel->search(['PostsSearch'=>['brand_id'=>$brandid]]);
+		$dataProvider->pagination->pageSize=5;
+	
+		return $dataProvider;
 	}
 }

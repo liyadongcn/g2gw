@@ -16,37 +16,100 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php //echo Html::encode($this->title) ?>
     
 <!-- 个人头像开始 -->
-    <?= html::img($model->face,['class'=>'img-circle']); ?>
+    <?php //echo  html::img($model->face,['class'=>'img-circle']); ?>
 <!-- 个人头像结束 -->
 <!--  注册时间 开始 -->
-    <?= html::encode(date('Y-m-d H:i:s',$model->created_at))?>
+    <?php //echo html::encode(date('Y-m-d H:i:s',$model->created_at))?>
 <!-- 注册时间 结束 -->
 <!-- 修改时间开始 -->
-    <?= html::encode(date('Y M D H:i:s',$model->updated_at));?>
+    <?php //echo html::encode(date('Y M D H:i:s',$model->updated_at));?>
 <!-- 修改时间结束 -->
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            //'id',
-            'username',
-            //'password',
-            'cellphone',
-            'email:email',
-            'face',
-            'nickname',
-            //'auth_key',
-            //'accessToken',
-            'created_at',
-            'updated_at',
-            //'password_hash',
-            //'password_reset_token',
-            //'status',
-            //'role',
-        ],
-    ]) ?>
+
+<!-- 用户详情展示开始 -->
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="media media-profile">
+            <div class="media-left">
+                <img class="media-object" src=<?= html::encode($model->face); ?> alt=<?= html::encode($model->username)?>></div>
+            <div class="media-body">
+                <h3 class="media-heading">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <?= html::encode($model->username)?>
+                    <small>
+                        第 <em>27646</em> 位会员
+                    </small>
+                    <span class="pull-right">
+                        <a class="btn btn-xs btn-success btn-follow" href="/follow?id=27646">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            关注
+                        </a>
+                        <a class="btn btn-xs btn-primary" href="/user/message/create?id=27646">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            发私信
+                        </a>
+                    </span>
+                </h3>
+
+                <p>
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    上海
+                    <span class="glyphicon glyphicon-gift"></span>
+                    2051-05-01
+                </p>
+
+                <p>
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    <?= html::mailto($model->email)?>
+                    <span class="fa fa-group"></span>
+                    未设置
+                </p>
+
+                <p>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    注册时间：<?= html::encode(date('Y-m-d H:i:s',$model->created_at))?>
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    最后登录：3分钟前
+                    <span class="glyphicon glyphicon-dashboard"></span>
+                    在线时长：52小时22分
+                </p>
+
+                <p>
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    这家伙有点懒，还没写个性签名！
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <?php
+//      echo  DetailView::widget([
+//         'model' => $model,
+//         'attributes' => [
+//             //'id',
+//             'username',
+//             //'password',
+//             'cellphone',
+//             'email:email',
+//             'face',
+//             'nickname',
+//             //'auth_key',
+//             //'accessToken',
+//             'created_at',
+//             'updated_at',
+//             //'password_hash',
+//             //'password_reset_token',
+//             //'status',
+//             //'role',
+//         ],
+//     ]) 
+     ?>
+<!-- 用户详情展示结束 -->
     
 <!-- 用户发表的所有评论开始 -->
 <?php $dataProvider=$model->getComments();?>
@@ -62,29 +125,20 @@ $this->params['breadcrumbs'][] = $this->title;
         	<?php foreach ($comments as $comment):?>
                 <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>"
                 class="list-group-item">
-                <div class='row'>
-                    <div class='col-lg-9'>
                         <?= html::encode($comment->content)?>
-                    </div>
-                    <div calss='col-lg-3'>
-                        <p class="text-right">
-                        <span class='glyphicon glyphicon-time'></span><?= html::encode($comment->created_date)?>
-                        </p>
-                    </div>
-                </div>
+                        <span class='glyphicon glyphicon-time pull-right'><?= html::encode($comment->created_date)?></span>
                 </a>
         	<?php endforeach;?>
         <?php endif;?>
         </ul>
-    </div>
-    <div class="panel-footer">
-    	<span>
-    	<?php echo LinkPager::widget([
+      
+        <?php echo LinkPager::widget([
             'pagination' => $dataProvider->getPagination(),
             ]);
         ?>
-    	</span>
+       
     </div>
+    
 </div>
 <!-- 用户发表的所有评论结束 -->
 	

@@ -82,7 +82,7 @@ class Album extends \yii\db\ActiveRecord
    {
     	if (parent::beforeSave($insert)) {
     		// ...custom code here...
-    		if($this->model_type=MODEL_TYPE_POSTS)
+    		if($this->model_type==MODEL_TYPE_POSTS)
     		{
     			$this->is_default=1;
     		}

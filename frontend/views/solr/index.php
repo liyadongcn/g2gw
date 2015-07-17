@@ -23,17 +23,26 @@ $this->params['breadcrumbs'][] = $this->title;
   
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
-<!-- 搜索结果总数开始 -->
-	<span class="glyphicon glyphicon-search">
-	<?= html::encode('找到'.$dataProvider->totalCount).'条'?>
-	</span>
-<!-- 搜索结果总数结束 -->
-<!-- 排序开始 -->
-    <div class="pull-right">
-    <?php $sort=$dataProvider->sort;?>
-	<?php echo $sort->link('id').' | ' .$sort->link('title');?>
+    
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <!-- 搜索结果总数开始 -->
+        <span class="glyphicon glyphicon-search">
+        <?= html::encode('找到'.$dataProvider->totalCount).'条'?>
+        </span>
+        <!-- 搜索结果总数结束 -->
     </div>
-<!-- 排序结束     -->
+    <div class="col-md-6 col-sm-12">
+        <!-- 排序开始 -->
+        <div class="pull-right">
+        <?php $sort=$dataProvider->sort;?>
+        <?php echo $sort->link('id').' | ' .$sort->link('title');?>
+        </div>
+        <!-- 排序结束     -->
+    </div>
+</div>
+
+
 <ul class="list-group">
     
     <?php foreach ($models as $model):?>

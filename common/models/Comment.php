@@ -155,7 +155,7 @@ class Comment extends \yii\db\ActiveRecord
     {
     	if($this->validate())
     	{
-    		$this->model_type=StringHelper::basename($model->className());
+    		$this->model_type=strtolower(StringHelper::basename($model->className()));
     		$this->model_id=$model->id;
     		if(yii::$app->user->isGuest)
     		{

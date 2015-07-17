@@ -91,7 +91,7 @@ class GoodsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Goods();
+     $model = new Goods();
         $model->loadDefaultValues();
         //$model->comment_status=Goods::COMMENT_STATUS_OPEN;
        
@@ -107,6 +107,8 @@ class GoodsController extends Controller
         				$model->saveToAlbum($file);
         			}
         		}
+        		//set the categories of this model.
+        		$model->setCategories();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
             

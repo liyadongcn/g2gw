@@ -24,9 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-lg-9 ">
 	<div class="goods-index">
 
+<!-- 搜索结果数量及排序开始 -->
 <?php $sort=$dataProvider->sort;?>
-<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
- 
+<div class="row">
+<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+<div class="col-md-6 col-sm-12">
+	<p class="pull-right">
+	<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
+	</p>
+</div>
+</div>
+<!-- 搜索结果数量及排序结束 -->
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
@@ -41,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<?php $images=$model->album;?>
 						<?php if($images):?>
 							<?php foreach ($images as $image) :?>
-								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="200">
+								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="120px">
 							<?php endforeach;?>
 						<?php else :?>
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." width="200"> -->
@@ -50,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					</div>
 					<div class="media-body">
 						<a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
-							<h1 class="media-heading"><?= html::encode($model->title)?></h1>
+							<h3 class="media-heading"><?= html::encode($model->title)?></h3>
 						</a>
 						<p>
 							<?= html::encode($model->description)?>
@@ -159,7 +167,7 @@ echo LinkPager::widget([
 <!-- 用户收藏的商品结束 -->
 
 <!-- 热门商品开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 class="panel-title">热门商品</h3>
 	</div>
@@ -195,7 +203,7 @@ echo LinkPager::widget([
 <!-- 热门标签结束 -->
 
 <!-- 最新商品开始 -->
-<div class="panel panel-default">
+<div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 class="panel-title">最新商品</h3>
 	</div>
