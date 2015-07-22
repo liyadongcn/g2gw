@@ -26,6 +26,8 @@ define('COMMENT_STATUS_TRASH','trash');//移至回收站
 define('COMMENT_STATUS_CLOSE','open');//不允许评论
 define('COMMENT_STATUS_OPEN','close');//允许评论
 
+define('DEFAULT_IMAGE',1);
+
 
 require('solr_config.php');
 

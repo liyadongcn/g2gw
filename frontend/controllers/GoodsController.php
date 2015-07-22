@@ -102,9 +102,9 @@ class GoodsController extends Controller
         	{
         		if($model->file)
         		{
-        			foreach ($model->file as $file)
+        			foreach ($model->file as $key=>$file)
         			{
-        				$model->saveToAlbum($file);
+        				$key==0?$model->saveToAlbum($file,DEFAULT_IMAGE):$model->saveToAlbum($file);
         			}
         		}
         		//set the categories of this model.

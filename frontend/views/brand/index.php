@@ -21,6 +21,8 @@ use yii\data\Sort;
 
 $this->title = '品牌';
 $this->params['breadcrumbs'] [] = $this->title;
+
+const ROW_ITEMS_COUNT=3;
 ?>
     		
 <div class="row">
@@ -33,14 +35,14 @@ $this->params['breadcrumbs'] [] = $this->title;
 		</div>
 		
 <!-- 品牌促销活动开始 -->
-<?php $promotions=Posts::getPromotions()->all();?>
+<?php $promotions=Posts::getPromotions(10)->all();?>
 <?php if($promotions):?>
 	<?php foreach ($promotions as $promotion):?>
-		<?php $img=$promotion->getAlbumDefault();?>
+		<?php $img=$promotion->getAlbumDefaultImg();?>
 		<?php if($img):?>		
 			<?php $items[]=[
 					'content'=>'<a href="'.$promotion->url.'">'.html::img($img->filename).'</a>',
-					'caption'=>'<h4>'.html::encode($promotion->post_title).'</h4>',
+					'caption'=>'<h4 >'.html::encode($promotion->post_title).'</h4>',
 					'options'=>'',
 				];				
 			?>
@@ -73,98 +75,94 @@ $this->params['breadcrumbs'] [] = $this->title;
 
 <!-- 搜索结果数量及排序开始 -->
 <?php $sort=$dataProvider->sort;?>
-<div class="row">
+<div class="row ">
 <div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
 <div class="col-md-6 col-sm-12">
-<p class="pull-right">
+<p class="action pull-right">
 <?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
 </p>
 </div>
 </div>
 <!-- 搜索结果数量及排序结束 -->
 
+<!-- 搜索结果展示开始 -->
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
-<ul class="list-group">
-	<li class="list-group-item">
-  	<?php foreach ($models as $model):?>
-  		<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="media">
-							<div class="media-left media-middle">
-								<a href="<?= Url::to(['brand/view','id'=>$model->id])?>"> <img
-									class="media-object"
-									src="<?= html::encode($model->logo)?>" alt="..." width="120">
-								</a>
-							</div>
-							<div class="media-body">
-								<h2 class="media-heading"><?= html::encode($model->en_name.$model->cn_name)?></h2>
-								<p>
-								<?= html::encode($model->introduction)?>
-								</p>
-								
-							</div>
-						</div>
-						<div class="text-right">
-									<?php $ecommerces=$model->ecommerces;?>
+<?php $rows=(int)ceil($dataProvider->count/ROW_ITEMS_COUNT);?>
+<?php for($i=0;$i<$rows;$i++):?>
+	<div class="row">
+	<?php for($j=0;$j<ROW_ITEMS_COUNT;$j++):?>
+		<?php $modelIndex=$j+$i*ROW_ITEMS_COUNT;?>
+		<?php if($modelIndex+1>$dataProvider->count) break;?>
+		<div class="col-md-4">
+		<div class="thumbnail">
+      		<a href="<?= Url::to(['brand/view','id'=>$models[$modelIndex]->id])?>"> <img src="<?= html::encode($models[$modelIndex]->logo)?>" alt="..."></a>
+      		<div class="caption">
+        	<h3><?= html::encode($models[$modelIndex]->cn_name)?>
+        		<?php if($models[$modelIndex]->country):?>
+        			<a href="<?= url::to(['brand/search-by-country','country_code'=>$models[$modelIndex]->country_code])?>">
+        			<span class="pull-right" data-toggle="tooltip" data-placement="top" title=<?= html::encode($models[$modelIndex]->country->cn_name)?>><?= html::img($models[$modelIndex]->country->flag,['width'=>30])?></span>
+        			</a>
+        		<?php endif;?> 
+        	</h3>       		
+        		<div class="btn-group " role="group" aria-label="...">
+									<?php $ecommerces=$models[$modelIndex]->ecommerces;?>
 									<?php if ($ecommerces) :?>
-										<div class="btn-group pull-right" role="group" aria-label="...">
+										
 									<?php foreach ($ecommerces as $ecommerce) :?>
 										<?php if($ecommerce->accept_order):?>
-										<a class="btn btn-success"
+										<a class="btn btn-success btn-xs"
 												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php else :?>
-										<a class="btn btn-warning"
+										<a class="btn btn-warning btn-xs"
 												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php endif;?>
 									<?php endforeach;?>
-										</div>
+										
 									<?php endif;?>
-						</div>	
-					</div>
-					<div class="panel-footer">
-						<div class="row">
-							<div class="col-md-6 col-sm-12">
-								<div class='text-left'>
-				  					<?php $tagMaps=$model->getTagMaps()->all();?>
+				</div>
+				
+				<p>
+				  					<?php $tagMaps=$models[$modelIndex]->getTagMaps()->all();?>
 				  					<?php if($tagMaps):?>
+				  					<hr>
+				  					<span class="glyphicon glyphicon-tags">&nbsp;</span>
 				  					<?php foreach ($tagMaps as $tagMap):?>  			
-				  						<a href="<?= Url::to(['brand/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
+				  						<a href="<?= Url::to(['brand/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
 				  					<?php endforeach;?>	
 				  					<?php endif;?>		
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-12">
-								<p class='text-right'>
-									<a href="<?= Url::to(['brand/thumbsup','id' => $model->id])?>">
+				</p>
+				<hr>
+				<p>
+									<a href="<?= Url::to(['brand/thumbsup','id' => $models[$modelIndex]->id])?>">
 										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-									</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsup) ?></span>
-									&nbsp;| <a
-										href="<?= Url::to(['brand/thumbsdown','id' => $model->id])?>">
+									</a> <span class="badge" aria-hidden="true"><?= Html::encode($models[$modelIndex]->thumbsup) ?></span>
+									<a
+										href="<?= Url::to(['brand/thumbsdown','id' => $models[$modelIndex]->id])?>">
 										<span class="glyphicon glyphicon-thumbs-down"
 										aria-hidden="true"></span>
-									</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsdown) ?></span>
-									&nbsp;| <span class="glyphicon glyphicon-comment"
+									</a> <span class="badge" aria-hidden="true"><?= Html::encode($models[$modelIndex]->thumbsdown) ?></span>
+									<span class="glyphicon glyphicon-comment"
 										aria-hidden="true"></span> <span class="badge"
-										aria-hidden="true"><?= Html::encode($model->comment_count) ?></span>
-									&nbsp;| <span class="glyphicon glyphicon-eye-open"></span> <span
-										class="badge"><?= Html::encode($model->view_count) ?></span>
-									&nbsp;| <a href="<?= Url::to(['brand/star','id' => $model->id])?>">
-									<?php if($model->isStared()):?>
+										aria-hidden="true"><?= Html::encode($models[$modelIndex]->comment_count) ?></span>
+									<span class="glyphicon glyphicon-eye-open"></span> <span
+										class="badge"><?= Html::encode($models[$modelIndex]->view_count) ?></span>
+									<a href="<?= Url::to(['brand/star','id' => $models[$modelIndex]->id])?>">
+									<?php if($models[$modelIndex]->isStared()):?>
 										<span class="glyphicon glyphicon-star"></span>
 									<?php else :?>
 										<span class="glyphicon glyphicon-star-empty"></span>
 									<?php endif;?>
 										
-									</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-  <?php endforeach;?>
-  </li>
-</ul>
+									</a> <span class="badge"><?= Html::encode($models[$modelIndex]->star_count) ?></span>
+				</p>
+      		</div>
+    	</div>
+		</div>
+	<?php endfor;?>
+	</div>
+<?php endfor;?>
+
 <?php else:?>
 	<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>
 <?php endif;?>
@@ -175,6 +173,7 @@ echo LinkPager::widget([
 		'pagination' => $dataProvider->getPagination(),
 ]);
 ?>
+<!-- 搜索结果展示结束 -->
 	</div>
 	<!-- 页面左半部分结束 -->
 	

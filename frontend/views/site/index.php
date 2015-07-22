@@ -48,16 +48,16 @@ $this->title = 'My Yii Application';
 
 <div class="clearfix">
 <?php switch ($searchModel->model_type):?>
-<?php case Search::MODEL_TYPE_BRAND:?>
+<?php case MODEL_TYPE_BRAND:?>
 	<?php echo $this->render('@app/views/brand/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
 	<?php break;?>
-<?php case Search::MODEL_TYPE_GOODS: ?>
+<?php case MODEL_TYPE_GOODS: ?>
 	<?php echo $this->render('@app/views/goods/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
 	<?php break;?>
-<?php case Search::MODEL_TYPE_POSTS: ?>
+<?php case MODEL_TYPE_POSTS: ?>
 	<?php echo $this->render('@app/views/posts/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
 	<?php break;?>
-<?php case Search::MODEL_TYPE_SOLR: ?>
+<?php case MODEL_TYPE_SOLR: ?>
 	<?php echo $this->render('@app/views/solr/index',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);?>
 	<?php break;?>
 <?php default:?>

@@ -82,8 +82,9 @@ AppAsset::register($this);
             }
          ?>
 			<p class="navbar-text">最新的官网购物信息</p>
-<!-- 分类菜单开始 -->			
-			<?php  $catMenuItems=Category::getCategoryAsMenuItems1( 0, yii::$app->session->get('SEARCH_MODEL_TYPE'));?>
+<!-- 分类菜单开始 -->
+			<?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>			
+			<?php  $catMenuItems=Category::getCategoryAsMenuItems1( 0, $searchModelType);?>
 			<?php echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-left'],
                 'items' =>$catMenuItems,
@@ -105,29 +106,29 @@ AppAsset::register($this);
 			<div class="input-group">
 			<span class="input-group-addon">
 			 <select name="Search[model_type]">
-<?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>
+
 <?php switch($searchModelType):?>
 <?php case MODEL_TYPE_BRAND:?>
 			  <option value="brand" selected="selected">品牌</option>
-			  <option value="goods">商品</option>
+			  <option value="goods">官网精品</option>
 			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_GOODS:?>
 			  <option value="brand">品牌</option>
-			  <option value="goods" selected="selected">商品</option>
+			  <option value="goods" selected="selected">官网精品</option>
 			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_POSTS:?>
 			  <option value="brand">品牌</option>
-			  <option value="goods">商品</option>
+			  <option value="goods">官网精品</option>
 			  <option value="posts" selected="selected">促销活动及购物经验</option>	
 			  <option value="solr">官网商品</option>	
 			  <?php break;?>
 <?php case MODEL_TYPE_SOLR:?>
 			  <option value="brand">品牌</option>
-			  <option value="goods">商品</option>
+			  <option value="goods">官网精品</option>
 			  <option value="posts">促销活动及购物经验</option>	
 			  <option value="solr" selected="selected">官网商品</option>	
 			  <?php break;?>

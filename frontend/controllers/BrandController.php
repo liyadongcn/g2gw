@@ -353,4 +353,22 @@ class BrandController extends Controller
     			'dataProvider' => $dataProvider,
     	]);
     }
+    
+    /**
+     * Search the models with the same country code.
+     *
+     * @param integer $tagid
+     * @return mixed
+     */
+    public function actionSearchByCountry($country_code)
+    {
+    	$searchModel = new BrandSearch();
+    	$searchModel->country_code=$country_code;
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    
+    	return $this->render('index', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    	]);
+    }
 }

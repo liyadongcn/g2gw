@@ -7,11 +7,12 @@ use common\models\Album;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
+use common\models\helper\TimeHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Goods */
 
-$this->title = $model->title;
+$this->title =  Yii::$app->name.'-'.$model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Goods', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -22,13 +23,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 详情表头开始 -->
 	<div class="action">
 		<span class="user"><span class="glyphicon glyphicon-info-sign"></span>商品编号：<?= html::encode($model->code)?></span>
-		<span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode($model->updated_date)?></span>
+		<span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span>
 		<span class="views"><span class="glyphicon glyphicon-eye-open"></span><?= Html::encode($model->view_count) ?>次浏览</span>
 		<span class="comments"><a href="#comments"><span
 				class="glyphicon glyphicon-comment"></span> <?= Html::encode($model->comment_count) ?>条评论</a></span>
 		<span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>"
 			data-toggle="tooltip" data-placement="top" title="收藏"><span
-				class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?></em></a></span>
+				class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?>人收藏</em></a></span>
 		<span class="vote"><a class="up"
 			href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
 			data-toggle="tooltip" data-original-title="顶"><span
@@ -69,14 +70,67 @@ $this->params['breadcrumbs'][] = $this->title;
 		<h2 class='text-left'><?= Html::encode($model->title) ?><small></small></h2>
 		<p class='text-left'><?= Html::encode($model->description) ?></p>
 		<p class='text-left'>
-			<a class="btn btn-primary btn-lg"
-				href="<?= Html::encode($model->url) ?>" role="button">去购买</a>
+			<a class="btn btn-success btn-lg"
+				href="<?= Html::encode($model->url) ?>" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+			<?php if($model->isStared()):?>
+				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
+					data-toggle="tooltip" data-placement="top" title="收藏"><span
+					class="glyphicon glyphicon-star">取消收藏</span> </a>
+			<?php else :?>
+				<a class="btn btn-primary btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"
+					data-toggle="tooltip" data-placement="top" title="收藏"><span
+					class="glyphicon glyphicon-star-empty">收藏</span> </a>
+			<?php endif;?>
+				
+			</p>
+			<p>
+			
 		</p>
 	</div>
 	</div>
 </div>
 	
 <!-- 商品详情展示结束 -->
+
+<!-- 点赞吐槽开始 -->
+<p class="text-center">
+	
+			<a class="up"
+			href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
+			data-toggle="tooltip" data-original-title="顶">
+			<span style="font-size:36px;color:#F00" class="glyphicon glyphicon-thumbs-up"></span><em><?= Html::encode($model->thumbsup) ?></em>
+			</a>
+			&nbsp;&nbsp;&nbsp;
+			<a
+			class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>"
+			title="" data-toggle="tooltip" data-original-title="踩">
+			<span style="font-size:36px;color:#999" class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em>
+			</a>
+	
+</p>
+<!-- 点赞吐槽结束 -->
+
+<!-- 商品标签列表开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">标签</h3>
+	</div>
+	<div class="panel-body">
+  			<?php $tagMaps=$model->getTagMaps()->all();?>
+  			<?php if($tagMaps):?>
+  			<span class="glyphicon glyphicon-tags">&nbsp;</span>
+  			<?php foreach ($tagMaps as $tagMap):?>
+  				<a href="<?= Url::to(['goods/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
+  			<?php endforeach;?>
+  			<?php endif;?>		
+<!-- 			<span class="label label-primary">Primary</span> -->
+		<!-- 			<span class="label label-success">Success</span> -->
+		<!-- 			<span class="label label-info">Info</span> -->
+		<!-- 			<span class="label label-warning">Warning</span> -->
+		<!-- 			<span class="label label-danger">Danger</span> -->
+	</div>
+</div>
+<!-- 商品标签列表结束	 -->
 
 	<!-- 相关发帖开始 -->
 <?php $postsProvider=$model->getRelatedPosts();?>
@@ -90,9 +144,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php //var_dump($comments);?>
         <?php if($posts):?>
             <?php foreach ($posts as $post):?>
-                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
-                class="list-group-item"><?= html::encode($post->post_title)?>
-                <span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+            	<a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
+            		<div class="row">
+            			<div class="col-md-9"><span class="pull-left"><?= html::encode($post->post_title)?></span></div>
+            			<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span></div>
+               		</div>
                 </a>
             <?php endforeach;?>
         <?php endif;?>
@@ -186,26 +242,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	</blockquote> -->
 <!-- </div> -->
 
-<!-- 商品标签列表开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">标签</h3>
-	</div>
-	<div class="panel-body">
-  			<?php 
-  				$tagMaps=$model->getTagMaps()->all();
-  				foreach ($tagMaps as $tagMap)
-  			:?>
-  				<a href="<?= Url::to(['goods/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
-  			<?php endforeach;?>			
-<!-- 			<span class="label label-primary">Primary</span> -->
-		<!-- 			<span class="label label-success">Success</span> -->
-		<!-- 			<span class="label label-info">Info</span> -->
-		<!-- 			<span class="label label-warning">Warning</span> -->
-		<!-- 			<span class="label label-danger">Danger</span> -->
-	</div>
-</div>
-<!-- 商品标签列表结束	 -->
+
 
 <!-- 相关商品开始 -->
 <div class="panel panel-primary">
@@ -218,9 +255,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php //var_dump($relatedBrands); die();?>
 	<?php if($relatedGoods):?>
 		<?php foreach ($relatedGoods as $goods):?>
-			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>"
-				class="list-group-item"><?= html::encode($goods->title)?>
-			<span class='glyphicon glyphicon-time pull-right'><?= html::encode($goods->updated_date)?></span>
+			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" class="list-group-item">
+			<div class="row">
+            		<div class="col-md-9"><?= html::encode($goods->title)?></div>
+            		<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($goods->updated_date)?></span></div>
+             </div>
 			</a>
 		<?php endforeach;?>
 	<?php endif;?>
@@ -228,6 +267,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <!-- 相关商品结束 -->
+
+<!-- 百度分享功能开始 -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享功能结束 -->
 
 <!-- 评论列表开始 -->
 <div id="comments">

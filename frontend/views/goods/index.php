@@ -10,6 +10,7 @@ use common\models\User;
 use common\models\tag;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
+use common\models\helper\TimeHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\GoodsSearch */
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 <div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
 <div class="col-md-6 col-sm-12">
-	<p class="pull-right">
+	<p class="action pull-right">
 	<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
 	</p>
 </div>
@@ -46,11 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				<div class="media">
 					<div class="media-left media-middle">
 						<a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
-						<?php $images=$model->album;?>
-						<?php if($images):?>
-							<?php foreach ($images as $image) :?>
+						<?php $image=$model->albumDefaultImg;?>
+						<?php if($image):?>
 								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="120px">
-							<?php endforeach;?>
 						<?php else :?>
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." width="200"> -->
 						<?php endif;?>
@@ -67,19 +66,19 @@ $this->params['breadcrumbs'][] = $this->title;
 					</div>
 					<p class="text-right">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button">去购买</a>
+								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
 							<?php endif;?>
 					</p>
 				</div>
-			</div>
-			<div class="panel-footer">
+				<!-- <div > -->
 				<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class='text-left'>
 	  					<?php $tagMaps=$model->getTagMaps()->all();?>
 	  					<?php if($tagMaps):?>
+	  					<span class="glyphicon glyphicon-tags">&nbsp;</span>
 	  					<?php foreach ($tagMaps as $tagMap):?>  			
-	  						<a href="<?= Url::to(['goods/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
+	  						<a href="<?= Url::to(['goods/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
 	  					<?php endforeach;?>	
 	  					<?php endif;?>		
 	<!-- 			<span class="label label-primary">Primary</span> -->
@@ -94,20 +93,27 @@ $this->params['breadcrumbs'][] = $this->title;
 						<a href="<?= Url::to(['goods/thumbsup','id' => $model->id])?>"> <span
 							class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsup) ?></span>
-						&nbsp;| <a href="<?= Url::to(['goods/thumbsdown','id' => $model->id])?>">
+						<a href="<?= Url::to(['goods/thumbsdown','id' => $model->id])?>">
 							<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsdown) ?></span>
-						&nbsp;| <span class="glyphicon glyphicon-comment"
+						<span class="glyphicon glyphicon-comment"
 							aria-hidden="true"></span> <span class="badge" aria-hidden="true"><?= Html::encode($model->comment_count) ?></span>
-						&nbsp;| <span class="glyphicon glyphicon-eye-open"></span> <span
+						<span class="glyphicon glyphicon-eye-open"></span> <span
 							class="badge"><?= Html::encode($model->view_count) ?></span>
-						&nbsp;| <a href="<?= Url::to(['goods/star','id' => $model->id])?>">
-							<span class="glyphicon glyphicon-star"></span>
+						<a href="<?= Url::to(['goods/star','id' => $model->id])?>">
+							<?php if($model->isStared()):?>
+										<span class="glyphicon glyphicon-star"></span>
+									<?php else :?>
+										<span class="glyphicon glyphicon-star-empty"></span>
+									<?php endif;?>
 							</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
+							<span class="glyphicon glyphicon-time"></span> <span class="badge" aria-hidden="true"><?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span></span>
 					</p>
 				</div>
 				</div>
+			<!-- </div> -->
 			</div>
+			
 		</div>
   <?php endforeach;?>
   </li>
@@ -140,17 +146,27 @@ echo LinkPager::widget([
         <h3 class="panel-title">收藏的商品<span class="badge pull-right"><?= html::encode($starGoodsProvider->totalCount)?></span></h3>
     </div>
     <div class="panel-body">
-    <ul class="list-group">
+    <!-- <ul class="list-group"> -->
     	<?php $goods=$starGoodsProvider->models;?>
         <?php if($goods):?>
             <?php foreach ($goods as $goodsOne):?>
-            <li class="list-group-item">
-                <a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>"><?= html::encode($goodsOne->title)?></a>
-                <span class="pull-right"><a href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a></span>
-            </li>
+            <!-- <li class="list-group-item"> -->
+            <div class="thumbnail">
+				<?php if($image=$goodsOne->albumDefaultImg):?>
+      				<img src="<?= html::encode($image->filename)?>" alt="...">
+      			<?php endif;?>
+      			<p class="small">
+      				<?= html::encode($goodsOne->title)?>
+      			</p>
+      			<p class="text-right">
+      				<a class="btn btn-primary btn-xs" href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a>
+      			</p>
+      			
+      		</div>
+            <!-- </li> -->
             <?php endforeach;?>
         <?php endif;?>
-    </ul>
+    <!-- </ul> -->
     </div>
     <div class="panel-footer">
         	<span>
@@ -172,14 +188,23 @@ echo LinkPager::widget([
 		<h3 class="panel-title">热门商品</h3>
 	</div>
 	<div class="panel-body">
-	<ul class="list-group">
+	<!-- <ul class="list-group"> -->
 	<?php $hotestGoods=Goods::getHotestGoods(5)->all();?>
 	<?php if($hotestGoods):?>
 		<?php foreach ($hotestGoods as $goods):?>
-			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" class="list-group-item"><?= html::encode($goods->title)?></a>
+			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" >
+			<div class="thumbnail">
+				<?php if($image=$goods->albumDefaultImg):?>
+      				<img src="<?= html::encode($image->filename)?>" alt="...">
+      			<?php endif;?>
+      			<p class="small">
+      				<?= html::encode($goods->title)?>
+      			</p>
+      		</div>
+			</a>
 		<?php endforeach;?>
 	<?php endif;?>
-	</ul>
+	<!-- </ul> -->
 	</div>
 </div>
 <!-- 热门商品结束 -->
@@ -208,15 +233,24 @@ echo LinkPager::widget([
 		<h3 class="panel-title">最新商品</h3>
 	</div>
 	<div class="panel-body">
-		<ul class="list-group">
+		<!-- <ul class="list-group"> -->
 	<?php $latestGoods=Goods::getLatestGoods(5)->all();?>
 	<?php //var_dump($relatedBrands); die();?>
 	<?php if($latestGoods):?>
 		<?php foreach ($latestGoods as $goods):?>
-			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" class="list-group-item"><?= html::encode($goods->title)?></a>
+			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" >
+			<div class="thumbnail">
+				<?php if($image=$goods->albumDefaultImg):?>
+      				<img src="<?= html::encode($image->filename)?>" alt="...">
+      			<?php endif;?>
+      			<p class="small">
+      				<?= html::encode($goods->title)?>
+      			</p>
+      		</div>
+			</a>
 		<?php endforeach;?>
 	<?php endif;?>
-	</ul>
+	<!-- </ul> -->
 	</div>
 </div>
 <!-- 最新商品结束 -->

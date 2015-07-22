@@ -98,8 +98,8 @@ class PostsController extends Controller
         	$model->file = UploadedFile::getInstances($model, 'file');
         	if ($model->save() && $model->validate()) {
         		if($model->file){
-        			foreach ($model->file as $file) {
-        				$model->saveToAlbum($file);
+        			foreach ($model->file as $key=>$file) {
+        				$key==0?$model->saveToAlbum($file,1):$model->saveToAlbum($file);
         			}
         		}
         		//set the categories of this model.

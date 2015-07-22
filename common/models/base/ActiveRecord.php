@@ -298,13 +298,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	}
 	
 	/**
-	 * This function is to get all the default album records related to the model.
+	 * This function is to get  the default album image records related to the model.
 	 * 得到数据模型相关的相册对象列表
 	 *
 	 * @author Wintermelon
 	 * @since  1.0
 	 */
-	public function getAlbumDefault()
+	public function getAlbumDefaultImg()
 	{
 		return Album::findOne(['model_id'=>$this->id,'model_type'=>$this->modelType(),'is_default'=>1]);
 	}
@@ -328,13 +328,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 * @author Wintermelon
 	 * @since  1.0
 	 */
-	public function saveToAlbum($file)
+	public function saveToAlbum($file,$is_defaut=0)
 	{
 		$file->saveAs('uploads\\'.$this->modelType() .'\\'. $file->baseName . '.' . $file->extension);
 		$album = new Album();
 		$album->model_id=$this->id;
 		$album->model_type=$this->modelType();
 		$album->filename='uploads\\'.$this->modelType() .'\\'. $file->baseName . '.' . $file->extension;
+		$album->is_default=$is_defaut;
 		$album->save();
 	}
 	
@@ -653,4 +654,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	
 		return $dataProvider;
 	}
+	
+	
 }

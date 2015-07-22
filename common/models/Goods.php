@@ -81,13 +81,13 @@ class Goods extends base\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'brand_id' => 'Brand ID',
-            'code' => 'Code',
-            'description' => 'Description',
+            'brand_id' => '商品品牌',
+            'code' => '商品编号',
+            'description' => '商品描述',
             'thumbsup' => '口碑',
             'thumbsdown' => 'Thumbsdown',
-            'url' => 'Url',
-            'title' => 'Title',
+            'url' => 'Url网址',
+            'title' => '标题',
             'comment_status' => 'Comment Status',
             'comment_count' => '评论',
             'created_date' => 'Created Date',

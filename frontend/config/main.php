@@ -8,8 +8,11 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'name' => '官网购',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'zh-CN', // <- here!
+    'timeZone' => 'Asia/Chongqing',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'user' => [

@@ -94,7 +94,7 @@ class GoodsSearch extends Goods
         }
         if($this->relationship)
         {
-        	$query->joinWith('relationshipsMap')->where(['relationship_id'=>$this->relationship,'userid'=>$this->userid]);
+        	$query->joinWith('relationshipsMap')->where(['relationship_id'=>$this->relationship,'relationships_map.userid'=>$this->userid]);
         }
         if($this->category_id)
         {

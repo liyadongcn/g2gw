@@ -78,17 +78,17 @@ class Album extends \yii\db\ActiveRecord
         ];
     }
     
-   public function beforeSave($insert)
-   {
-    	if (parent::beforeSave($insert)) {
-    		// ...custom code here...
-    		if($this->model_type==MODEL_TYPE_POSTS)
-    		{
-    			$this->is_default=1;
-    		}
-    		return true;
-    	} else {
-    		return false;
-    	}
-   }
+//    public function beforeSave($insert)
+//    {
+//     	if (parent::beforeSave($insert)) {
+//     		// ...custom code here...
+//     		if($this->model_type==MODEL_TYPE_POSTS)
+//     		{
+//     			//$this->is_default=1;
+//     		}
+//     		return true;
+//     	} else {
+//     		return false;
+//     	}
+//    }
 }

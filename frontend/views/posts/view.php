@@ -6,11 +6,14 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
+use yii\i18n\Formatter;
+use common\models\helper\TimeHelper;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
 
-$this->title = $model->id;
+$this->title = Yii::$app->name.'-'.$model->post_title;
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -23,31 +26,64 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	
 	<div class="action">
-            <span class="user"><a href="/user/27646"><span class="glyphicon glyphicon-user"></span><?= html::encode($model->user->username)?></a></span>
-            <span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode($model->created_date)?></span>
+            <span class="user"><a href="<?= Url::to(['user/view','id'=>$model->userid])?>"><span class="glyphicon glyphicon-user"></span><?= html::encode($model->user->username)?></a></span>
+            <span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span>
             <span class="views"><span class="glyphicon glyphicon-eye-open"></span><?= Html::encode($model->view_count) ?>次浏览</span>
             <span class="comments"><a href="#comments"><span class="glyphicon glyphicon-comment"></span> <?= Html::encode($model->comment_count) ?>条评论</a></span>
-            <span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>" data-toggle="tooltip" data-placement="top" title="收藏" ><span class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?></em></a></span>
+            <span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>" data-toggle="tooltip" data-placement="top" title="收藏" ><span class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?>人收藏</em></a></span>
             <span class="vote"><a class="up" href="<?= Url::to(['thumbsup','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="顶"><span class="glyphicon glyphicon-thumbs-up"></span> <em><?= Html::encode($model->thumbsup) ?></em></a><a class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="踩"><span class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em></a></span>
     </div>
 	<!-- 文章图片列表开始 -->
 	<?php $album=$model->album;?>
 	<?php if(!empty($album)):?>
-			<div class="center-block">		
+			
 			<?php foreach ($album as $image): ?>
 				<a href=<?= Url::to($model->url)?>>
-				<?= html::img($image->filename,['class'=>'img-responsive'])?>	
+				<?= html::img($image->filename,['class'=>'img-responsive center-block'])?>	
 				</a>			
-			</div>
+			
 		<?php endforeach;?>
 	<?php endif;?>
 <!-- 文章图片列表结束 -->
-	<p>
+	<p class="lead">
 		<?= html::encode($model->post_content)?>
 	</p>
 	
 </div>
 
+<!-- 点赞吐槽开始 -->
+<p class="text-center">
+	
+			<a class="up"
+			href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
+			data-toggle="tooltip" data-original-title="顶">
+			<span style="font-size:36px;color:#F00" class="glyphicon glyphicon-thumbs-up"></span><em><?= Html::encode($model->thumbsup) ?></em>
+			</a>
+			&nbsp;&nbsp;&nbsp;
+			<a
+			class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>"
+			title="" data-toggle="tooltip" data-original-title="踩">
+			<span style="font-size:36px;color:#999" class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em>
+			</a>
+	
+</p>
+<!-- 点赞吐槽结束 -->
+
+<!-- 收藏开始 -->
+<p class="text-center">
+<a class="btn btn-success btn-lg" href=<?= Url::to($model->url)?>><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+<?php if($model->isStared()):?>
+				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
+					data-toggle="tooltip" data-placement="top" title="收藏"><span
+					class="glyphicon glyphicon-star">取消收藏</span> </a>
+			<?php else :?>
+				<a class="btn btn-primary btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"
+					data-toggle="tooltip" data-placement="top" title="收藏"><span
+					class="glyphicon glyphicon-star-empty">收藏</span> </a>
+			<?php endif;?>
+</p>
+<!-- 收藏结束 -->
+			
 <!-- 文章标签开始 -->
 	<div class="panel panel-default">
   		<div class="panel-body">
@@ -55,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
   			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
-  					<a href="<?= Url::to(['posts/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
+  					<a href="<?= Url::to(['posts/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
   				<?php endforeach;?>	
   			<?php endif;?>		
 <!-- 			<span class="label label-primary">Primary</span> -->
@@ -77,9 +113,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php $relatedPosts=$model->getRelatedPosts()->models;?>
 	<?php if($relatedPosts):?>
 		<?php foreach ($relatedPosts as $post):?>
-			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
-				class="list-group-item"><?= html::encode($post->post_title)?>
-				<span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>"	class="list-group-item">
+			<div class="row">
+            		<div class="col-md-9"><?= html::encode($post->post_title)?></div>
+            		<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span></div>
+             </div>
 			</a>
 		<?php endforeach;?>
 	<?php endif;?>
@@ -98,8 +136,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php $latestPosts=$model->getLatestPosts(5)->all();?>
 	<?php if($latestPosts):?>
 		<?php foreach ($latestPosts as $post):?>
-			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item"><?= html::encode($post->post_title)?>
-			<span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span>
+			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
+			<div class="row">
+            		<div class="col-md-9"><?= html::encode($post->post_title)?></div>
+            		<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span></div>
+            </div>
 			</a>
 		<?php endforeach;?>
 	<?php endif;?>
@@ -107,6 +148,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <!-- 最新文章结束 -->
+
+<!-- 百度分享功能开始 -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享功能结束 -->
     
 <div id="comments">
 	<div class="page-header">

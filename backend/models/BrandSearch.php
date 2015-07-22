@@ -39,10 +39,10 @@ class BrandSearch extends Brand
     public function rules()
     {
         return [
- /*            [['id', 'thumbsup', 'thumbsdown', 'company_id', 'comment_count', 'view_count'], 'integer'],
-            [['en_name', 'country_code', 'logo', 'cn_name', 'introduction', 'baidubaike'], 'safe'], */
+            [['id', 'thumbsup', 'thumbsdown', 'company_id', 'comment_count', 'view_count'], 'integer'],
+            [['en_name', 'country_code', 'logo', 'cn_name', 'introduction', 'baidubaike'], 'safe'], 
         	['keyWords','safe'],
-        	[['relationship','userid'],'safe'],
+        	[['relationship','userid','country_code'],'safe'],
         ];
     }
 
@@ -69,7 +69,7 @@ class BrandSearch extends Brand
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         	'pagination' => [
-                'pagesize' => '10',
+                'pagesize' => '24',
         	],
         	'sort' => [
         			'defaultOrder' => [
@@ -107,16 +107,16 @@ class BrandSearch extends Brand
         
         if($this->relationship)
         {
-        	$query->joinWith('relationshipsMap')->where(['relationship_id'=>$this->relationship,'userid'=>$this->userid]);
+        	$query->joinWith('relationshipsMap')->where(['relationship_id'=>$this->relationship,'relationships_map.userid'=>$this->userid]);
         }
         if($this->category_id)
         {
-        	$query->joinWith('categoryMap')->where(['category_id'=>$this->category_id]);
+        	$query->joinWith('categoryMap')->where(['category_id'=>$this->category_id])->groupBy(['id']);
         }
        
 
          $query->andFilterWhere([
-            //'id' => $this->ids,
+            'id' => $this->id,
             //'thumbsup' => $this->thumbsup,
             //'thumbsdown' => $this->thumbsdown,
             //'company_id' => $this->company_id,
@@ -125,7 +125,7 @@ class BrandSearch extends Brand
         ]);
  
         $query->orFilterWhere(['like', 'en_name', $this->keyWords])
-             ->orFilterWhere(['like', 'country_code', $this->keyWords])
+             ->orFilterWhere(['like', 'country_code', $this->country_code])
 //             ->andFilterWhere(['like', 'logo', $this->logo])
             ->orFilterWhere(['like', 'cn_name', $this->keyWords])
             ->orFilterWhere(['like', 'introduction', $this->keyWords]);

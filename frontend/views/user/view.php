@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 use yii\widgets\LinkPager;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
+use common\models\helper\TimeHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
@@ -71,8 +72,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p>
                     <span class="glyphicon glyphicon-calendar"></span>
                     注册时间：<?= html::encode(date('Y-m-d H:i:s',$model->created_at))?>
+                </p>
+                <p>
                     <span class="glyphicon glyphicon-log-in"></span>
                     最后登录：3分钟前
+                </p>
+                 <p>  
                     <span class="glyphicon glyphicon-dashboard"></span>
                     在线时长：52小时22分
                 </p>
@@ -123,10 +128,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php //var_dump($comments);?>
         <?php if($comments):?>
         	<?php foreach ($comments as $comment):?>
-                <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>"
-                class="list-group-item">
-                        <?= html::encode($comment->content)?>
-                        <span class='glyphicon glyphicon-time pull-right'><?= html::encode($comment->created_date)?></span>
+                <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>" class="list-group-item">
+                <div class="row">
+                    <div class="col-md-9"><?= html::encode($comment->content)?></div>
+                    <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($comment->created_date))?></span></div>
+                </div>
                 </a>
         	<?php endforeach;?>
         <?php endif;?>
@@ -154,8 +160,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php //var_dump($comments);?>
         <?php if($posts):?>
             <?php foreach ($posts as $post):?>
-                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"
-                class="list-group-item"><?= html::encode($post->post_title)?></a>
+                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
+                <div class="row">
+                    <div class="col-md-9"><?= html::encode($post->post_title)?></div>
+                    <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($post->created_date))?></span></div>
+                </div>
+                </a>
             <?php endforeach;?>
         <?php endif;?>
     </ul>
@@ -215,8 +225,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if($posts):?>
             <?php foreach ($posts as $post):?>
             <li class="list-group-item">
-                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a>
-                <span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span>
+                <div class="row">
+                    <div class="col-md-9"><a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a></div>
+                    <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span></div>
+                </div>
             </li>
             <?php endforeach;?>
         <?php endif;?>
@@ -245,8 +257,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if($goods):?>
             <?php foreach ($goods as $goodsOne):?>
             <li class="list-group-item">
-                <a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>"><?= html::encode($goodsOne->title)?></a>
-                <span class="pull-right"><a href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a></span>
+                <div class="row">
+                    <div class="col-md-9"><a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>"><?= html::encode($goodsOne->title)?></a></div>
+                    <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a></span></div>
+                </div>
             </li>
             <?php endforeach;?>
         <?php endif;?>

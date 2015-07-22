@@ -31,7 +31,7 @@ class Search extends Model
     {
         return [
         	['keyWords','safe'],
-        	['model_type','default','value'=>self::MODEL_TYPE_BRAND],
+        	['model_type','default','value'=>\Yii::$app->params['searchModelType']],
         ];
     }
 
@@ -65,16 +65,16 @@ class Search extends Model
     	
     	switch ($this->model_type)
     	{
-    		case self::MODEL_TYPE_BRAND:
+    		case MODEL_TYPE_BRAND:
     			$searchModel = new BrandSearch();
     			break;
-    		case self::MODEL_TYPE_GOODS:
+    		case MODEL_TYPE_GOODS:
     			$searchModel = new GoodsSearch();
     			break;
-    		case self::MODEL_TYPE_POSTS:
+    		case MODEL_TYPE_POSTS:
     			$searchModel = new PostsSearch();
     			break;
-    		case self::MODEL_TYPE_SOLR:
+    		case MODEL_TYPE_SOLR:
     			$searchModel = new SolrSearch();
     			break;
     		default:

@@ -77,21 +77,22 @@ class Posts extends base\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'post_title' => 'Post Title',
-            'post_content' => 'Post Content',
-            'post_status' => 'Post Status',
-            'url' => 'Url',
+            'post_title' => '标题',
+            'post_content' => '内容',
+            'post_status' => '发布状态',
+            'url' => 'Url网址',
             'created_date' => 'Created Date',
             'updated_date' => '最新',
             'userid' => 'Userid',
             'comment_count' => '评论',
             'thumbsup' => '口碑',
             'thumbsdown' => 'Thumbsdown',
-            'effective_date' => 'Effective Date',
-            'expired_date' => 'Expired Date',
+            'effective_date' => '活动开始时间',
+            'expired_date' => '活动结束时间',
             'view_count' => '浏览',
             'star_count' => '收藏', 
-        	'brand_id' =>'Brand ID',
+        	'brand_id' =>'涉及品牌',
+            'file'=>'上传图片',
         ];
     }
     

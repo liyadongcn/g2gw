@@ -23,51 +23,53 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 页面左半部分开始 -->
 	<div class="col-lg-9 ">
 	<div class="posts-index">
-	
-<!-- 搜索结果数量及排序开始 -->
-<div class="row">
-	<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
-	<div class="col-md-6 col-sm-12">
-		<p class="action pull-right">
-		<?php $sort=$dataProvider->sort;?>
-		<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
-		<p>
-	</div>
-</div>
-<!-- 搜索结果数量及排序结束 -->
+
+<?php $sort=$dataProvider->sort;?>
+<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
+
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
 <ul class="list-group">
 	<li class="list-group-item">
   	<?php foreach ($models as $model):?>
-  	
-  	<div class="thumbnail">
-      <a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
-						<?php $image=$model->albumDefaultImg;?>
-						<?php if($image):?>
-								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="...">
+  		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-left media-middle">
+						<a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
+						<?php $images=$model->album;?>
+						<?php if($images):?>
+							<?php foreach ($images as $image) :?>
+								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="64">
+							<?php endforeach;?>
 						<?php else :?>
-								<img class=" media-object img-rounded" src=""	alt="..." >
+								<img class=" media-object img-rounded" src=""	alt="..." width="64">
 						<?php endif;?>
 						</a>
-      <div class="caption">
-        <h3 ><?= html::encode($model->post_title)?></h3>
-        <p><?= html::encode($model->post_content)?></p>
-        <p class="text-right">
+					</div>
+					<div class="media-body">
+						<h3 class="media-heading"><?= html::encode($model->post_title)?></h3>
+						<p>
+							<?= html::encode($model->post_content)?>
+						</p>
+						
+					</div>
+					<p class="text-right">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button">去购买</a>
 							<?php endif;?>
 					</p>
-				
+				</div>
+			</div>
+			<div class="panel-footer">
 				<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class='text-left'>
 	  					<?php $tagMaps=$model->getTagMaps()->all();?>
 	  					<?php if($tagMaps):?>
-	  					<span class="glyphicon glyphicon-tags">&nbsp;</span>
 	  					<?php foreach ($tagMaps as $tagMap):?>  			
-	  						<a href="<?= Url::to(['posts/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
+	  						<a href="<?= Url::to(['posts/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-success"><?= $tagMap->tag->name?></span></a>
 	  					<?php endforeach;?>	
 	  					<?php endif;?>		
 	<!-- 			<span class="label label-primary">Primary</span> -->
@@ -82,29 +84,21 @@ $this->params['breadcrumbs'][] = $this->title;
 						<a href="<?= Url::to(['posts/thumbsup','id' => $model->id])?>"> <span
 							class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsup) ?></span>
-						<a href="<?= Url::to(['posts/thumbsdown','id' => $model->id])?>">
+						&nbsp;| <a href="<?= Url::to(['posts/thumbsdown','id' => $model->id])?>">
 							<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsdown) ?></span>
-						<span class="glyphicon glyphicon-comment"
+						&nbsp;| <span class="glyphicon glyphicon-comment"
 							aria-hidden="true"></span> <span class="badge" aria-hidden="true"><?= Html::encode($model->comment_count) ?></span>
-						<span class="glyphicon glyphicon-eye-open"></span> <span
+						&nbsp;| <span class="glyphicon glyphicon-eye-open"></span> <span
 							class="badge"><?= Html::encode($model->view_count) ?></span>
-						<a href="<?= Url::to(['posts/star','id' => $model->id])?>">
-							<?php if($model->isStared()):?>
-										<span class="glyphicon glyphicon-star"></span>
-									<?php else :?>
-										<span class="glyphicon glyphicon-star-empty"></span>
-									<?php endif;?>
+						&nbsp;| <a href="<?= Url::to(['posts/star','id' => $model->id])?>">
+							<span class="glyphicon glyphicon-star"></span>
 							</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
-						<span class="glyphicon glyphicon-time"></span><span class="badge" aria-hidden="true"><?= html::encode(yii::$app->formatter->asRelativeTime($model->updated_date,time()+8*3600))?></span></span>
 					</p>
 				</div>
 				</div>
-      </div>
-    </div>
-						
-						
-					
+			</div>
+		</div>
   <?php endforeach;?>
   </li>
 </ul>
@@ -143,10 +137,8 @@ echo LinkPager::widget([
         <?php if($posts):?>
             <?php foreach ($posts as $post):?>
             <li class="list-group-item">
-            <div class="row">
-            		<div class="col-md-12"><a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a></div>
-            		<div class="col-md-12"><span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span></div>
-               	</div>
+                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a>
+                <span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span>
             </li>
             <?php endforeach;?>
         <?php endif;?>
@@ -167,9 +159,9 @@ echo LinkPager::widget([
 <!-- 用户收藏的帖子结束 -->
 	
 <!-- 热门文章开始 -->
-<div class="panel panel-primary">
+<div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">热门活动及文章</h3>
+		<h3 class="panel-title">热门文章</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">
@@ -203,9 +195,9 @@ echo LinkPager::widget([
 <!-- 热门标签结束 -->
 
 <!-- 最新文章开始 -->
-<div class="panel panel-primary">
+<div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">最新活动及文章</h3>
+		<h3 class="panel-title">最新文章</h3>
 	</div>
 	<div class="panel-body">
 	<ul class="list-group">

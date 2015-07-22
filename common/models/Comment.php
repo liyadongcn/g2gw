@@ -94,7 +94,7 @@ class Comment extends \yii\db\ActiveRecord
             'approved' => 'Approved',
             'thumbsup' => 'Thumbsup',
             'thumbsdown' => 'Thumbsdown',
-            'content' => 'Content',
+            'content' => '评论内容',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
             'userid' => 'Userid',
