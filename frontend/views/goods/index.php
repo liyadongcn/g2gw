@@ -18,6 +18,8 @@ use common\models\helper\TimeHelper;
 
 $this->title = '商品';
 $this->params['breadcrumbs'][] = $this->title;
+
+const ROW_ITEMS_COUNT=2;
 ?>
 
 <div class="row">
@@ -149,23 +151,33 @@ echo LinkPager::widget([
     <!-- <ul class="list-group"> -->
     	<?php $goods=$starGoodsProvider->models;?>
         <?php if($goods):?>
-            <?php foreach ($goods as $goodsOne):?>
-            <!-- <li class="list-group-item"> -->
+        <?php $rows=(int)ceil($starGoodsProvider->count/ROW_ITEMS_COUNT);?>
+		<?php for($i=0;$i<$rows;$i++):?>
+		<div class="row">
+		<?php for($j=0;$j<ROW_ITEMS_COUNT;$j++):?>
+		<?php $goodsIndex=$j+$i*ROW_ITEMS_COUNT;?>
+		<?php if($goodsIndex+1>$starGoodsProvider->count) break;?>
+			<div class="col-xs-6">
+            <?php $goodsOne=$goods[$goodsIndex]?>
             <div class="thumbnail">
+            	<a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>" >
 				<?php if($image=$goodsOne->albumDefaultImg):?>
       				<img src="<?= html::encode($image->filename)?>" alt="...">
       			<?php endif;?>
       			<p class="small">
       				<?= html::encode($goodsOne->title)?>
       			</p>
+      			</a>
       			<p class="text-right">
       				<a class="btn btn-primary btn-xs" href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a>
       			</p>
-      			
       		</div>
-            <!-- </li> -->
-            <?php endforeach;?>
+      		</div>
+            <?php endfor;?>
+            </div>
+           <?php endfor;?>
         <?php endif;?>
+       
     <!-- </ul> -->
     </div>
     <div class="panel-footer">

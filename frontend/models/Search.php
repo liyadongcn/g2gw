@@ -61,7 +61,12 @@ class Search extends Model
     	}
     	//Save the serach model type to the session.
     	//This will tell the main layout the current search model type and reset the selection input for searching.
-    	$session=yii::$app->session->set('SEARCH_MODEL_TYPE',$this->model_type);
+    	//$session=yii::$app->session->set('SEARCH_MODEL_TYPE',$this->model_type);
+    	$this->model_type=yii::$app->session->get('SEARCH_MODEL_TYPE');
+    	if(empty($this->model_type)){
+    		$this->model_type=yii::$app->params['searchModelType'];
+    		yii::$app->session->set('SEARCH_MODEL_TYPE',$this->model_type);
+    	}
     	
     	switch ($this->model_type)
     	{

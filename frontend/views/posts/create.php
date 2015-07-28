@@ -11,9 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="posts-create">
-
-    <h3><?= Html::encode($this->title) ?></h3>
-
+	<div class="page-header">
+    <h3><?= Html::encode($this->title) ?><small>您的每一次推荐都是对我们的激励</small></h3>
+	</div>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

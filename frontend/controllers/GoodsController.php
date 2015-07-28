@@ -54,6 +54,8 @@ class GoodsController extends Controller
     public function actionIndex()
     {
         $searchModel = new GoodsSearch();
+        //This will tell the main layout the current search model type and reset the selection input for searching.
+        $session=yii::$app->session->set('SEARCH_MODEL_TYPE',MODEL_TYPE_GOODS);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

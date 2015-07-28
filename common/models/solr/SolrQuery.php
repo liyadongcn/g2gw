@@ -12,10 +12,17 @@ namespace common\models\solr;
 
 //use SolrQuery;
 
+
 class SolrQuery extends \SolrQuery
 {
 	private $_fields;
 	
+	
+	/**
+	 * Allow user can add the fields throug a array.
+	 * 
+	 * @param array $fields
+	 */
 	public function addFields($fields)
 	{
 		if(is_array($fields))
@@ -28,6 +35,12 @@ class SolrQuery extends \SolrQuery
 		}	
 	}
 	
+	/**
+	 * Let the field has one label to show. Now is used by the sort component.
+	 * The sort object can show the field in label by the user setting.
+	 * 
+	 * @return array|multitype:unknown array 
+	 */
 	public function getFieldsWithLable()
 	{
 		if(isset($this->_fields))

@@ -55,6 +55,8 @@ class BrandController extends Controller
     public function actionIndex()
     {
         $searchModel = new BrandSearch();
+        //This will tell the main layout the current search model type and reset the selection input for searching.
+        $session=yii::$app->session->set('SEARCH_MODEL_TYPE',MODEL_TYPE_BRAND);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

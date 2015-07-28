@@ -29,6 +29,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+    const STATUS_ONLINE =20;
     const DEFAULT_USER_FACE='uploads\user\default_small.png';
     
     const MODEL_TYPE_GOODS='goods';
@@ -61,8 +62,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED,self::STATUS_ONLINE]],
         	['face', 'default', 'value' =>self::DEFAULT_USER_FACE],
+        	['onlineTime','default','value'=>0],
         ];
     }
 
@@ -270,5 +272,7 @@ class User extends ActiveRecord implements IdentityInterface
     	//->where(['model_type'=>$this->modelType()]);
     	//->all();
     }
+    
+    
     
 }

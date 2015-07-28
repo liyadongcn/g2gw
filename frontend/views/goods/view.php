@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="goods-view">
 
-	<h1><?php //echo  Html::encode($this->title) ?></h1>
+	<!-- <h1><?php //echo  Html::encode($this->title) ?></h1> -->
 <!-- 详情表头开始 -->
 	<div class="action">
 		<span class="user"><span class="glyphicon glyphicon-info-sign"></span>商品编号：<?= html::encode($model->code)?></span>
@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	</div>
 </div>
-	
+</div>	
 <!-- 商品详情展示结束 -->
 
 <!-- 点赞吐槽开始 -->

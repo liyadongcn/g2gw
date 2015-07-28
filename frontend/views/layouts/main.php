@@ -82,8 +82,9 @@ AppAsset::register($this);
             }
          ?>
 			<p class="navbar-text">最新的官网购物信息</p>
+			
 <!-- 分类菜单开始 -->
-			<?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>			
+			<?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>
 			<?php  $catMenuItems=Category::getCategoryAsMenuItems1( 0, $searchModelType);?>
 			<?php echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-left'],
@@ -91,7 +92,21 @@ AppAsset::register($this);
 				'encodeLabels' => false,
             ]);
             ?>
-<!-- 分类菜单结束 -->			
+<!-- 分类菜单结束 -->
+            
+<!-- 主菜单开始 -->
+            <?php echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-left'],
+                'items' =>[
+                		['label' =>'品牌','url' => ['/brand/index']],
+                		['label' =>'精品','url' => ['/goods/index']],
+                		['label' =>'促销','url' => ['/posts/index']],
+                		['label' =>'官网搜','url' => ['/solr/index']],
+            	],
+				'encodeLabels' => false,
+            ]);
+            ?>
+<!-- 主菜单结束 -->
             
             <?php echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -104,48 +119,26 @@ AppAsset::register($this);
             <div class="form-group">
            
 			<div class="input-group">
-			<span class="input-group-addon">
-			 <select name="Search[model_type]">
-
 <?php switch($searchModelType):?>
 <?php case MODEL_TYPE_BRAND:?>
-			  <option value="brand" selected="selected">品牌</option>
-			  <option value="goods">官网精品</option>
-			  <option value="posts">促销活动及购物经验</option>	
-			  <option value="solr">官网商品</option>	
-			  <?php break;?>
+<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索品牌......">
+			  <?php break;?>		
 <?php case MODEL_TYPE_GOODS:?>
-			  <option value="brand">品牌</option>
-			  <option value="goods" selected="selected">官网精品</option>
-			  <option value="posts">促销活动及购物经验</option>	
-			  <option value="solr">官网商品</option>	
+<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索网友推荐官网精品......">
 			  <?php break;?>
 <?php case MODEL_TYPE_POSTS:?>
-			  <option value="brand">品牌</option>
-			  <option value="goods">官网精品</option>
-			  <option value="posts" selected="selected">促销活动及购物经验</option>	
-			  <option value="solr">官网商品</option>	
+<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索促销及活动......">
 			  <?php break;?>
 <?php case MODEL_TYPE_SOLR:?>
-			  <option value="brand">品牌</option>
-			  <option value="goods">官网精品</option>
-			  <option value="posts">促销活动及购物经验</option>	
-			  <option value="solr" selected="selected">官网商品</option>	
+<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索官网全部商品......">
 			  <?php break;?>
 <?php default:?>
-			  <option value="brand" selected="selected">品牌</option>
-			  <option value="goods">商品</option>
-			  <option value="posts">促销活动及购物经验</option>	
-			  <option value="solr">官网商品</option>	
 			  <?php break;?>
-<?php endswitch;?>		
-			</select>
-			</span>
-	            <input type="text" name="Search[keyWords]" class="form-control" placeholder="找出你的最爱......">
+<?php endswitch;?>		            
 	           
 	            <span class="input-group-btn">
 	            	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-	            <span>
+	            </span>
 	        </div>
             </div>
             </form>
@@ -174,11 +167,11 @@ AppAsset::register($this);
 <!--     	</div> -->
 <!--     	</div> -->
         </div>
-	</div>
+</div>
 
 	<footer class="footer">
 		<div class="container">
-			<p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+			<p class="pull-left">&copy; G2GW <?= date('Y') ?></p>
 			<p class="pull-right"><?= Yii::powered() ?></p>
 		</div>
 	</footer>

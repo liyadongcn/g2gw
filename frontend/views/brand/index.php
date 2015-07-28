@@ -34,7 +34,7 @@ const ROW_ITEMS_COUNT=3;
 
 		</div>
 		
-<!-- 品牌促销活动开始 -->
+<!-- 品牌促销活动轮播开始 -->
 <?php $promotions=Posts::getPromotions(10)->all();?>
 <?php if($promotions):?>
 	<?php foreach ($promotions as $promotion):?>
@@ -69,7 +69,7 @@ const ROW_ITEMS_COUNT=3;
 // ]);
 ?>		
 
-<!-- 品牌促销活动结束 -->
+<!-- 品牌促销活动轮播结束 -->
 
 <hr>
 
@@ -246,11 +246,14 @@ echo LinkPager::widget([
 	<div class="panel-body">
 	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,30)->all();?>
 	<?php if($hotestTags):?>
+		<p>
 		<?php foreach ($hotestTags as $tag):?>			
 			<a href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?></span>
-			</a>
+			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)
+			</span>
+			</a>&nbsp;
 		<?php endforeach;?>
+		</p>
 	<?php endif;?>
 	</div>
 </div>

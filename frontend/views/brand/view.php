@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				more</a>
 			<?php if($model->isStared()):?>
 				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
-					data-toggle="tooltip" data-placement="top" title="收藏"><span
+					data-toggle="tooltip" data-placement="top" title="取消收藏"><span
 					class="glyphicon glyphicon-star">取消收藏</span> </a>
 			<?php else :?>
 				<a class="btn btn-primary btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"

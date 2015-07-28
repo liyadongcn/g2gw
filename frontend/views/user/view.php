@@ -75,11 +75,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 </p>
                 <p>
                     <span class="glyphicon glyphicon-log-in"></span>
-                    最后登录：3分钟前
+                    上次登录：<?= html::encode(TimeHelper::getRelativeTime(Yii::$app->session->get('lastLoginTime')))?>
                 </p>
                  <p>  
                     <span class="glyphicon glyphicon-dashboard"></span>
-                    在线时长：52小时22分
+                    在线时长：<?= html::encode(TimeHelper::formatTimeLength($model->onlineTime))?>
                 </p>
 
                 <p>

@@ -173,10 +173,10 @@ class Category extends \yii\db\ActiveRecord
     			$label='所有品牌分类';
     			break;
     		case self::MODEL_TYPE_GOODS:
-    			$label='所有商品分类';
+    			$label='所有精品分类';
     			break;
     		case self::MODEL_TYPE_POSTS:
-    			$label='所有发帖分类';
+    			$label='所有促销分类';
     			break;
     		default:
     			$label='';

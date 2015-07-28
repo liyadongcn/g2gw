@@ -49,6 +49,8 @@ class PostsController extends Controller
     public function actionIndex()
     {
         $searchModel = new PostsSearch();
+        //This will tell the main layout the current search model type and reset the selection input for searching.
+        $session=yii::$app->session->set('SEARCH_MODEL_TYPE',MODEL_TYPE_POSTS);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
