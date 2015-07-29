@@ -231,8 +231,8 @@ echo LinkPager::widget([
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
 			<a href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?></span>
-			</a>
+			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)</span>
+			</a>&nbsp;
 		<?php endforeach;?>
 	<?php endif;?>
 	</div>

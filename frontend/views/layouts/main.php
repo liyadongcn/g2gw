@@ -100,7 +100,7 @@ AppAsset::register($this);
                 'items' =>[
                 		['label' =>'品牌','url' => ['/brand/index']],
                 		['label' =>'精品','url' => ['/goods/index']],
-                		['label' =>'促销','url' => ['/posts/index']],
+                		['label' =>'活动','url' => ['/posts/index']],
                 		['label' =>'官网搜','url' => ['/solr/index']],
             	],
 				'encodeLabels' => false,
@@ -127,7 +127,7 @@ AppAsset::register($this);
 <input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索网友推荐官网精品......">
 			  <?php break;?>
 <?php case MODEL_TYPE_POSTS:?>
-<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索促销及活动......">
+<input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索官网活动及购物经验......">
 			  <?php break;?>
 <?php case MODEL_TYPE_SOLR:?>
 <input type="text" name="Search[keyWords]" class="form-control" placeholder="搜索官网全部商品......">

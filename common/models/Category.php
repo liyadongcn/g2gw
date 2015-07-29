@@ -176,7 +176,7 @@ class Category extends \yii\db\ActiveRecord
     			$label='所有精品分类';
     			break;
     		case self::MODEL_TYPE_POSTS:
-    			$label='所有促销分类';
+    			$label='所有活动分类';
     			break;
     		default:
     			$label='';
