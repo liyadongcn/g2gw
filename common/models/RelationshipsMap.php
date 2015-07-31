@@ -33,6 +33,9 @@ class RelationshipsMap extends \yii\db\ActiveRecord
                 'attributes' => [
                     \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_date'],
                 ],
+            	'value' => function ($event){
+            		return  new Expression('NOW()');
+            	},
             ],
         ];
 	}

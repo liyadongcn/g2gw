@@ -227,7 +227,7 @@ echo LinkPager::widget([
 		<h3 class="panel-title">热门标签</h3>
 	</div>
 	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS,10)->all();?>
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
 			<a href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">

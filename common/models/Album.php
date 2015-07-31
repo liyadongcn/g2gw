@@ -91,4 +91,32 @@ class Album extends \yii\db\ActiveRecord
 //     		return false;
 //     	}
 //    }
+	
+	public function beforeDelete() 
+	{
+		if(parent::beforeDelete())
+		{
+			if($this->filename)
+			{
+				if(file_exists($this->filename))
+				{
+					unlink($this->filename);
+				}
+			}
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+		
+	}
+	
+	public function setDefault()
+	{
+		self::updateAll(['is_default'=>0],['model_type'=>$this->model_type,'model_id'=>$this->model_id]);
+		$this->is_default=true;
+		$this->save();
+	}
+
 }

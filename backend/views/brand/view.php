@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
   			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
-  					<span class="label label-success"><?= $tagMap->tag->name?></span>
+  					<span class="label label-success"><?= $tagMap->tag->name?></span>  									
   				<?php endforeach;?>	
   			<?php endif;?>		
 <!-- 			<span class="label label-primary">Primary</span> -->

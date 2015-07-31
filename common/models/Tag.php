@@ -64,7 +64,7 @@ class Tag extends \yii\db\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public static function getHotestTags($modelType,$n=10)
+    public static function getHotestTags($modelType,$n=20)
     {
     	$query=self::find();
     	$query->where(['model_type'=>$modelType])->orderBy(['count' => SORT_DESC])

@@ -68,6 +68,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
 			//Delete the category_map records
 			$this->deleteAllCategoryMap();
 			//Delete the relationships_map records
+			$this->deleteAllRelationshipsMap();
+
 		}
 		catch (\Exception $e)
 		{
@@ -238,6 +240,26 @@ class ActiveRecord extends \yii\db\ActiveRecord
 		}
 	}
 	
+	/**
+	 * This function is to delete  all relationmaps records of this model.
+	 * In the mean while reduce the relationship count.
+	 * 删除数据模型所有的标签映射记录
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	private function deleteAllRelationshipsMap()
+	{
+		//DeleteAll 不触发afterDelete和befroreDelete事件,所以改为逐条记录删除触发删除事件
+		$maps=$this->getRelationshipsMap()->all();
+		if($maps)
+		{
+			foreach ($maps as $map)
+			{
+				$map->delete();
+			}
+		}
+	}
 
 	/**
 	 * This function is to delete  all tagmap records of this model.
@@ -318,7 +340,15 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 */
 	public function deleteAlbum()
 	{
-		return Album::deleteAll(['model_id'=>$this->id,'model_type'=>$this->modelType()]);
+		$pics=$this->getAlbum();
+		if($pics)
+		{
+			foreach ($pics as $pic)
+			{
+				$pic->delete();
+			}
+		}
+		//return Album::deleteAll(['model_id'=>$this->id,'model_type'=>$this->modelType()]);
 	}
 	
 	/**
@@ -387,7 +417,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	public function getCategories()
 	{
 		return $this->hasMany(Category::className(), ['id' => 'category_id','model_type'=>'model_type'])
-		->viaTable('category_map', ['model_id' => 'id']);
+		->viaTable('category_map', ['model_id' => 'id'])->where(['model_type'=>$this->modelType()]);
 	}
 	
 	/**
@@ -618,7 +648,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	}
 	
 	/**
-	 * This function is to get the related promotions posts of this brand.
+	 * This function is to get the related promotions posts of this model.
 	 *
 	 * @return ActiveDataProvider|null the Posts ActiveDataProvider
 	 *

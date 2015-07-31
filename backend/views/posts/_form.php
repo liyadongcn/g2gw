@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use common\models\Posts;
@@ -111,26 +112,27 @@ use kartik\widgets\Select2;
    			<h3 class="panel-title">图片</h3>
   		</div>
   		<div class="panel-body">
-  			 <?php
-  			 $album=$model->getAlbum();
-		if(!empty($album)){
-			echo '<div class="row">';			
-			foreach ($album as $image){
-				echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
-				echo '<div class="thumbnail">';
-				echo '<img src="'.$image->filename.'" class="img-responsive img-thumbnail" alt="Responsive image" width="200">';
-				echo '<div class="caption">';
-				//echo '<h3>Thumbnail label</h3>';
-				//echo '<p>...</p>';
-				echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
-				echo '</div>';
-				echo '</div>';
-				echo '</div>';
-			}		
-			echo '</div>';
-		}
-	?>
-    
+		  	<?php $album=$model->album;?>
+			<?php if(!empty($album)):?>
+			<div class="row">
+				<?php foreach ($album as $image): ?>
+				<div class="col-sm-6 col-md-3 col-lg-2"">
+				<div class="thumbnail">
+					<a href=<?= Url::to($model->url)?>>
+						<?= html::img($image->filename,['class'=>'img-responsive  img-thumbnail center-block'])?>	
+					</a>
+				<div class="caption">						
+					<p><a href=<?= Url::to(['album/delete','id'=>$image->id])?> class="btn btn-default btn-xs" role="button">删除</a>
+					<?php if(!$image->is_default):?>
+						<a href=<?= Url::to(['album/set-default','id'=>$image->id])?> class="btn btn-default btn-xs" role="button">设为默认图片</a>
+					<?php endif;?>
+					</p>
+				</div>
+				</div>
+				</div>			
+				<?php endforeach;?>
+			</div>
+			<?php endif;?>
     <?php 
     // Display an initial preview of files with caption
     // (useful in UPDATE scenarios). Set overwrite `initialPreview`
@@ -183,7 +185,11 @@ use kartik\widgets\Select2;
   			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
-  					<span class="label label-success"><?= $tagMap->tag->name?></span>
+  					<span class="label label-success"><?= $tagMap->tag->name?>
+  					<a href=<?= url::to(['tagmap/delete','id'=>$tagMap->id])?>>
+  					<span class="glyphicon glyphicon-remove"><span>
+  					</a>  
+  					</span>&nbsp;
   				<?php endforeach;?>	
   			<?php endif;?>		
 <!-- 			<span class="label label-primary">Primary</span> -->

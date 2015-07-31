@@ -31,3 +31,14 @@ phpunit.phar
 
 /frontend/web/uploads
 /backend/web/uploads
+/environments
+/tests
+/composer.lock
+/frontend/views/layouts/main_old.php
+/requirements.php
+/yii.bat
+/.bowerrc
+/init
+/init.bat
+/LICENSE.md
+/README-Yii2.md

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use common\models\Country;
 use common\models\Company;
 use common\models\Ecommerce;
@@ -131,7 +132,11 @@ use common\models\Category;
   			<?php $tagMaps=$model->getTagMaps()->all();?>
   			<?php if($tagMaps):?>
   				<?php foreach ($tagMaps as $tagMap):?>  			
-  					<span class="label label-success"><?= $tagMap->tag->name?></span>
+  					<span class="label label-success"><?= $tagMap->tag->name?>
+  					<a href=<?= url::to(['tagmap/delete','id'=>$tagMap->id])?>>
+  					<span class="glyphicon glyphicon-remove"><span>
+  					</a>  
+  					</span>&nbsp;
   				<?php endforeach;?>	
   			<?php endif;?>		
 <!-- 			<span class="label label-primary">Primary</span> -->

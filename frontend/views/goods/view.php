@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	?>
 	<!-- 商品图片列表结束 -->
 	</div>
-	<div class="col-ms-6">
+	<div class="col-md-6">
 		<div class="jumbotron ">
 		<h2 class='text-left'><?= Html::encode($model->title) ?><small></small></h2>
 		<p class='text-left'><?= Html::encode($model->description) ?></p>

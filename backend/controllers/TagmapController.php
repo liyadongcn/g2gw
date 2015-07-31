@@ -20,7 +20,7 @@ class TagmapController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['get','post'],
                 ],
             ],
         ];
@@ -99,8 +99,10 @@ class TagmapController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        
+        return $this->redirect(yii::$app->getRequest()->referrer);
 
-        return $this->redirect(['index']);
+        //return $this->redirect(['index']);
     }
 
     /**

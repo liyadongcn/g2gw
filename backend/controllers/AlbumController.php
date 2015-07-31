@@ -120,4 +120,13 @@ class AlbumController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionSetDefault($id)
+    {
+    	$this->findModel($id)->setDefault();
+    
+    	return $this->redirect(yii::$app->getRequest()->referrer);
+    
+    	//return $this->redirect(['index']);
+    }
 }
