@@ -174,7 +174,7 @@ echo LinkPager::widget([
 ]);
 ?>
 <!-- 搜索结果展示结束 -->
-	</div>
+</div>
 	<!-- 页面左半部分结束 -->
 	
 	<!-- 页面右半部分开始 -->
@@ -203,14 +203,14 @@ echo LinkPager::widget([
         <?php endif;?>
     </ul>
     </div>
-    <div class="panel-footer">
+<!--     <div class="panel-footer"> -->
     	<span>
     	<?php echo LinkPager::widget([
             'pagination' => $starBrandProvider->getPagination(),
             ]);
         ?>
     	</span>
-    </div>
+<!--     </div> -->
 	</div>
 	<?php endif;?>
 	<?php endif;?>
@@ -228,8 +228,9 @@ echo LinkPager::widget([
 	<?php //var_dump($relatedBrands); die();?>
 	<?php if($hotestBrands):?>
 		<?php foreach ($hotestBrands as $hotestdBrand):?>
-			<a href="<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?>"
-				class="list-group-item"><?= html::encode($hotestdBrand->en_name)?><span class="pull-right"><?= html::encode($hotestdBrand->cn_name)?></span></a>
+			<a href=<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?> class="list-group-item">
+			<?= html::encode($hotestdBrand->en_name)?><span class="pull-right"><?= html::encode($hotestdBrand->cn_name)?></span>
+			</a>
 		<?php endforeach;?>
 	<?php endif;?>
 	</ul>

@@ -38,10 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
-<ul class="list-group">
-	<li class="list-group-item">
+<ul class="list-unstyled">
   	<?php foreach ($models as $model):?>
-  	
+  	<li >
   	<div class="thumbnail">
       <a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
 						<?php $image=$model->albumDefaultImg;?>
@@ -96,17 +95,15 @@ $this->params['breadcrumbs'][] = $this->title;
 										<span class="glyphicon glyphicon-star-empty"></span>
 									<?php endif;?>
 							</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
-						<span class="glyphicon glyphicon-time"></span><span class="badge" aria-hidden="true"><?= html::encode(yii::$app->formatter->asRelativeTime($model->updated_date,time()+8*3600))?></span></span>
+						<span class="glyphicon glyphicon-time"></span><span class="badge" aria-hidden="true"><?= html::encode(yii::$app->formatter->asRelativeTime($model->updated_date,time()+8*3600))?></span>
 					</p>
 				</div>
 				</div>
       </div>
     </div>
-						
-						
-					
+  </li>						
   <?php endforeach;?>
-  </li>
+
 </ul>
 <?php else:?>
 	<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>

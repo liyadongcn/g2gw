@@ -41,18 +41,18 @@ const ROW_ITEMS_COUNT=2;
 
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
-<ul class="list-group">
-	<li class="list-group-item">
+<ul class="list-unstyled">	
   	<?php foreach ($models as $model):?>
+  		<li >
   		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="media">
 					<div class="media-left media-middle">
-						<a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
+						<a href=<?= Url::to(['goods/view','id'=>$model->id])?>>
 						<?php $image=$model->albumDefaultImg;?>
 						<?php if($image):?>
 								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="120px">
-						<?php else :?>
+						<?php //else :?>
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." width="200"> -->
 						<?php endif;?>
 						</a>
@@ -109,7 +109,7 @@ const ROW_ITEMS_COUNT=2;
 										<span class="glyphicon glyphicon-star-empty"></span>
 									<?php endif;?>
 							</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
-							<span class="glyphicon glyphicon-time"></span> <span class="badge" aria-hidden="true"><?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span></span>
+							<span class="glyphicon glyphicon-time"></span> <span class="badge" aria-hidden="true"><?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span>
 					</p>
 				</div>
 				</div>
@@ -117,8 +117,9 @@ const ROW_ITEMS_COUNT=2;
 			</div>
 			
 		</div>
+	</li>
   <?php endforeach;?>
-  </li>
+  
 </ul>
 <?php else:?>
 	<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>

@@ -332,3 +332,45 @@ a.desc:after {
            bottom:-20px;
            }    
 /* ·ÖÀà²Ëµ¥½áÊø*/
+
+/* Masonry CSS start */
+/*.item { width: 25%; }
+.item.w2 { width: 50%; }*/
+/* Masonry CSS end */
+
+
+/* 轮播广告开始 */
+
+.carousel {
+    /*height: 250px;*/
+    /*margin-bottom: 60px;*/
+}
+
+.carousel .item {
+    /*height: 250px;*/
+    background-color: #000;
+}
+
+.carousel .item img {
+    /*height: auto;*/
+    width: 100%;
+}
+
+.carousel-caption {
+    z-index: 10;
+    /*background-color:#000;
+    -moz-opacity:0.6;
+    opacity:0.6;
+    margin-bottom: 0px;
+    line-height: 22px;
+    width: 100%;*/
+    /*background: #333; -moz-opacity:.50; filter:alpha(opacity=50); opacity:.50; color: #fff; position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 0; border-top: 1px solid #999; */
+}
+
+.carousel-caption p {
+    margin-bottom: 0px;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* 轮播广告结束 */

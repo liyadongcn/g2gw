@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="posts-view">
 
-    <h1><?php //echo Html::encode($this->title) ?></h1>
+    <?php //echo Html::encode($this->title) ?>
 
     <div class="page-header">
   		<h3><?= html::encode($model->post_title)?><small></small></h3>
@@ -45,10 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php endforeach;?>
 	<?php endif;?>
 <!-- 文章图片列表结束 -->
+	<blockquote>
 	<p class="lead">
 		<?= html::encode($model->post_content)?>
 	</p>
-	
+	</blockquote>
 </div>
 
 <!-- 点赞吐槽开始 -->

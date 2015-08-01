@@ -11,7 +11,7 @@ use common\models\helper\TimeHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
-$this->title = $model->id;
+$this->title = Yii::$app->name.'-'.$model->nickname.'个人主页';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -114,9 +114,120 @@ $this->params['breadcrumbs'][] = $this->title;
 //         ],
 //     ]) 
      ?>
-<!-- 用户详情展示结束 -->
     
-<!-- 用户发表的所有评论开始 -->
+
+
+<!-- 用户情况Tab页开始 -->
+
+    <ul class="nav nav-tabs" role="tablist" id="feature-tab">
+        <li class="active"><a href="#tab-chrome" role="tab" data-toggle="tab">收藏的品牌</a></li>
+        <li><a href="#tab-firefox" role="tab" data-toggle="tab">收藏的精品</a></li>
+        <li><a href="#tab-safari" role="tab" data-toggle="tab">收藏的活动</a></li>
+        <li><a href="#tab-opera" role="tab" data-toggle="tab">发表的评论</a></li>
+        <li><a href="#tab-ie" role="tab" data-toggle="tab">发表的文章及活动</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab-chrome">
+            <!-- 用户收藏的品牌开始 -->
+            <?php $starBrandProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_BRAND);?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">收藏的品牌<span class="badge pull-right"><?= html::encode($starBrandProvider->totalCount)?></span></h3>
+                </div>
+                <div class="panel-body">
+                <ul class="list-group">
+                    
+                    <?php $brands=$starBrandProvider->models?>
+                    <?php if($brands):?>
+                        <?php foreach ($brands as $brand):?>
+                        <li class="list-group-item">
+                            <a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"><?= html::encode($brand->en_name)?></a>
+                            <span class="pull-right"><a href="<?= Url::to(['brand/remove-star','id'=>$brand->id])?>">取消收藏</a></span>
+                        </li>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+                </div>
+                <div class="panel-footer">
+                    <span>
+                    <?php echo LinkPager::widget([
+                        'pagination' => $starBrandProvider->getPagination(),
+                        ]);
+                    ?>
+                    </span>
+                </div>
+            </div>
+            <!-- 用户收藏的品牌结束 -->
+        </div>
+        <div class="tab-pane" id="tab-firefox">
+                <!-- 用户收藏商品开始 -->
+                <?php $starGoodsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_GOODS);?>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">收藏的商品<span class="badge pull-right"><?= html::encode($starGoodsProvider->totalCount)?></span></h3>
+                    </div>
+                    <div class="panel-body">
+                    <ul class="list-group">
+                        <?php $goods=$starGoodsProvider->models;?>
+                        <?php if($goods):?>
+                            <?php foreach ($goods as $goodsOne):?>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-9"><a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>"><?= html::encode($goodsOne->title)?></a></div>
+                                    <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a></span></div>
+                                </div>
+                            </li>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                    </ul>
+                    </div>
+                    <div class="panel-footer">
+                            <span>
+                        <?php echo LinkPager::widget([
+                            'pagination' => $starGoodsProvider->getPagination(),
+                            ]);
+                        ?>
+                        </span>
+                    </div>
+                </div>
+                <!-- 用户收藏的商品结束 -->
+        </div>
+        <div class="tab-pane" id="tab-safari">
+            <!-- 用户收藏的帖子开始 -->
+            <?php $starPostsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_POST);?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">收藏的帖子<span class="badge pull-right"><?= html::encode($starPostsProvider->totalCount)?></span></h3>
+                </div>
+                <div class="panel-body">
+                <ul class="list-group">
+                    <?php $posts=$starPostsProvider->models;?>
+                    <?php if($posts):?>
+                        <?php foreach ($posts as $post):?>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-9"><a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a></div>
+                                <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span></div>
+                            </div>
+                        </li>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+                </div>
+                <div class="panel-footer">
+                    <span>
+                    <?php echo LinkPager::widget([
+                        'pagination' => $starPostsProvider->getPagination(),
+                        ]);
+                    ?>
+                    </span>
+                </div>
+            </div>
+            <!-- 用户收藏的帖子结束 -->
+        </div>
+        <div class="tab-pane" id="tab-opera">
+            <!-- 用户发表的所有评论开始 -->
 <?php $dataProvider=$model->getComments();?>
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -127,14 +238,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php $comments=$dataProvider->models;?>
         <?php //var_dump($comments);?>
         <?php if($comments):?>
-        	<?php foreach ($comments as $comment):?>
+            <?php foreach ($comments as $comment):?>
                 <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>" class="list-group-item">
                 <div class="row">
                     <div class="col-md-9"><?= html::encode($comment->content)?></div>
                     <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($comment->created_date))?></span></div>
                 </div>
                 </a>
-        	<?php endforeach;?>
+            <?php endforeach;?>
         <?php endif;?>
         </ul>
       
@@ -147,135 +258,41 @@ $this->params['breadcrumbs'][] = $this->title;
     
 </div>
 <!-- 用户发表的所有评论结束 -->
-	
-<!-- 用户发表的所有贴子开始 -->
-<?php $postsProvider=$model->getPosts();?>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">发表的文章及活动<span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
-    </div>
-    <div class="panel-body">
-    <ul class="list-group">
-        <?php $posts=$postsProvider->models;?>
-        <?php //var_dump($comments);?>
-        <?php if($posts):?>
-            <?php foreach ($posts as $post):?>
-                <a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
-                <div class="row">
-                    <div class="col-md-9"><?= html::encode($post->post_title)?></div>
-                    <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($post->created_date))?></span></div>
+        </div>
+        <div class="tab-pane" id="tab-ie">
+            <!-- 用户发表的所有贴子开始 -->
+            <?php $postsProvider=$model->getPosts();?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">发表的文章及活动<span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
                 </div>
-                </a>
-            <?php endforeach;?>
-        <?php endif;?>
-    </ul>
-    </div>
-    <div class="panel-footer">
-    	<span>
-    	<?php echo LinkPager::widget([
-            'pagination' => $postsProvider->getPagination(),
-            ]);
-        ?>
-    	</span>
-    </div>
-</div>
-<!-- 用户发表的所有帖子结束 -->
-
-
-<!-- 用户收藏的品牌开始 -->
-<?php $starBrandProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_BRAND);?>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">收藏的品牌<span class="badge pull-right"><?= html::encode($starBrandProvider->totalCount)?></span></h3>
-    </div>
-    <div class="panel-body">
-    <ul class="list-group">
-    	
-    	<?php $brands=$starBrandProvider->models?>
-        <?php if($brands):?>
-            <?php foreach ($brands as $brand):?>
-            <li class="list-group-item">
-                <a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"><?= html::encode($brand->en_name)?></a>
-                <span class="pull-right"><a href="<?= Url::to(['brand/remove-star','id'=>$brand->id])?>">取消收藏</a></span>
-            </li>
-            <?php endforeach;?>
-        <?php endif;?>
-    </ul>
-    </div>
-    <div class="panel-footer">
-    	<span>
-    	<?php echo LinkPager::widget([
-            'pagination' => $starBrandProvider->getPagination(),
-            ]);
-        ?>
-    	</span>
-    </div>
-</div>
-<!-- 用户收藏的品牌结束 -->
-
-<!-- 用户收藏的帖子开始 -->
-<?php $starPostsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_POST);?>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">收藏的帖子<span class="badge pull-right"><?= html::encode($starPostsProvider->totalCount)?></span></h3>
-    </div>
-    <div class="panel-body">
-    <ul class="list-group">
-    	<?php $posts=$starPostsProvider->models;?>
-        <?php if($posts):?>
-            <?php foreach ($posts as $post):?>
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-9"><a href="<?= Url::to(['posts/view','id'=>$post->id])?>"><?= html::encode($post->post_title)?></a></div>
-                    <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['posts/remove-star','id'=>$post->id])?>">取消收藏</a></span></div>
+                <div class="panel-body">
+                <ul class="list-group">
+                    <?php $posts=$postsProvider->models;?>
+                    <?php //var_dump($comments);?>
+                    <?php if($posts):?>
+                        <?php foreach ($posts as $post):?>
+                            <a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-9"><?= html::encode($post->post_title)?></div>
+                                <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($post->created_date))?></span></div>
+                            </div>
+                            </a>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
                 </div>
-            </li>
-            <?php endforeach;?>
-        <?php endif;?>
-    </ul>
-    </div>
-    <div class="panel-footer">
-        <span>
-    	<?php echo LinkPager::widget([
-            'pagination' => $starPostsProvider->getPagination(),
-            ]);
-        ?>
-    	</span>
-    </div>
-</div>
-<!-- 用户收藏的帖子结束 -->
-
-<!-- 用户收藏商品开始 -->
-<?php $starGoodsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_GOODS);?>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">收藏的商品<span class="badge pull-right"><?= html::encode($starGoodsProvider->totalCount)?></span></h3>
-    </div>
-    <div class="panel-body">
-    <ul class="list-group">
-    	<?php $goods=$starGoodsProvider->models;?>
-        <?php if($goods):?>
-            <?php foreach ($goods as $goodsOne):?>
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-9"><a href="<?= Url::to(['goods/view','id'=>$goodsOne->id])?>"><?= html::encode($goodsOne->title)?></a></div>
-                    <div class="col-md-3"><span class="pull-right"><a href="<?= Url::to(['goods/remove-star','id'=>$goodsOne->id])?>">取消收藏</a></span></div>
+                <div class="panel-footer">
+                    <span>
+                    <?php echo LinkPager::widget([
+                        'pagination' => $postsProvider->getPagination(),
+                        ]);
+                    ?>
+                    </span>
                 </div>
-            </li>
-            <?php endforeach;?>
-        <?php endif;?>
-    </ul>
+            </div>
+            <!-- 用户发表的所有帖子结束 -->
+        </div>
     </div>
-    <div class="panel-footer">
-        	<span>
-    	<?php echo LinkPager::widget([
-            'pagination' => $starGoodsProvider->getPagination(),
-            ]);
-        ?>
-    	</span>
-    </div>
-</div>
-<!-- 用户收藏的商品结束 -->
-
-
+<!-- 用户情况Tab页开始 -->
 </div>
