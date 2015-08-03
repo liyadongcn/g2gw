@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 use common\models\helper\TimeHelper;
@@ -115,10 +116,10 @@ $this->params['breadcrumbs'][] = $this->title;
 //     ]) 
      ?>
     
-
+<!-- 用户详情展示结束 -->
 
 <!-- 用户情况Tab页开始 -->
-
+ 
     <ul class="nav nav-tabs" role="tablist" id="feature-tab">
         <li class="active"><a href="#tab-chrome" role="tab" data-toggle="tab">收藏的品牌</a></li>
         <li><a href="#tab-firefox" role="tab" data-toggle="tab">收藏的精品</a></li>
@@ -127,41 +128,39 @@ $this->params['breadcrumbs'][] = $this->title;
         <li><a href="#tab-ie" role="tab" data-toggle="tab">发表的文章及活动</a></li>
     </ul>
 
-    <div class="tab-content">
+	<div class="tab-content">
         <div class="tab-pane active" id="tab-chrome">
             <!-- 用户收藏的品牌开始 -->
-            <?php $starBrandProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_BRAND);?>
+            <?php Pjax::begin();?>
+            <?php $starBrandProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_BRAND)?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">收藏的品牌<span class="badge pull-right"><?= html::encode($starBrandProvider->totalCount)?></span></h3>
                 </div>
                 <div class="panel-body">
                 <ul class="list-group">
-                    
-                    <?php $brands=$starBrandProvider->models?>
+                    <?php $brands=$starBrandProvider->models;?>
                     <?php if($brands):?>
                         <?php foreach ($brands as $brand):?>
                         <li class="list-group-item">
-                            <a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"><?= html::encode($brand->en_name)?></a>
-                            <span class="pull-right"><a href="<?= Url::to(['brand/remove-star','id'=>$brand->id])?>">取消收藏</a></span>
+                            <a href=<?= Url::to(['brand/view','id'=>$brand->id])?>><?= html::encode($brand->en_name)?></a>
+                            <span class="pull-right"><a href=<?= Url::to(['brand/remove-star','id'=>$brand->id])?>>取消收藏</a></span>
                         </li>
                         <?php endforeach;?>
                     <?php endif;?>
                 </ul>
-                </div>
-                <div class="panel-footer">
-                    <span>
-                    <?php echo LinkPager::widget([
+                	<?php echo LinkPager::widget([
                         'pagination' => $starBrandProvider->getPagination(),
                         ]);
                     ?>
-                    </span>
                 </div>
             </div>
+            <?php Pjax::end();?>
             <!-- 用户收藏的品牌结束 -->
         </div>
         <div class="tab-pane" id="tab-firefox">
                 <!-- 用户收藏商品开始 -->
+                <?php Pjax::begin();?>
                 <?php $starGoodsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_GOODS);?>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -181,20 +180,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endforeach;?>
                         <?php endif;?>
                     </ul>
-                    </div>
-                    <div class="panel-footer">
-                            <span>
-                        <?php echo LinkPager::widget([
+                    <?php echo LinkPager::widget([
                             'pagination' => $starGoodsProvider->getPagination(),
                             ]);
                         ?>
-                        </span>
                     </div>
                 </div>
+                <?php Pjax::end();?>
                 <!-- 用户收藏的商品结束 -->
         </div>
         <div class="tab-pane" id="tab-safari">
             <!-- 用户收藏的帖子开始 -->
+            <?php Pjax::begin();?>
             <?php $starPostsProvider=$model->getRelationshipModels(Relationships::RELATIONSHIP_STAR, RelationshipsMap::MODEL_TYPE_POST);?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -214,53 +211,50 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endforeach;?>
                     <?php endif;?>
                 </ul>
-                </div>
-                <div class="panel-footer">
-                    <span>
-                    <?php echo LinkPager::widget([
+                <?php echo LinkPager::widget([
                         'pagination' => $starPostsProvider->getPagination(),
                         ]);
                     ?>
-                    </span>
                 </div>
             </div>
+            <?php Pjax::end();?>
             <!-- 用户收藏的帖子结束 -->
         </div>
         <div class="tab-pane" id="tab-opera">
             <!-- 用户发表的所有评论开始 -->
-<?php $dataProvider=$model->getComments();?>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">发表的评论<span class="badge pull-right"><?= html::encode($dataProvider->totalCount)?></span></h3>
-    </div>
-    <div class="panel-body">
-        <ul class="list-group">
-        <?php $comments=$dataProvider->models;?>
-        <?php //var_dump($comments);?>
-        <?php if($comments):?>
-            <?php foreach ($comments as $comment):?>
-                <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>" class="list-group-item">
-                <div class="row">
-                    <div class="col-md-9"><?= html::encode($comment->content)?></div>
-                    <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($comment->created_date))?></span></div>
-                </div>
-                </a>
-            <?php endforeach;?>
-        <?php endif;?>
-        </ul>
-      
-        <?php echo LinkPager::widget([
-            'pagination' => $dataProvider->getPagination(),
-            ]);
-        ?>
-       
-    </div>
-    
-</div>
-<!-- 用户发表的所有评论结束 -->
+           <?php Pjax::begin();?>
+			<?php $dataProvider=$model->getComments();?>
+			<div class="panel panel-primary">
+			    <div class="panel-heading">
+			        <h3 class="panel-title">发表的评论<span class="badge pull-right"><?= html::encode($dataProvider->totalCount)?></span></h3>
+			    </div>
+			    <div class="panel-body">
+			        <ul class="list-group">
+			        <?php $comments=$dataProvider->models;?>
+			        <?php //var_dump($comments);?>
+			        <?php if($comments):?>
+			            <?php foreach ($comments as $comment):?>
+			                <a href="<?= Url::to([$comment->model_type.'/view','id'=>$comment->model_id])?>" class="list-group-item">
+			                <div class="row">
+			                    <div class="col-md-9"><?= html::encode($comment->content)?></div>
+			                    <div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode(TimeHelper::getRelativeTime($comment->created_date))?></span></div>
+			                </div>
+			                </a>
+			            <?php endforeach;?>
+			        <?php endif;?>
+			        </ul>
+			        <?php echo LinkPager::widget([
+			            'pagination' => $dataProvider->getPagination(),
+			            ]);
+			        ?>
+			    </div>
+			</div>
+			   <?php Pjax::end();?>
+			<!-- 用户发表的所有评论结束 -->
         </div>
         <div class="tab-pane" id="tab-ie">
             <!-- 用户发表的所有贴子开始 -->
+            <?php Pjax::begin();?>
             <?php $postsProvider=$model->getPosts();?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -281,18 +275,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endforeach;?>
                     <?php endif;?>
                 </ul>
-                </div>
-                <div class="panel-footer">
-                    <span>
-                    <?php echo LinkPager::widget([
+                <?php echo LinkPager::widget([
                         'pagination' => $postsProvider->getPagination(),
                         ]);
                     ?>
-                    </span>
                 </div>
+                    
             </div>
+            <?php Pjax::end();?>
             <!-- 用户发表的所有帖子结束 -->
         </div>
     </div>
-<!-- 用户情况Tab页开始 -->
+ 
+<!-- 用户情况Tab页结束-->
 </div>

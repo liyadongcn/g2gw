@@ -218,7 +218,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $searchModel=new PostsSearch();
         $dataProvider = $searchModel->search(['PostsSearch'=>['userid'=>$this->id]]);
-        $dataProvider->pagination->pageSize=10;
+        $dataProvider->pagination->pageSize=6;
         
         return $dataProvider;
     }

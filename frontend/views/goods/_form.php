@@ -201,7 +201,38 @@ use kartik\widgets\FileInput;
     </div>
 
     <?php ActiveForm::end(); ?>
-    
-
 
 </div>
+
+<?php $script = <<< JS
+	//推荐商品时自动按照品牌填写标题
+    $("#goods-brand_id").change(function(){
+        var brandName=$("#goods-brand_id").find("option:selected").text();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#goods-brand_id").val()!="")
+        {
+            var title= $("#goods-title").val();
+            $("#goods-title").val(brandName+title);            
+        }        
+    });
+    $("#goods-title").click(function(){
+        var brandName=$("#goods-brand_id").find("option:selected").text();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#goods-brand_id").val()!="" && $("#goods-title").val()=="")
+        {
+            $("#goods-title").val(brandName);            
+        }        
+    });
+
+     //给推荐商品按照标题自动增加内容
+    $("#goods-description").click(function(){
+        var title=$("#goods-title").val();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#goods-description").val()=="")
+        {
+            $("#goods-description").val(title);
+        }        
+    });
+JS;
+	$this->registerJs($script);
+?>

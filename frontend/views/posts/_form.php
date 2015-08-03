@@ -19,6 +19,18 @@ use kartik\widgets\Select2;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
+    <?php 
+   // Usage with ActiveForm and model
+    echo $form->field($model, 'brand_id')->widget(Select2::classname(), [
+      'data' => $model->getDropDownListData(MODEL_TYPE_BRAND),
+      'options' => ['placeholder' => '请选择品牌 ...'],
+      'pluginOptions' => [
+          'allowClear' => true
+      ],
+   ]); 
+   
+   ?> 
+
     <?= $form->field($model, 'post_title')->textInput(['maxlength' => 100]) ?>
 
     <?= $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
@@ -32,17 +44,7 @@ use kartik\widgets\Select2;
 //    			 ]) 
     ?>
     
-       <?php 
-   // Usage with ActiveForm and model
-    echo $form->field($model, 'brand_id')->widget(Select2::classname(), [
-   		'data' => $model->getDropDownListData(MODEL_TYPE_BRAND),
-   		'options' => ['placeholder' => '请选择商品品牌 ...'],
-   		'pluginOptions' => [
-   				'allowClear' => true
-   		],
-   ]); 
-   
-   ?> 
+  
    			 
  <!-- 文章分类开始 -->
 	 <div class="panel panel-default">
@@ -203,3 +205,35 @@ use kartik\widgets\Select2;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php $script = <<< JS
+	//给发表的活动标题自动增加品牌名称
+    $("#posts-brand_id").change(function(){
+    	var brandName=$("#posts-brand_id").find("option:selected").text();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#posts-brand_id").val()!="")
+        {
+            var title= $("#posts-post_title").val();
+            $("#posts-post_title").val(brandName+title);            
+        }        
+    });
+    $("#posts-post_title").click(function(){
+        var brandName=$("#posts-brand_id").find("option:selected").text();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#posts-brand_id").val()!="" && $("#posts-post_title").val()=="")
+        {
+            $("#posts-post_title").val(brandName);            
+        }        
+    });
+    //给发表的活动按照标题自动增加内容
+    $("#posts-post_content").click(function(){
+        var title=$("#posts-post_title").val();
+        //alert($("#posts-brand_id").find("option:selected").text());
+        if($("#posts-post_content").val()=="")
+        {
+            $("#posts-post_content").val(title);
+        }        
+    });
+JS;
+   $this->registerJs($script);
+?>
