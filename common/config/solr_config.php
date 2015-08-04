@@ -13,6 +13,7 @@ define('SOLR_SECURE', false);
 
 /* Domain name of the Solr server */
 define('SOLR_SERVER_HOSTNAME', 'liyadongcn.xicp.net');
+//define('SOLR_SERVER_HOSTNAME', 'localhost');
 
 /* HTTP Port to connection */
 define('SOLR_SERVER_PORT', ((SOLR_SECURE) ? 8443 : 8983));
@@ -20,6 +21,7 @@ define('SOLR_SERVER_PORT', ((SOLR_SECURE) ? 8443 : 8983));
 /* HTTP Path to connection */
 //define('SOLR_SERVER_PATH', '/solr/gettingstarted');
 define('SOLR_SERVER_PATH', '/solr/collection1');
+//define('SOLR_SERVER_PATH', '/solr/techproducts');
 
 /* HTTP Basic Authentication Username */
 define('SOLR_SERVER_USERNAME', '');

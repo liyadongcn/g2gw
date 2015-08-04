@@ -27,16 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-md-6 col-sm-12">
         <!-- 搜索结果总数开始 -->
+        <small>
         <span class="glyphicon glyphicon-search">
-        <?= html::encode('找到'.$dataProvider->totalCount).'条'?>
+        <?= html::encode('共为您找到'.$dataProvider->totalCount).'条官网商品信息'?>
         </span>
+        </small>
         <!-- 搜索结果总数结束 -->
     </div>
     <div class="col-md-6 col-sm-12">
         <!-- 排序开始 -->
         <div class="pull-right">
         <?php $sort=$dataProvider->sort;?>
-        <?php echo $sort->link('id').' | ' .$sort->link('title');?>
+        <?php //echo $sort->link('id').' | ' .$sort->link('title');?>
         </div>
         <!-- 排序结束     -->
     </div>
@@ -56,10 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <li class="list-group-item">
     					<p>
                         <a href="<?php echo Html::encode($model->url)?>">
-                        	<?php if($model->offsetExists('title')):?>
+                        	<?php if($model->offsetExists('title')):?>                        	
                             	<h5 ><?php echo html::encode($model->title)?></h5>
-                            	<h5 ><?php //echo html::encode('----'.$model['highlighting'][$model->id]['title'])?></h5>
-                            	
+                            	<small><?php echo Html::encode($model->id)?></small>
                             <?php else:?>
                             	<h5 ><?php echo html::encode('无标题')?></h5>
                             <?php endif;?>

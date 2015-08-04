@@ -26,13 +26,13 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => '用户名已经被使用,请重新填写'],
             ['username', 'string', 'min' => 2, 'max' => 30],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => '邮箱已经使用,请更换邮箱'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -49,6 +49,19 @@ class SignupForm extends Model
             ['cellphone','match','pattern'=>'/\d{11}/'],
 
             [['file'], 'file'],
+        ];
+    }
+
+     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => '用户名',
+            'email' => '邮箱',
+            'password' => '重复密码',
+            'password_repeat' => '密码',
         ];
     }
 

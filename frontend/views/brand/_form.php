@@ -22,13 +22,13 @@ use common\models\Category;
 
     <?= $form->field($model, 'en_name')->textInput(['maxlength' => 30]) ?>
 
+     <?= $form->field($model, 'cn_name')->textInput(['maxlength' => 30]) ?>
+
     <?php //echo $form->field($model, 'country_code')->textInput(['maxlength' => 3]) ?>
     
-    <?= $form->field($model, 'country_code')->dropDownList(
-    												$model->getDropDownListData(MODEL_TYPE_COUNTRY),
-    		                                        ['prompt' => '选择国家......']
-    		
-    		); ?>
+   <?= $form->field($model, 'introduction')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'baidubaike')->textInput(['maxlength' => 255]) ?>
 
     <?php //echo $form->field($model, 'logo')->textInput(['maxlength' => 255]) ?>
     <?php //echo $form->field($model, 'file')->fileInput() ?>
@@ -99,11 +99,13 @@ use common\models\Category;
 	</div>
 <!-- 图片显示与上传结束     -->
 
-    <?= $form->field($model, 'cn_name')->textInput(['maxlength' => 30]) ?>
+    <?= $form->field($model, 'country_code')->dropDownList(
+                            $model->getDropDownListData(MODEL_TYPE_COUNTRY),
+                                                ['prompt' => '选择国家......']
+        
+        ); ?>
 
-    <?= $form->field($model, 'introduction')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'baidubaike')->textInput(['maxlength' => 255]) ?>
+    
 
     <?php //echo  $form->field($model, 'thumbsup')->textInput() ?>
 
@@ -227,7 +229,7 @@ use common\models\Category;
 <!--  电商网站结束 -->
 	
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '提交' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -31,6 +31,18 @@ class LoginForm extends Model
         ];
     }
 
+      /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => '用户名',
+            'password' => '密码',
+            'rememberMe' => '记住我（一个月内自动登录）',
+        ];
+    }
+
     /**
      * Validates the password.
      * This method serves as the inline validation for password.

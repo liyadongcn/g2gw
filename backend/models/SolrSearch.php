@@ -19,6 +19,8 @@ class SolrSearch extends Model
 	 */
 	public $keyWords;
 	
+	private $_isOnline=false;
+	
 	/**
 	 * @return array | Fields of solr response.
 	 */
@@ -29,7 +31,10 @@ class SolrSearch extends Model
 				'tstamp'=>'时间',
 				'title'=>'标题',
 				'url'=>'url',
-				//'content'=>'content',
+				'boost'=>'相关性',
+// 				//'content'=>'content',
+// 				'id'=>'唯一标识',
+// 				'name' => '名称',
 		];
 	}
 	
@@ -41,7 +46,7 @@ class SolrSearch extends Model
 	{
 		return [
 				[['keyWords'], 'safe'],
-				[['keyWords'],'default','value'=>'*'],
+				[['keyWords'],'default','value'=>''],
 		];
 	}
 
@@ -77,6 +82,20 @@ class SolrSearch extends Model
 		
 		$client = new SolrClient($options);
 		
+		if(!$this->_isOnline)
+		{
+			try {
+				$pingresponse = $client->ping();
+				if($pingresponse)
+				{
+					$this->_isOnline=true;
+				}
+			} catch (Exception $e) {
+				throw new NotAcceptableHttpException($e->getMessage());
+			}
+			
+		}
+		
 		$query = new SolrQuery();
 		
 		if($this->keyWords)
@@ -85,7 +104,7 @@ class SolrSearch extends Model
 		}
 		else
 		{
-			$query->setQuery('*:*');
+			$query->setQuery('title:*');
 		}
 		
 		$responseFields=self::getSolrResponseFields();
@@ -118,13 +137,14 @@ class SolrSearch extends Model
 				'pagination' => [
 						'pagesize' => '15',
 				],
-				'sort' => [
-						'defaultOrder' => [
-								'title' => SolrQuery::ORDER_ASC,
-								'id' => SolrQuery::ORDER_ASC,
-								//'tstamp' => SolrQuery::ORDER_DESC,
-						]
-				],
+// 				'sort' => [
+// 						'defaultOrder' => [
+// 								//'boost' =>  SolrQuery::ORDER_DESC,
+// 								'title' => SolrQuery::ORDER_ASC,
+// 								'id' => SolrQuery::ORDER_ASC,
+// 								//'tstamp' => SolrQuery::ORDER_DESC,
+// 						]
+// 				],
 		]);
 		
 		$this->load($params);
@@ -134,6 +154,8 @@ class SolrSearch extends Model
 			// $query->where('0=1');
 			return $dataProvider;
 		}
+		
+		
 		
 		// 		$dataProvider->solr=$client;
 		

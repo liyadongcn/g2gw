@@ -26,7 +26,7 @@ class SolrController extends Controller
 								[
 										'actions' => ['index'],
 										'allow' => true,
-										'roles' => ['?'],
+										'roles' => ['?','@'],
 								],
 						],
 				],
@@ -48,19 +48,28 @@ class SolrController extends Controller
 		//This will tell the main layout the current search model type and reset the selection input for searching.
 		//$session=yii::$app->session->set('SEARCH_MODEL_TYPE',MODEL_TYPE_SOLR);
 		
-		return $this->render('error', [
+		/* return $this->render('error', [
 				'name' => '提示',
 				'message' => '搜索服务器正在建设中.....',
-		]);
+		]); */
 		
-	/* 	$searchModel = new SolrSearch();
+	 	$searchModel = new SolrSearch();
+	 	//This will tell the main layout the current search model type and reset the selection input for searching.
+	 	$session=yii::$app->session->set('SEARCH_MODEL_TYPE',MODEL_TYPE_SOLR);
 		
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		if(empty($searchModel->keyWords))
+		{
+			//echo $searchModel->keyWords.'dddddddddd';
+			//\Yii::$app->getSession()->setFlash('info', 'This is the message');
+			return $this->render('error',['name'=>'提示','message'=>'搜索官网商品必须需要填写关键字']);
+		}
 
 		return $this->render('index', [
 				'searchModel' => $searchModel,
 				'dataProvider' => $dataProvider,
-		]); */
+		]); 
 	}
 
 }

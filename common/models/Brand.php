@@ -64,10 +64,13 @@ class Brand extends base\ActiveRecord
             [['thumbsup', 'thumbsdown', 'company_id', 'comment_count', 'view_count','star_count'], 'integer'],
         	[['thumbsup', 'thumbsdown', 'comment_count', 'view_count','star_count'], 'default','value'=>0],
             [['en_name', 'cn_name'], 'string', 'max' => 30],
+            ['en_name', 'unique'],
+            ['cn_name', 'unique'],
             [['country_code'], 'string', 'max' => 3],
             [['logo', 'baidubaike'], 'string', 'max' => 255],
+            ['baidubaike','url'],
         	//[['tag_string'], 'string'],
-        	[['file'], 'file']
+        	[['file'], 'file'],
         ]);
     }
 
@@ -78,12 +81,12 @@ class Brand extends base\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'en_name' => 'En Name',
-            'country_code' => 'Country Code',
+            'en_name' => '英文名称',
+            'country_code' => '所属国家',
             'logo' => 'Logo',
-            'cn_name' => 'Cn Name',
-            'introduction' => 'Introduction',
-            'baidubaike' => 'Baidubaike',
+            'cn_name' => '中文名称',
+            'introduction' => '品牌介绍',
+            'baidubaike' => '百度百科Baidubaike URL地址',
             'thumbsup' => '点赞',
             'thumbsdown' => 'Thumbsdown',
             'company_id' => 'Company ID',

@@ -103,6 +103,22 @@ class EcommerceController extends Controller
         //return $this->redirect(['index']);
         return $this->redirect(yii::$app->request->referrer);
     }
+    
+    public function actionExportUrls()
+    {
+    	$filename='export\\urls'.date('YmdHis',time()).'.txt';
+    	if(Ecommerce::exportURLS($filename)) 
+    	{
+    		\Yii::$app->getSession()->setFlash('success', '成功输出Urls到文件'.$filename);
+    	}
+    	else {
+    		\Yii::$app->getSession()->setFlash('error', '输出Urls失败！');
+    	}
+    	
+    	
+    	return $this->redirect(['index']);
+    	//return $this->redirect(yii::$app->request->referrer);
+    }
 
     /**
      * Finds the Ecommerce model based on its primary key value.

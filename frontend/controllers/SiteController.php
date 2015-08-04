@@ -85,6 +85,11 @@ class SiteController extends Controller
     	$searchModel = new Search();
     	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     	
+    	if($searchModel->model_type===MODEL_TYPE_SOLR && empty($searchModel->keyWords))
+    	{
+    		return $this->render('error',['name'=>'提示','message'=>'搜索官网商品必须需要填写关键字']);
+    	}
+    	
     	return $this->render('index', [
     			'searchModel' => $searchModel,
     			'dataProvider' => $dataProvider,
