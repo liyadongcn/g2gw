@@ -25,7 +25,8 @@
         "kartik-v/yii2-popover-x": "*",
         "yiisoft/yii2-imagine": "^2.0",
         "philippfrenzel/yii2masonry": "*",
-        "callmez/yii2-wechat": "^0.2.0"         
+        "callmez/yii2-wechat": "^0.2.0",
+        "yiisoft/yii2-authclient": "^2.0"         
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

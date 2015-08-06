@@ -24,6 +24,8 @@ AppAsset::register($this);
 <head>
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="qc:admins" content="14670676276314343636772777627645647752" />
+
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -55,7 +57,8 @@ AppAsset::register($this);
                 ];
                 $menuItems[] = ['label' => '登录', 'url' => ['/site/login'],'linkOptions' => ['class' => 'active']];
             } else {
-				//$menuItems[] = ['label' => 'Solr Testing', 'url' => ['/site/comment']];
+				//$menuItems[] = ['label' => 'Solr Testing', 'url' => ['/site/solr']];
+				//$menuItems[] = ['label' => 'Masonry Testing', 'url' => ['/site/masonry']];
 //                 $menuItems[] = [
 //                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
 //                     'url' => ['/site/logout'],

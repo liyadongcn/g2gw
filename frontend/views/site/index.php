@@ -9,7 +9,7 @@ use yii\helpers\Html;
 /* @var $searchModel  */
 /* @var $dataProvider  */
 
-$this->title = 'My Yii Application';
+$this->title = yii::$app->name;
 ?>
 
 <div class="search">

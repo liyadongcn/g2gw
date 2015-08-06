@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\CommentForm */
@@ -25,3 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php \yii2masonry\yii2masonry::begin([
+    'clientOptions' => [
+        'columnWidth' => 50,
+        'itemSelector' => '.comment'
+    ]
+]); ?>
+
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+        <div class="comment"><h3>Test</h3><p>Und mehr Text</p></div>
+
+<?php \yii2masonry\yii2masonry::end(); ?>
+<?php $this->registerCss(".comment { width: 25%; }  .comment.w2 { width: 50%; }");?>
+

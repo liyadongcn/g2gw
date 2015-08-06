@@ -32,6 +32,24 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+    	'authClientCollection' => [
+    		'class' => 'yii\authclient\Collection',
+    		'clients' => [
+    				'qq' => [
+    						'class'=>'common\components\QqOAuth',
+    						'clientId'=>'101241136',
+    						'clientSecret'=>'60b542692faa77ab0e1891f5b6ed1047'
+    				],
+    				'github' => [
+    						'class' => 'yii\authclient\clients\GitHub',
+    						'clientId' => 'b3e84718412ea6ad69c8',
+    						'clientSecret' => '2bca99bcb8e21b4614b6259c3de79a9d042a745e',
+    				],
+    				'google' => [
+    						'class' => 'yii\authclient\clients\GoogleOpenId'
+    				],
+    		],
+    	],
     ],
     'params' => $params,
 ];
