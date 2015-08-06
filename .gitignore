@@ -42,3 +42,4 @@ phpunit.phar
 /init.bat
 /LICENSE.md
 /README-Yii2.md
+/backend/web/export
