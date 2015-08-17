@@ -86,7 +86,7 @@ class Search extends Model
     			return null;
     	}
     	$searchModel->keyWords=$this->keyWords;
-    	//var_dump($params);
+    	//var_dump($this->keyWords);
     	//die();
     	return $dataProvider = $searchModel->search($params);
 

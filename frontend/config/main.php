@@ -36,9 +36,24 @@ return [
     		'class' => 'yii\authclient\Collection',
     		'clients' => [
     				'qq' => [
-    						'class'=>'common\components\QqOAuth',
+    						'class' => 'xj\oauth\QqAuth',
     						'clientId'=>'101241136',
-    						'clientSecret'=>'60b542692faa77ab0e1891f5b6ed1047'
+    						'clientSecret'=>'60b542692faa77ab0e1891f5b6ed1047',
+    				],
+    				'sina' => [
+    						'class' => 'xj\oauth\WeiboAuth',
+    						'clientId' => '126537379',
+    						'clientSecret' => '75baab3dafcc172737b4ce55d8ea0e20',
+    				],
+    				'weixin' => [
+    						'class' => 'xj\oauth\WeixinAuth',
+    						'clientId' => '111',
+    						'clientSecret' => '111',
+    				],
+    				'renren' => [
+    						'class' => 'xj\oauth\RenrenAuth',
+    						'clientId' => '111',
+    						'clientSecret' => '111',
     				],
     				'github' => [
     						'class' => 'yii\authclient\clients\GitHub',

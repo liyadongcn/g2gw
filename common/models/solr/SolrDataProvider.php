@@ -11,8 +11,8 @@ use common\models\solr\SolrQuery;
 class SolrDataProvider extends BaseDataProvider
 {
 	/**
-	 * @var QueryInterface the query that is used to fetch data models and [[totalCount]]
-	 * if it is not explicitly set.
+	 * @var SolrQuery instance;
+	 * 
 	 */
 	public $query;
 	/**
@@ -28,13 +28,15 @@ class SolrDataProvider extends BaseDataProvider
 	 */
 	public $key;
 	/**
-	 * @var Connection|array|string the DB connection object or the application component ID of the DB connection.
-	 * If not set, the default DB connection will be used.
-	 * Starting from version 2.0.2, this can also be a configuration array for creating the object.
+	 * @var  SolrClient instance;
+	 * 
 	 */
-	//public $db;
 	public $solr;
-	
+	/**
+	 * @var SolrQueryResponse;
+	 *
+	 */
+	private $_response;
 	
 	/**
 	 * Initializes the DB connection component.
@@ -90,8 +92,9 @@ class SolrDataProvider extends BaseDataProvider
 		 //var_dump($this->query);
 		 
 		 ///die();
+		 $this->_response= $this->solr->query($this->query)->getResponse();
 		
-		 return $this->solr->query($this->query)->getResponse()->response->docs; 
+		 return $this->_response->response->docs; 
 	}
 	
 	/**
@@ -224,6 +227,29 @@ class SolrDataProvider extends BaseDataProvider
 					}
 					
 				}
-
+	}
+	
+	/**
+	 * This functiong get the hightlighting field through the id and name;
+	 * 
+	 * @param $id string  id of the response doc.
+	 * @param $field string the hightlinghting field name.
+	 * 
+	 * @return true | false | string of the heighlighting.
+	 * 
+	 * @author LIYADONG
+	 *
+	 */
+	
+	public function getHighlighting($id,$field)
+	{
+		if(!$this->_response || !$this->query->getHighlight()) return false;
+		if(in_array($field, $this->query->getHighlightFields()))
+		{
+			//var_dump($this->_response);
+			//die;
+			return isset($this->_response->highlighting[$id][$field][0])? $this->_response->highlighting[$id][$field][0]:false;
+		}
+		return flase;
 	}
 }

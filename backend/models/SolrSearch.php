@@ -82,21 +82,30 @@ class SolrSearch extends Model
 		
 		$client = new SolrClient($options);
 		
-		if(!$this->_isOnline)
-		{
-			try {
-				$pingresponse = $client->ping();
-				if($pingresponse)
-				{
-					$this->_isOnline=true;
-				}
-			} catch (Exception $e) {
-				throw new NotAcceptableHttpException($e->getMessage());
-			}
+// 		if(!$this->_isOnline)
+// 		{
+// 			try {
+// 				$pingresponse = $client->ping();
+// 				if($pingresponse)
+// 				{
+// 					$this->_isOnline=true;
+// 				}
+// 			} catch (Exception $e) {
+// 				throw new NotAcceptableHttpException($e->getMessage());
+// 			}
 			
-		}
+// 		}
 		
 		$query = new SolrQuery();
+		
+		$this->load($params);
+			
+		if (!$this->validate()) {
+			// uncomment the following line if you do not want to any records when validation fails
+			// $query->where('0=1');
+			return $dataProvider;
+		}
+			
 		
 		if($this->keyWords)
 		{
@@ -111,9 +120,13 @@ class SolrSearch extends Model
 		
 		$query->addFields($responseFields);
 		
-// 		$query->setHighlight(0);
+ 		$query->setHighlight(1);
 		
-// 		$query->addHighlightField('title');
+ 		$query->addHighlightField('title');
+ 		
+ 		$query->setHighlightSimplePre('<mark class="text-danger">');
+ 		
+ 		$query->setHighlightSimplePost('</mark>');
 		
 // 		$query->addField('id');
 		
@@ -131,6 +144,8 @@ class SolrSearch extends Model
 		
 		// 		$query->setRows(10);
 		
+ 		
+		
 		$dataProvider=new SolrDataProvider([
 				'solr' => $client,
 				'query' => $query,
@@ -147,13 +162,6 @@ class SolrSearch extends Model
 // 				],
 		]);
 		
-		$this->load($params);
-		
-		if (!$this->validate()) {
-			// uncomment the following line if you do not want to any records when validation fails
-			// $query->where('0=1');
-			return $dataProvider;
-		}
 		
 		
 		

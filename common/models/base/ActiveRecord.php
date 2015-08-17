@@ -13,6 +13,7 @@ use common\models\Country;
 use backend\models\PostsSearch;
 use yii\helpers\StringHelper;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 use yii\db\Expression;
 use yii;
 use common\models\User;
@@ -39,6 +40,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
 				'createdAtAttribute' => 'created_date',
 				'updatedAtAttribute' => 'updated_date',
 				'value' => new Expression('NOW()'),
+				],
+				[
+				'class' => BlameableBehavior::className(),
+				'createdByAttribute' => 'userid',
+				'updatedByAttribute' => 'userid',
 				],
 		];
 	}
@@ -360,11 +366,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 */
 	public function saveToAlbum($file,$is_defaut=0)
 	{
-		$file->saveAs('uploads\\'.$this->modelType() .'\\'. $file->baseName . '.' . $file->extension);
+		$fileName='uploads\\'.$this->modelType() .'\\'. uniqid() . '.' . $file->extension;
+		$file->saveAs($fileName);
 		$album = new Album();
 		$album->model_id=$this->id;
 		$album->model_type=$this->modelType();
-		$album->filename='uploads\\'.$this->modelType() .'\\'. $file->baseName . '.' . $file->extension;
+		$album->filename=$fileName;
 		$album->is_default=$is_defaut;
 		$album->save();
 	}

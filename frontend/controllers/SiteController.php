@@ -92,7 +92,8 @@ class SiteController extends Controller
     	
     	if($searchModel->model_type===MODEL_TYPE_SOLR && empty($searchModel->keyWords))
     	{
-    		return $this->render('error',['name'=>'提示','message'=>'搜索官网商品必须需要填写关键字']);
+    		//return $this->render('error',['name'=>'提示','message'=>'搜索官网商品必须需要填写关键字']);
+    		return $this->render('@app/views/solr/search',['model'=>$searchModel]);
     	}
     	
     	return $this->render('index', [
@@ -215,6 +216,11 @@ class SiteController extends Controller
         ]);
     }
     
+    /**
+     * Testing Solr functions sample code。
+     * 
+     * @return \yii\base\string
+     */
     public function actionSolr()
     {
     	
@@ -341,6 +347,11 @@ class SiteController extends Controller
 		}
 		
 	
+	    /**
+	     * This is a login callback function through the third part system。
+	     * 
+	     * @param unknown $client
+	     */
 	    public function onAuthSuccess($client)
 	    {
 	        $attributes = $client->getUserAttributes();

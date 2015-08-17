@@ -106,8 +106,8 @@ class EcommerceController extends Controller
     
     public function actionExportUrls()
     {
-    	$filename='export\\urls'.date('YmdHis',time()).'.txt';
-    	if(Ecommerce::exportURLS($filename)) 
+    	$filename='export\\urls'.date('YmdHis',time());
+    	if(Ecommerce::exportURLS($filename.'.txt') && Ecommerce::exportURLS($filename.'-orignal.txt',true)) 
     	{
     		\Yii::$app->getSession()->setFlash('success', '成功输出Urls到文件'.$filename);
     	}

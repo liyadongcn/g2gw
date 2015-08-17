@@ -5,8 +5,10 @@ use yii\widgets\LinkPager;
 use yii\data\Sort;
 use common\models\Brand;
 use common\models\User;
+use common\models\Goods;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
+use common\models\Ecommerce;
 
 /* @var $this yii\web\View */
 $this->title = '官网商品';
@@ -58,11 +60,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <li class="list-group-item">
     					<p>
                         <a href="<?php echo Html::encode($model->url)?>">
-                        	<?php if($model->offsetExists('title')):?>                        	
-                            	<h5 ><?php echo html::encode($model->title)?></h5>
-                            	<small><?php echo Html::encode($model->id)?></small>
+                        	<?php if($model->offsetExists('title')):?>
+                        		<?php if($title=$dataProvider->getHighlighting($model->id,'title')):?>                        	
+                            	<h5><?php echo $title;?></h5>
+                            	<?php else:?>
+                            	<h5><?php echo html::encode($model->title)?></h5>
+                            	<?php endif;?>
+                            	<small><?php echo Html::encode('信息来源：'.Ecommerce::getDomain($model->id))?></small>
                             <?php else:?>
-                            	<h5 ><?php echo html::encode('无标题')?></h5>
+                            	<h5><?php echo html::encode('无标题')?></h5>
                             <?php endif;?>
                         </a>
                         </p>
@@ -114,6 +120,62 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-lg-3 ">
 
+<!-- 相关商品开始 -->
+
+    <!-- <ul class="list-group"> -->
+    <?php $relatedGoods=Goods::getGoodsByKeyWords($searchModel->keyWords,5)->all();?>
+    <?php if($relatedGoods):?>
+        <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">相关商品</h3>
+        </div>
+        <div class="panel-body">
+        <?php foreach ($relatedGoods as $goods):?>
+            <a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" >
+            <div class="thumbnail">
+                <?php if($image=$goods->albumDefaultImg):?>
+                    <img src="<?= html::encode($image->filename)?>" alt="...">
+                <?php endif;?>
+                <p class="small">
+                    <?= html::encode($goods->title)?>
+                </p>
+            </div>
+            </a>
+        <?php endforeach;?>
+        </div>
+        </div>
+    <?php endif;?>
+    <!-- </ul> -->
+
+<!-- 相关商品结束 -->
+
+<!-- 热门商品开始 -->
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">热门商品</h3>
+    </div>
+    <div class="panel-body">
+    <!-- <ul class="list-group"> -->
+    <?php $hotestGoods=Goods::getHotestGoods(5)->all();?>
+    <?php if($hotestGoods):?>
+        <?php foreach ($hotestGoods as $goods):?>
+            <a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" >
+            <div class="thumbnail">
+                <?php if($image=$goods->albumDefaultImg):?>
+                    <img src="<?= html::encode($image->filename)?>" alt="...">
+                <?php endif;?>
+                <p class="small">
+                    <?= html::encode($goods->title)?>
+                </p>
+            </div>
+            </a>
+        <?php endforeach;?>
+    <?php endif;?>
+    <!-- </ul> -->
+    </div>
+</div>
+<!-- 热门商品结束 -->
+
 <!-- 用户收藏品牌开始 -->
 	<?php if(!yii::$app->user->isGuest):?>
 	<?php $user=User::findIdentity(yii::$app->user->id);?>
@@ -149,48 +211,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php endif;?>
 	<?php endif;?>
 	<?php endif;?>
-<!-- 用户收藏平拍结束 -->
+<!-- 用户收藏品牌结束 -->
 	
-<!-- 热门品牌开始 -->
-<div class="panel panel-danger">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门品牌</h3>
-	</div>
-	<div class="panel-body">
-		<ul class="list-group">
-	<?php $hotestBrands=Brand::getHotestBrands(5)->all();?>
-	<?php //var_dump($relatedBrands); die();?>
-	<?php if($hotestBrands):?>
-		<?php foreach ($hotestBrands as $hotestdBrand):?>
-			<a href="<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?>"
-				class="list-group-item"><?= html::encode($hotestdBrand->en_name)?></a>
-		<?php endforeach;?>
-	<?php endif;?>
-	</ul>
-	</div>
-</div>
-<!-- 热门品牌结束 -->
-
-<!-- 最新品牌开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">最新品牌</h3>
-	</div>
-	<div class="panel-body">
-		<ul class="list-group">
-	<?php $brands=Brand::getLatestBrands(5)->all();?>
-	<?php //var_dump($relatedBrands); die();?>
-	<?php if($brands):?>
-		<?php foreach ($brands as $brand):?>
-			<a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"
-				class="list-group-item"><?= html::encode($brand->en_name)?></a>
-		<?php endforeach;?>
-	<?php endif;?>
-	</ul>
-	</div>
-</div>
-<!-- 最新品牌结束 -->
-
 	</div>
 <!-- 页面右半部分结束 -->
 

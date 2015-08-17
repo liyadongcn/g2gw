@@ -94,7 +94,7 @@ class Ecommerce extends \yii\db\ActiveRecord
     	return $this->hasOne(Brand::className(), ['id'=>'brand_id']);
     }
     
-    public static function exportURLS($filename)
+    public static function exportURLS($filename,$orignal=false)
     {    	
     	$ecommerces=Ecommerce::find()->all();
     	if($ecommerces)
@@ -103,9 +103,16 @@ class Ecommerce extends \yii\db\ActiveRecord
     		if(!$file) return false;
     		foreach ($ecommerces as $ecommerce)
     		{
-    			$url=parse_url($ecommerce->website);
-    			if($url) //fwrite($file, self::NUTCH_PATTERN.self::getDomain($url['host']).$url['path']."\r\n");
-    				fwrite($file, self::NUTCH_PATTERN.str_replace('www.','',$url['host']).$url['path']."\r\n");
+    			if($orignal){
+    				$url=parse_url($ecommerce->website);
+    				if($url) fwrite($file,"http://".$url['host'].$url['path']."\r\n");
+    			}
+    			else {
+    				$url=parse_url($ecommerce->website);
+    				if($url) //fwrite($file, self::NUTCH_PATTERN.self::getDomain($url['host']).$url['path']."\r\n");
+    					fwrite($file, self::NUTCH_PATTERN.str_replace('www.','',$url['host']).$url['path']."\r\n");
+    			}
+    			
     		}
     		fclose($file);
     	}

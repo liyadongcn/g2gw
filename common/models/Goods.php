@@ -128,7 +128,7 @@ class Goods extends base\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public function getRelatedGoods($n=10)
+    public function getRelatedGoods($n=10,$keyWords=null)
     {
     	$query=$this->find();
     	
@@ -144,7 +144,7 @@ class Goods extends base\ActiveRecord
 //     		{
 //     			$query->orFilterWhere(['like','title',$category->name]);
 //     		}
-//     	}
+//     	}	
     	
     	$query->andFilterWhere(['!=','id',$this->id])
     	      ->andFilterWhere(['=','brand_id',$this->brand_id])
@@ -152,6 +152,41 @@ class Goods extends base\ActiveRecord
     		  ->limit($n);
     	return $query;   
     	 
+    }
+    
+    /**
+     * This function is to get the related goods by the keyWords and conditions.
+     *
+     * @param $keyWords string 
+     * @param $conditions array of the conditions
+     * @param integer the number of the records needed. the default is 10.
+     * @return array|null the model objects
+     *
+     * @author Wintermelon
+     * @since  1.0
+     */
+    public static function getGoodsByKeyWords($keyWords=null,$n=10,$conditions=null)
+    {
+    	$query=self::find();
+    	
+    	if(!empty($conditions))
+    	{
+    		$query->andFilterWhere($conditions);
+    	}
+    
+    	if(!empty($keyWords))
+    	{
+    		$query->orFilterWhere(['like', 'code', $keyWords])
+    		->orFilterWhere(['like', 'description', $keyWords])
+    		->orFilterWhere(['like', 'url', $keyWords])
+    		->orFilterWhere(['like', 'title', $keyWords]);
+    	}
+    	 
+    	$query->orderBy(['updated_date' => SORT_DESC, 'view_count' => SORT_DESC])
+    	->limit($n);
+    	
+    	return $query;
+    
     }
     
     /**
