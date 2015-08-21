@@ -22,11 +22,14 @@ define('COMMENT_STATUS_APPROVED','approved');//批准
 define('COMMENT_STATUS_REFUSED','refused');//驳回
 define('COMMENT_STATUS_SPAM','spam');//垃圾评论
 define('COMMENT_STATUS_TRASH','trash');//移至回收站
+define('COMMENT_STATUS_REPORTED','reported');//被举报
 
 define('COMMENT_STATUS_CLOSE','open');//不允许评论
 define('COMMENT_STATUS_OPEN','close');//允许评论
 
-define('DEFAULT_IMAGE',1);
+define('DEFAULT_IMAGE',1);//缺省主图标志
+
+define('DEFAULT_USER_FACE','uploads\user\default_small.png');//缺省用户图片显示
 
 
 require('solr_config.php');

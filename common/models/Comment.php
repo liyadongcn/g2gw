@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 use yii\db\Expression;
 use common\models\User;
 use yii\helpers\StringHelper;
@@ -58,6 +59,11 @@ class Comment extends \yii\db\ActiveRecord
     				'createdAtAttribute' => 'created_date',
     				'updatedAtAttribute' => 'updated_date',
     				'value' => new Expression('NOW()'),
+    			],
+    			[
+    			'class' => BlameableBehavior::className(),
+    			'createdByAttribute' => 'userid',
+    			'updatedByAttribute' => false,
     			],
     	];
     }
@@ -159,19 +165,26 @@ class Comment extends \yii\db\ActiveRecord
     		$this->model_id=$model->id;
     		if(yii::$app->user->isGuest)
     		{
-    			$this->userid=0;
+    			//$this->userid=0;
     			$this->author='匿名用户';
     		}
     		else
     		{
-    			$this->userid=yii::$app->user->id;
+    			//$this->userid=yii::$app->user->id;
     			$this->author=User::findIdentity(yii::$app->user->id)->username;
     		}
+    		$author_ip= Yii::$app->request->userIP;
+    		$author_ip===null?:$this->author_ip=$author_ip;
     		$this->save();
     		$model->updateCounters(['comment_count'=>1]);
     		//$this->content='';
     		return true;
     	}
     	return false;
+    }
+    
+    public function getStatus()
+    {
+    	return $this->approved;
     }
 }

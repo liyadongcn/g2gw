@@ -59,6 +59,7 @@ AppAsset::register($this);
             } else {
 				//$menuItems[] = ['label' => 'Solr Testing', 'url' => ['/site/solr']];
 				//$menuItems[] = ['label' => 'Masonry Testing', 'url' => ['/site/masonry']];
+            	//$menuItems[] = ['label' => 'WeChat Testing', 'url' => ['/wx/message']];
 //                 $menuItems[] = [
 //                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
 //                     'url' => ['/site/logout'],

@@ -43,3 +43,10 @@ phpunit.phar
 /LICENSE.md
 /README-Yii2.md
 /backend/web/export
+/*.rar
+/frontend/web/css/cropper.css
+/frontend/web/css/cropper.min.css
+/frontend/web/js/cropper.js
+/frontend/web/js/cropper.min.js
+/frontend/web/storage/wechat/avatar
+/frontend/web/storage/wechat/qr_code

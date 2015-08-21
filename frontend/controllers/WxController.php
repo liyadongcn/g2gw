@@ -72,26 +72,9 @@ class WxController extends Controller
 	
 	public function actionMessage()
 	{
-		//define your token
-		//define("TOKEN", "123");
-		$wechatObj = new WechatCallbackapiTest();
-		//$wechatObj->valid();
-		$wechatObj->responseMsg();
-	
-		/* $msgType=yii::$app->request->post('MsgType');
-			echo $msgType;
-			echo '<br>';
-		echo 'hhhhhh';  */
-		/* switch($msgType)
-			{
-			case 'text':
-			echo $msgType;
-			break;
-			case '':
-			break;
-	
-		} */
-	
+		// 全局公众号sdk使用
+		$wechat = Yii::$app->wechat;
+		$wechat->sendText('o1F7ZwtpMSqdB4vNo_srs19EtmoM','ok!');
 	}
 
 }

@@ -174,10 +174,29 @@ echo LinkPager::widget([
 ]);
 ?>
 <!-- 搜索结果展示结束 -->
+
+<!-- 马赛克显示效果开始 -->
+<?php \yii2masonry\yii2masonry::begin([
+    'clientOptions' => [
+        'columnWidth' => '_col-md-4',
+        'itemSelector' => '._mthumbnail',
+        'percentPosition' => true
+    ]
+]); ?>
+
+<?php \yii2masonry\yii2masonry::end(); ?>
+<?php $css= <<<CSS
+	._thumbnail { float: left;}
+  	._thumbnail.w2 { width: 50%; }
+CSS;
+$this->registerCss($css);
+?>
+<!-- 马赛克显示效果结束 -->
+
 </div>
-	<!-- 页面左半部分结束 -->
+<!-- 页面左半部分结束 -->
 	
-	<!-- 页面右半部分开始 -->
+<!-- 页面右半部分开始 -->
 	<div class="col-lg-3 ">
 
 <!-- 用户收藏品牌开始 -->

@@ -13,6 +13,7 @@ use yii\web\UploadedFile;
 use backend\models\backend\models;
 use common\models\AuthItem;
 use common\models\AuthAssignment;
+use common\components\CropAvatar;
 
 
 /**
@@ -188,4 +189,46 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionUpdateAvatar($id)
+    {
+    	$model = $this->findModel($id);
+    	$model->scenario='UpdateAvatar';
+    	if ($model->load(Yii::$app->request->post())) {
+    		//Get the uploaded file instance
+    		$model->file = UploadedFile::getInstance($model, 'file');
+    		if($model->save())
+    		{
+    			return $this->render('view', ['model' => $model,]);
+    		}
+    	}
+    	return $this->render('avatar', ['model' => $model]);
+    }
+    
+    public function actionChangeAvatar($id)
+    {
+    	$model = $this->findModel($id);
+    	
+    	$crop = new CropAvatar(
+    			isset($_POST['avatar_src']) ? $_POST['avatar_src'] : null,
+    			isset($_POST['avatar_data']) ? $_POST['avatar_data'] : null,
+    			isset($_FILES['avatar_file']) ? $_FILES['avatar_file'] : null,
+    			$id
+    	);
+    	
+    	$response = array(
+    			'state'  => 200,
+    			'message' => $crop -> getMsg(),
+    			'result' => $crop -> getResult()
+    	);
+    	
+    	$model->scenario='UpdateAvatar';
+    	
+    	$model->face = $crop -> getResult();
+
+    	$model->save();
+    	
+    	echo json_encode($response);
+    }
+    
 }

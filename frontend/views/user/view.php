@@ -35,8 +35,73 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="media media-profile">
-            <div class="media-left">
-                <img class="media-object" src=<?= html::encode($model->face); ?> alt=<?= html::encode($model->username)?>></div>
+            <div class="media-left" id="crop-avatar">
+            	 <div class="avatar-view" title="点击进行修改">
+      				<img class="media-object img-thumbnail"  src=<?= html::encode($model->face); ?> alt="Avatar">
+    			</div>
+    			<!--  用户头像修改Modal开始 -->
+    <!-- Cropping modal -->
+    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form class="avatar-form" action=<?= Url::to(['user/change-avatar','id'=>$model->id])?> enctype="multipart/form-data" method="post">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="avatar-modal-label">头像修改</h4>
+            </div>
+            <div class="modal-body">
+              <div class="avatar-body">
+
+                <!-- Upload image and data -->
+                <div class="avatar-upload">
+                  <input type="hidden" class="avatar-src" name="avatar_src">
+                  <input type="hidden" class="avatar-data" name="avatar_data">
+                  <label for="avatarInput">选择头像图片</label>
+                  <input type="file" class="avatar-input" id="avatarInput" name="avatar_file">
+                </div>
+
+                <!-- Crop and preview -->
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="avatar-wrapper"></div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="avatar-preview preview-lg"></div>
+                    <div class="avatar-preview preview-md"></div>
+                    <div class="avatar-preview preview-sm"></div>
+                  </div>
+                </div>
+
+                <div class="row avatar-btns">
+                  <div class="col-md-9">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-90" title="Rotate -90 degrees">左转</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-15">-15度</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-30">-30度</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="-45">-45度</button>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="90" title="Rotate 90 degrees">右转</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="15">15度</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="30">30度</button>
+                      <button type="button" class="btn btn-primary" data-method="rotate" data-option="45">45度</button>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block avatar-save">确定</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+          </form>
+        </div>
+      </div>
+    </div><!-- /.modal -->    
+<!--  用户头像修改Modal结束 -->
+            </div>
             <div class="media-body">
                 <h3 class="media-heading">
                     <span class="glyphicon glyphicon-user"></span>
@@ -288,4 +353,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
  
 <!-- 用户情况Tab页结束-->
+
+
+    
+    <!-- Loading state -->
+    <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+    
 </div>
