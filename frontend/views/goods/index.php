@@ -30,7 +30,9 @@ const ROW_ITEMS_COUNT=2;
 <!-- 搜索结果数量及排序开始 -->
 <?php $sort=$dataProvider->sort;?>
 <div class="row">
-<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+<div class="col-md-6 col-sm-12">
+<!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
+</div>
 <div class="col-md-6 col-sm-12">
 	<p class="action pull-right">
 	<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
@@ -68,7 +70,7 @@ const ROW_ITEMS_COUNT=2;
 					</div>
 					<p class="text-right">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
+								<a class="btn btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
 							<?php endif;?>
 					</p>
 				</div>

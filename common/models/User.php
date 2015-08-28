@@ -274,6 +274,17 @@ class User extends ActiveRecord implements IdentityInterface
     	//->all();
     }
     
-    
+    /**
+     * This function is to get the display name of user.
+     * If the nickname is aviliable , it will return the nickname string else it will return the username string.
+     * 得到用户显示名称
+     *
+     * @author Wintermelon
+     * @since  1.0
+     */
+    public function getDisplayName()
+    {
+        return empty($this->nickname)? $this->username : $this->nickname;
+    }
     
 }

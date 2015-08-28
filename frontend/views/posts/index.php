@@ -26,7 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 <!-- 搜索结果数量及排序开始 -->
 <div class="row">
-	<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+	<div class="col-md-6 col-sm-12">
+	<!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
+	</div>
 	<div class="col-md-6 col-sm-12">
 		<p class="action pull-right">
 		<?php $sort=$dataProvider->sort;?>
@@ -55,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p><?= html::encode($model->post_content)?></p>
         <p class="text-right">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+								<a class="btn btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
 							<?php endif;?>
 					</p>
 				

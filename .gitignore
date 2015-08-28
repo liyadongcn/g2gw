@@ -50,3 +50,4 @@ phpunit.phar
 /frontend/web/js/cropper.min.js
 /frontend/web/storage/wechat/avatar
 /frontend/web/storage/wechat/qr_code
+/common/rbac/AuthorRule

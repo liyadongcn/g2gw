@@ -36,14 +36,14 @@ return [
     		'class' => 'yii\authclient\Collection',
     		'clients' => [
     				'qq' => [
-    						'class' => 'xj\oauth\QqAuth',
+    						'class' => 'common\components\QQAuth',
     						'clientId'=>'101241136',
     						'clientSecret'=>'60b542692faa77ab0e1891f5b6ed1047',
     				],
     				'sina' => [
-    						'class' => 'xj\oauth\WeiboAuth',
-    						'clientId' => '126537379',
-    						'clientSecret' => '75baab3dafcc172737b4ce55d8ea0e20',
+    						'class' => 'common\components\WeiboAuth',
+    						'clientId' => '2482357588',
+    						'clientSecret' => '88363d0008e462fdc71f58ad1949b607',
     				],
     				'weixin' => [
     						'class' => 'xj\oauth\WeixinAuth',
@@ -60,9 +60,9 @@ return [
     						'clientId' => 'b3e84718412ea6ad69c8',
     						'clientSecret' => '2bca99bcb8e21b4614b6259c3de79a9d042a745e',
     				],
-    				'google' => [
+    				/* 'google' => [
     						'class' => 'yii\authclient\clients\GoogleOpenId'
-    				],
+    				], */
     		],
     	],
     ],

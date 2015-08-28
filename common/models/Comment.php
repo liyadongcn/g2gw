@@ -171,7 +171,7 @@ class Comment extends \yii\db\ActiveRecord
     		else
     		{
     			//$this->userid=yii::$app->user->id;
-    			$this->author=User::findIdentity(yii::$app->user->id)->username;
+    			$this->author=User::findIdentity(yii::$app->user->id)->displayName;
     		}
     		$author_ip= Yii::$app->request->userIP;
     		$author_ip===null?:$this->author_ip=$author_ip;

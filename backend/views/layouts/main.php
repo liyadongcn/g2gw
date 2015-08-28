@@ -72,8 +72,13 @@ AppAsset::register($this);
 				<a class="list-group-item list-group-item-success" href=<?= url::to(['/user'])?>>用户管理（User）</a>
 				<a class="list-group-item " href=<?= url::to(['/relationships'])?>>&nbsp;&nbsp;--用户关系管理（Relationships）</a>
 				<a class="list-group-item " href=<?= url::to(['/relationships-map'])?>>&nbsp;&nbsp;--用户关系映射管理（RelationshipsMap）</a>
-                <a class="list-group-item list-group-item-success" href=<?= url::to(['/auth-item'])?>>用户权限管理（AuthItem）</a>
-                <a class="list-group-item " href=<?= url::to(['/auth-assignment'])?>>&nbsp;&nbsp;--分配用户权限（AuthAssignment）</a>
+                <a class="list-group-item list-group-item-success" href=<?= url::to(['/admin'])?>>用户权限管理（Admin）</a>
+                <a class="list-group-item " href=<?= url::to(['/admin/permission'])?>>&nbsp;&nbsp;--权限（Permission）</a>
+                <a class="list-group-item " href=<?= url::to(['/admin/role'])?>>&nbsp;&nbsp;--角色（Role）</a>
+                <a class="list-group-item " href=<?= url::to(['/admin/route'])?>>&nbsp;&nbsp;--路径（Route）</a>
+                <a class="list-group-item " href=<?= url::to(['/admin/assignment'])?>>&nbsp;&nbsp;--分配（Assignment）</a>
+                <a class="list-group-item " href=<?= url::to(['/admin/rule'])?>>&nbsp;&nbsp;--规则（Rule）</a>
+                <!-- <a class="list-group-item " href=<?= url::to(['/admin/menu'])?>>&nbsp;&nbsp;--菜单（Menu）</a> -->
         	</div>
         </div>
         <div class="col-lg-10"><!--right part  -->

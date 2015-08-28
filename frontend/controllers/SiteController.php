@@ -22,7 +22,8 @@ use SolrInputDocument;
 use common\models\solr\SolrDataProvider;
 use common\models\solr\common\models\solr;
 use common\models\Auth;
-
+use common\components\QQAuth;
+use common\components\WeiboAuth;
 
 /**
  * Site controller
@@ -59,7 +60,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post','get'],
                 ],
             ],
         ];
@@ -184,11 +185,11 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->getSession()->setFlash('success', '邮件发送成功！请接收邮件并按照相应步骤操作修改您的密码。');
 
                 return $this->goHome();
             } else {
-                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                Yii::$app->getSession()->setFlash('error', '发送邮件失败！对不起我们暂时不能通过邮件修改您的密码。');
             }
         }
 
@@ -206,7 +207,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+            Yii::$app->getSession()->setFlash('success', '新密码已经保存，请使用新密码登录！');
 
             return $this->goHome();
         }
@@ -355,7 +356,22 @@ class SiteController extends Controller
 	    public function onAuthSuccess($client)
 	    {
 	        $attributes = $client->getUserAttributes();
-	
+	        
+	        if($client instanceof QQAuth)
+	        {
+// 	        	var_dump($client->getUserInfo());
+// 	        	die();
+				return $client->login();
+	        }
+	        if($client instanceof WeiboAuth)
+	        {
+	        	/* var_dump($client);
+	        	var_dump($client->getUserInfo());
+	        	die(); */
+	        	return $client->login();
+	        }
+	        
+	       	
 	        /* @var $auth Auth */
 	        $auth = Auth::find()->where([
 	            'source' => $client->getId(),

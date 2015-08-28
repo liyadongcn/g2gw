@@ -24,7 +24,8 @@ AppAsset::register($this);
 <head>
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="qc:admins" content="14670676276314343636772777627645647752" />
+<meta property="qc:admins" content="146706762767277636" />
+<meta property="wb:webmaster" content="ef03646278077715" />
 
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -66,7 +67,9 @@ AppAsset::register($this);
 //                     'linkOptions' => ['data-method' => 'post']
 //                 ];
                 $menuItems[] = [
-                 'label' => Yii::$app->user->identity->username,
+                 //'label' => Yii::$app->user->identity->username,
+                 'label' => html::img(Yii::$app->user->identity->face,['alt'=>Yii::$app->user->identity->username]),
+                		'linkOptions' => ['class' => 'avatar'],
                  'items' => 
                     [
                     	['label' => '<span class="glyphicon glyphicon-user"></span>个人主页', 'url' => ['/user/view','id'=>yii::$app->user->id]],

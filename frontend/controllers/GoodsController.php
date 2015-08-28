@@ -24,6 +24,8 @@ use backend\models\backend\models;
  */
 class GoodsController extends Controller
 {
+	
+	
     public function behaviors()
     {
         return [

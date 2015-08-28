@@ -66,7 +66,8 @@ class SignupForm extends Model
     }
 
     /**
-     * Signs user up.
+     * Signs user up. The dedfault user role will be 'author'.
+     * User can create posts goods and brand. User can update self information and models.
      *
      * @return User|null the saved model or null if saving fails
      */
@@ -83,6 +84,10 @@ class SignupForm extends Model
                  $user->face = 'uploads/' . $this->username . '.' . $this->file->extension;
              }           
             if ($user->save()) {
+            	$auth = Yii::$app->authManager;
+            	// Assign default role to user. 
+            	$role=$auth->getRole('author');
+            	if($role) $auth->assign($role, $user->id);
                 return $user;
             }
         }

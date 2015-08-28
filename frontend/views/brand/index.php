@@ -76,7 +76,9 @@ const ROW_ITEMS_COUNT=3;
 <!-- 搜索结果数量及排序开始 -->
 <?php $sort=$dataProvider->sort;?>
 <div class="row ">
-<div class="col-md-6 col-sm-12"><span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span></div>
+<div class="col-md-6 col-sm-12">
+<!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
+</div>
 <div class="col-md-6 col-sm-12">
 <p class="action pull-right">
 <?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
@@ -112,10 +114,10 @@ const ROW_ITEMS_COUNT=3;
 									<?php foreach ($ecommerces as $ecommerce) :?>
 										<?php if($ecommerce->accept_order):?>
 										<a class="btn btn-success btn-xs"
-												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+												href="<?= html::encode($ecommerce->website);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php else :?>
 										<a class="btn btn-warning btn-xs"
-												href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+												href="<?= html::encode($ecommerce->website);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php endif;?>
 									<?php endforeach;?>
 										

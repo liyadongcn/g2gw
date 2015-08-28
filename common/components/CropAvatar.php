@@ -81,7 +81,7 @@ class CropAvatar {
   }
 
   private function setDst() {
-    $this -> dst = self::AVATAR_FILE_PATH . $this->avatarID . '.png';
+    $this -> dst = self::AVATAR_FILE_PATH . $this->avatarID .$this->extension;
   }
 
   private function crop($src, $dst, $data) {

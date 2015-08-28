@@ -3,14 +3,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\User;
-use backend\models\UserSearch;
+use frontend\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
-use backend\models\backend\models;
 use common\models\AuthItem;
 use common\models\AuthAssignment;
 use common\components\CropAvatar;
@@ -24,6 +24,21 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+    		'access' => [
+    				'class' => AccessControl::className(),
+    				'rules' => [
+    						[
+	    						'actions' => ['view'],
+	    						'allow' => true,
+	    						'roles' => ['@'],
+    						],
+    						[
+								'actions' => ['update','change-avatar','update-password'],
+								'allow' => true,
+								'roles' => ['author'],
+    						],
+    				],
+    		],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -114,51 +129,22 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelAuthItems = AuthItem::find()->all();
-        $model->permissions=ArrayHelper::map($model->authAssignments,'item_name','item_name');
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-        	//Get the uploaded file instance
-        	$model->file = UploadedFile::getInstance($model, 'file');
-        	
-        	if ($model->file && $model->validate()) {
-        		$model->file->saveAs('uploads\\user\\' . $model->username. '.' . $model->file->extension);
-        		$model->face='uploads\\user\\' . $model->username. '.' . $model->file->extension;
-        	}
+        $model->scenario='UpdateProfile';
         
-        	$model->setPassword($model->password);
-        	$model->generateAuthKey();
-        	//$model->password='';
-        	
-        	//Compare the difference of the permissions to get the deleted auth;
-        	$oldPermissions = $model->permissions;
-        	$model->permissions = $_POST['User']['permissions'];
-        	$deletedPermissions = array_diff($oldPermissions, $model->permissions);
-        	if(!empty($deletedPermissions)){
-        		AuthAssignment::deleteAll(['item_name'=>$deletedPermissions,'user_id'=>$model->id]);
-        	}
-        	
-       		if($model->save())
-        	{
-        		if($model->permissions)
-        		{
-        			foreach ($model->permissions as $permission) {
-        				if(!$model->findAuthAssignmentByItemName($permission))
-        				{
-        					$authAssignment=new AuthAssignment();
-        					$authAssignment->item_name=$permission;
-        					$authAssignment->user_id=$model->id;
-        					$authAssignment->save();
-        				}        				
-        			}
-        		}
-        		return $this->redirect(['view', 'id' => $model->id]);
-        	}
-        	
-        } 
-        
-        return $this->render('update', ['model' => $model,'modelAuthItems' => $modelAuthItems]);
-        
+        if (\Yii::$app->user->can('updateUser', ['user' => $model])) {
+        	// update user basic information
+	        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+	        	
+	       		if($model->save())
+	        	{
+	        		return $this->redirect(['view', 'id' => $model->id]);
+	        	}
+	        } 
+	        return $this->render('update', ['model' => $model]);
+        }
+        else {
+        	throw new ForbiddenHttpException('没有权限修改！');
+        }
     }
 
     /**
@@ -190,45 +176,104 @@ class UserController extends Controller
         }
     }
     
+    /**
+     * Update the avatar using the cropbox widget but it is not avilable for the mobile phone.
+     * 
+     * @param integer $id of the user
+     * @return \yii\base\string
+     */
     public function actionUpdateAvatar($id)
     {
     	$model = $this->findModel($id);
     	$model->scenario='UpdateAvatar';
-    	if ($model->load(Yii::$app->request->post())) {
-    		//Get the uploaded file instance
-    		$model->file = UploadedFile::getInstance($model, 'file');
-    		if($model->save())
-    		{
-    			return $this->render('view', ['model' => $model,]);
-    		}
-    	}
-    	return $this->render('avatar', ['model' => $model]);
+    	
+    	if (\Yii::$app->user->can('updateUser', ['user' => $model])) {
+    		// update userself avatar
+	    	if ($model->load(Yii::$app->request->post())) {
+	    		//Get the uploaded file instance
+	    		$model->file = UploadedFile::getInstance($model, 'file');
+	    		if($model->save())
+	    		{
+	    			return $this->render('view', ['model' => $model,]);
+	    		}
+	    	}
+	    	return $this->render('avatar', ['model' => $model]);
+	    	}
+	    else {
+	    	throw new ForbiddenHttpException('没有权限修改！');
+	    }	    
     }
     
+    /**
+     * Update the user password.
+     *
+     * @param integer $id of the user
+     * @return \yii\base\string
+     */
+    public function actionUpdatePassword($id)
+    {
+    	$model = $this->findModel($id);
+        $model->scenario='UpdatePassword';
+        $model->password='';
+
+        if (\Yii::$app->user->can('updateUser', ['user' => $model])) {
+        	// update user self password
+	        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+	        	
+	        	$model->setPassword($model->password);
+	        	
+	       		if($model->save(false))
+	        	{
+	        		return $this->redirect(['view', 'id' => $model->id]);
+	        	}
+	        	
+	        }         
+	        return $this->render('update_password', ['model' => $model]);
+	    }
+        else {
+        	throw new ForbiddenHttpException('没有权限修改！');
+        }
+    }
+    
+    /**
+     * Update the avatar using the crop plugin and it is working on the cell phone too.
+     * It is ajax function.
+     * @param integer $id of the user
+     */
     public function actionChangeAvatar($id)
     {
     	$model = $this->findModel($id);
     	
-    	$crop = new CropAvatar(
-    			isset($_POST['avatar_src']) ? $_POST['avatar_src'] : null,
-    			isset($_POST['avatar_data']) ? $_POST['avatar_data'] : null,
-    			isset($_FILES['avatar_file']) ? $_FILES['avatar_file'] : null,
-    			$id
-    	);
-    	
-    	$response = array(
-    			'state'  => 200,
-    			'message' => $crop -> getMsg(),
-    			'result' => $crop -> getResult()
-    	);
-    	
-    	$model->scenario='UpdateAvatar';
-    	
-    	$model->face = $crop -> getResult();
-
-    	$model->save();
-    	
-    	echo json_encode($response);
+    	if (\Yii::$app->user->can('updateUser', ['user' => $model])) {
+    		// update userself avatar
+	    	$crop = new CropAvatar(
+	    			isset($_POST['avatar_src']) ? $_POST['avatar_src'] : null,
+	    			isset($_POST['avatar_data']) ? $_POST['avatar_data'] : null,
+	    			isset($_FILES['avatar_file']) ? $_FILES['avatar_file'] : null,
+	    			$id
+	    	);
+	    	
+	    	$response = array(
+	    			'state'  => 200,
+	    			'message' => $crop -> getMsg(),
+	    			'result' => $crop -> getResult()
+	    	);
+	    	
+	    	$model->scenario='UpdateAvatar';
+	    	
+	    	$model->face = $crop -> getResult();
+	
+	    	$model->save();
+	    	
+	//     	var_dump($response);
+	    	
+	//     	die();
+	    	
+	    	echo json_encode($response);
+    	}
+    	else {
+    		throw new ForbiddenHttpException('没有权限修改！');
+    	}
     }
     
 }

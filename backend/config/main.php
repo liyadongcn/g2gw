@@ -11,10 +11,13 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    //'language' => 'zh-CN', // <- here!
+    'language' => 'zh-CN', // <- here!
     'modules' => [
         'comments' => [
             'class' => 'vova07\comments\Module'
+        ],
+        'admin' => [
+            'class' => 'mdm\admin\Module',        
         ]
     ],
     'components' => [
@@ -34,12 +37,28 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-         'i18n' => [
+        'i18n' => [
                 'translations' => [
                         '*' => [
                                 'class' => 'yii\i18n\PhpMessageSource'
                         ],
                 ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+        ],
+        'as access' => [
+            'class' => 'mdm\admin\components\AccessControl',
+            'allowActions' => [
+                'site/*',
+                'admin/*',
+                'some-controller/some-action',
+                // The actions listed here will be allowed to everyone including guests.
+                // So, 'admin/*' should not appear here in the production, of course.
+                // But in the earlier stages of your development, you may probably want to
+                // add a lot of actions here until you finally completed setting up rbac,
+                // otherwise you may not even take a first step.
+            ]
         ],
     ],
     'params' => $params,

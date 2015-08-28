@@ -13,6 +13,9 @@ use backend\models\PostsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\NotAcceptableHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * PostsController implements the CRUD actions for Posts model.
@@ -22,6 +25,21 @@ class PostsController extends Controller
     public function behaviors()
     {
         return [
+    		'access' => [
+    				'class' => AccessControl::className(),
+    				'rules' => [
+    						[
+	    						'actions' => ['index','view'],
+	    						'allow' => true,
+	    						'roles' => ['@'],
+    						],
+    						[
+    							'actions' => ['update'],
+    							'allow' => true,
+    							'roles' => ['author','editor','admin'],
+    						],
+    				],
+        	],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -113,30 +131,37 @@ class PostsController extends Controller
     {
         $model = $this->findModel($id);
         
-        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
-
-        if ($model->load(Yii::$app->request->post())) {
-        	
-        	//Get the current user
-        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+    	if (\Yii::$app->user->can('updatePosts', ['post' => $model])) {
+    	// update post
+    		$model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
+    		
+    		if ($model->load(Yii::$app->request->post())) {
+    			 
+    			//Get the current user
+    			$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+    		
+    			// Get the pictures and save to the album
+    			$model->file = UploadedFile::getInstances($model, 'file');
+    			if ($model->save() && $model->validate()) {
+    				if($model->file){
+    					foreach ($model->file as $file) {
+    						$model->saveToAlbum($file);
+    					}
+    				}
+    				//set the categories of this model.
+    				$model->setCategories();
+    				return $this->redirect(['view', 'id' => $model->id]);
+    			}
+    		} else {
+    			return $this->render('update', [
+    					'model' => $model,
+    			]);
+    		}
+		}
+		else {
+			throw new ForbiddenHttpException('没有权限修改！');
+		}
         
-        	// Get the pictures and save to the album
-        	$model->file = UploadedFile::getInstances($model, 'file');
-        	if ($model->save() && $model->validate()) {
-        		if($model->file){
-        			foreach ($model->file as $file) {
-        				$model->saveToAlbum($file);
-        			}
-        		}
-        		//set the categories of this model.
-        		$model->setCategories();
-           	 	return $this->redirect(['view', 'id' => $model->id]);
-        	}
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**

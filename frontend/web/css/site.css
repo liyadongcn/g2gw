@@ -96,6 +96,34 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
+/* 主导航开始 */
+/* .navbar-brand { padding-top: 0; padding-right: 0; } */
+.navbar-right > li:first-child > a { position: relative; }
+.navbar-right > li > a.avatar { padding-top: 10px; padding-bottom: 0; }
+.navbar-right > li > a.avatar img { border-radius: 4px; border: #ccc solid 1px; width: 32px; height: 32px; }
+.navbar-right > li .badge { background: #D8582B; padding: 2px 4px; font-size: 10px; font-weight: normal; position: absolute; top: 10px; left: 25px; }
+/* 主导航结束 */
+
+/* 个人主页开始 */
+.board { height: 80px; }
+.board span { width: 33.33%; float: left; text-align: center; border-right: #ddd solid 1px; font-size: 18px; }
+.board span:last-child { border-right: none; }
+.board span em { font-style: normal; font-size: 24px; color: #D8582B; line-height: 1.6em; }
+
+
+.media-profile .media-object { margin-right: 10px; width: 130px; height: 130px; border-radius: 4px; padding: 2px; border: #ddd solid 1px; }
+.media-profile h1 { border-bottom: #eee solid 1px; padding-bottom: 10px; margin-bottom: 15px; font-size: 18px;}
+.media-profile h1 a { font-size: 12px; }
+.media-profile h1 img { height: 18px; margin-right: 10px; }
+.media-profile h1 small em { font-style: normal; color: #D8582B; }
+.media-profile p { font-size: 12px; color: #666; margin-left: -20px; }
+.media-profile p:last-child { margin-bottom: 0; }
+.media-profile p span { margin-left: 20px; }
+
+.fa-mars { font-weight: bold; color: #3B6FBA; }
+.fa-venus { font-weight: bold; color: #D8582B; }
+/* 个人主页结束 */
+
 /* 脕脨卤铆脪鲁驴陋脢录 */
 .media-list .media { border-bottom: #eee solid 1px; padding-bottom: 15px; }
 .media-list .media .media-object { width: 48px; height: 48px; border-radius: 4px; }

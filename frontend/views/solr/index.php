@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--                     <div class="media-body"> -->
     <li class="list-group-item">
     					<p>
-                        <a href="<?php echo Html::encode($model->url)?>">
+                        <a href="<?php echo Html::encode($model->url)?>" target="_blank" >
                         	<?php if($model->offsetExists('title')):?>
                         		<?php if($title=$dataProvider->getHighlighting($model->id,'title')):?>                        	
                             	<h5><?php echo $title;?></h5>
