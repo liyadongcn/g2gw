@@ -45,7 +45,7 @@ return [
     						'clientId' => '2482357588',
     						'clientSecret' => '88363d0008e462fdc71f58ad1949b607',
     				],
-    				'weixin' => [
+    				/*'weixin' => [
     						'class' => 'xj\oauth\WeixinAuth',
     						'clientId' => '111',
     						'clientSecret' => '111',
@@ -54,9 +54,9 @@ return [
     						'class' => 'xj\oauth\RenrenAuth',
     						'clientId' => '111',
     						'clientSecret' => '111',
-    				],
+    				],*/
     				'github' => [
-    						'class' => 'yii\authclient\clients\GitHub',
+    						'class' => 'common\components\GithubAuth',
     						'clientId' => 'b3e84718412ea6ad69c8',
     						'clientSecret' => '2bca99bcb8e21b4614b6259c3de79a9d042a745e',
     				],

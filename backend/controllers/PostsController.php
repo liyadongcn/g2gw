@@ -38,6 +38,11 @@ class PostsController extends Controller
     							'allow' => true,
     							'roles' => ['author','editor','admin'],
     						],
+                            [
+                                'actions' => ['delete'],
+                                'allow' => true,
+                                'roles' => ['editor','admin'],
+                            ],
     				],
         	],
             'verbs' => [

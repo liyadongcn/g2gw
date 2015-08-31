@@ -7,6 +7,7 @@ use yii\base\Exception;
 use yii\helpers\Json;
 use common\models\User;
 use common\models\Auth;
+use yii\authclient\clients\GitHub;
 
 /**
  *
@@ -15,10 +16,10 @@ use common\models\Auth;
  *     'authClientCollection' => [
  *         'class' => 'yii\authclient\Collection',
  *         'clients' => [
- *             'sina' => [
- *                 'class' => 'common\components\WeiboAuth',
- *                 'clientId' => 'qq_client_id',
- *                 'clientSecret' => 'qq_client_secret',
+ *             'github' => [
+ *                 'class' => 'common\components\GithubAuth',
+ *                 'clientId' => 'client_id',
+ *                 'clientSecret' => 'client_secret',
  *             ],
  *         ],
  *     ]
@@ -26,18 +27,18 @@ use common\models\Auth;
  * ]
  * ~~~
  *
- * @see http://connect.qq.com/
+ * @see 
  *
  * @author wintermelon
  * @since 2.0
  */
-class WeiboAuth extends \xj\oauth\WeiboAuth
+class GithubAuth extends GitHub
 {
 	public $defaultRole='author';
 	
 	public function login()
 	{
-		$attributes = array_merge($this->getUserAttributes(),$this->getUserInfo());
+		$attributes = $this->getUserAttributes();
 			
 		/* @var $auth Auth */
 		$auth = Auth::find()->where([
@@ -57,12 +58,11 @@ class WeiboAuth extends \xj\oauth\WeiboAuth
 				} else {
 					$password = Yii::$app->security->generateRandomString(6);
 					$user = new User([
-							'username' => $this->name.$attributes['name'],
-							//'email' => $attributes['email'],
+							'username' => $attributes['login'],
+							'email' => $attributes['email'],
 							'password' => $password,
 					]);
-					$user->nickname=$attributes['screen_name'];
-					isset($attributes['profile_image_url']) ? $user->face=$attributes['profile_image_url'] : $user->face=DEFAULT_USER_FACE;
+					$user->face=$attributes['avatar_url'];
 					$user->generateAuthKey();
 					$user->generatePasswordResetToken();
 					$transaction = $user->getDb()->beginTransaction();
@@ -93,16 +93,11 @@ class WeiboAuth extends \xj\oauth\WeiboAuth
 				$auth = new Auth([
 						'user_id' => Yii::$app->user->id,
 						'source' => $this->getId(),
-						'source_id' => $attributes['id'],
+						'source_id' => $attributes['openid'],
 				]);
 				$auth->save();
 			}
 		}
-	}
-	
-	protected function defaultTitle()
-	{
-		return '新浪微博';
 	}
 
 }

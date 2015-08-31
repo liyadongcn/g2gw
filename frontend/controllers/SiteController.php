@@ -24,6 +24,7 @@ use common\models\solr\common\models\solr;
 use common\models\Auth;
 use common\components\QQAuth;
 use common\components\WeiboAuth;
+use common\components\GithubAuth;
 
 /**
  * Site controller
@@ -355,7 +356,7 @@ class SiteController extends Controller
 	     */
 	    public function onAuthSuccess($client)
 	    {
-	        $attributes = $client->getUserAttributes();
+	        //$attributes = $client->getUserAttributes();
 	        
 	        if($client instanceof QQAuth)
 	        {
@@ -371,9 +372,17 @@ class SiteController extends Controller
 	        	return $client->login();
 	        }
 	        
+	        if($client instanceof GithubAuth)
+	        {
+	        	/* var_dump($client);
+	        	 var_dump($client->getUserInfo());
+	        	 die(); */
+	        	return $client->login();
+	        }
+	         
 	       	
 	        /* @var $auth Auth */
-	        $auth = Auth::find()->where([
+	       /*  $auth = Auth::find()->where([
 	            'source' => $client->getId(),
 	            'source_id' => $attributes['id'],
 	        ])->one();
@@ -423,6 +432,6 @@ class SiteController extends Controller
 	                ]);
 	                $auth->save();
 	            }
-	        }
+	        } */
 	    }
 }

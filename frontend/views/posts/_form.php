@@ -108,70 +108,68 @@ use kartik\widgets\Select2;
     <?php //echo $form->field($model, 'view_count')->textInput() ?>
     
 <!-- 图片显示与更新开始    -->
-         <div class="panel panel-default">
+    <div class="panel panel-default">
   		<div class="panel-heading">
    			<h3 class="panel-title">图片</h3>
   		</div>
   		<div class="panel-body">
-  			 <?php
-  			 $album=$model->getAlbum();
-		if(!empty($album)){
-			echo '<div class="row">';			
-			foreach ($album as $image){
-				echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
-				echo '<div class="thumbnail">';
-				echo '<img src="'.$image->filename.'" class="img-responsive img-thumbnail" alt="Responsive image" width="200">';
-				echo '<div class="caption">';
-				//echo '<h3>Thumbnail label</h3>';
-				//echo '<p>...</p>';
-				echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
-				echo '</div>';
-				echo '</div>';
-				echo '</div>';
-			}		
-			echo '</div>';
-		}
-	?>
+  	<!--      <?php
+    $album=$model->getAlbum();
+        if(!empty($album)){
+          echo '<div class="row">';      
+          foreach ($album as $image){
+            echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
+            echo '<div class="thumbnail">';
+            echo '<img src="'.$image->filename.'" class="img-responsive img-thumbnail" alt="Responsive image" width="200">';
+            echo '<div class="caption">';
+            //echo '<h3>Thumbnail label</h3>';
+            //echo '<p>...</p>';
+            echo '<a href="index.php?r=album/delete&id='.$image->id.'" class="btn btn-default btn-xs" role="button">删除</a></p>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+          }    
+          echo '</div>';
+        }
+      ?> -->
     
     <?php 
     // Display an initial preview of files with caption
     // (useful in UPDATE scenarios). Set overwrite `initialPreview`
     // to `false` to append uploaded images to the initial preview.
     // Usage with ActiveForm and model
-     echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
-     		'options'=>[
-     				'multiple'=>true
-     		],
-     		'pluginOptions' => [
-    			//'initialPreview'=>empty($initialPreview)?array():$initialPreview,
-    			/* [
-    				Html::img("/images/moon.jpg", ['class'=>'file-preview-image', 'alt'=>'The Moon', 'title'=>'The Moon']),
-    		    	Html::img("/images/earth.jpg",  ['class'=>'file-preview-image', 'alt'=>'The Earth', 'title'=>'The Earth']),
-    		    	], */
-     		 	'initialCaption'=>"选择图片",
-     		  	'overwriteInitial'=>FALSE,
-     			'previewFileType' => 'image',
-     			'showCaption' => false,
-     			'showRemove' => true,
-     			'showUpload' => false,
-//      			'browseClass' => 'btn btn-primary btn-block',
-//      			'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-//      			'browseLabel' =>  'Select Photo',
-     			//'initialPreviewShowDelete'=>true,
-     			//'initialPreviewConfig'=>empty($initialPreviewConfigs)?array():$initialPreviewConfigs,
-     		]
-     	]);
-    // Multiple file/image selection with image only preview
-    // Note for multiple file upload, the attribute name must be appended with
-    // `[]` for PHP to be able to read an array of files
-/*     echo $form->field($model, 'file[]')->fileInput( [
-    		'options' => ['multiple' => true, 'accept' => 'image/*'],
-    		'pluginOptions' => [
-    				'previewFileType' => 'image',
-    				'showUpload' => false,
-    		]
-    ]); */
-    ?>
+//      echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
+//      		'options'=>[
+//      				'multiple'=>true
+//      		],
+//      		'pluginOptions' => [
+//     			//'initialPreview'=>empty($initialPreview)?array():$initialPreview,
+//     			/* [
+//     				Html::img("/images/moon.jpg", ['class'=>'file-preview-image', 'alt'=>'The Moon', 'title'=>'The Moon']),
+//     		    	Html::img("/images/earth.jpg",  ['class'=>'file-preview-image', 'alt'=>'The Earth', 'title'=>'The Earth']),
+//     		    	], */
+//      		 	'initialCaption'=>"选择图片",
+//      		  'overwriteInitial'=>false,
+//      			'previewFileType' => 'image',
+//      			'showCaption' => false,
+//      			'showRemove' => true,
+//      			'showUpload' => false,
+// //      			'browseClass' => 'btn btn-primary btn-block',
+// //      			'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+// //      			'browseLabel' =>  'Select Photo',
+//      			//'initialPreviewShowDelete'=>true,
+//      			//'initialPreviewConfig'=>empty($initialPreviewConfigs)?array():$initialPreviewConfigs,
+//      		]
+//      	]);
+    
+      // Multiple file/image selection with image only preview
+      // Note for multiple file upload, the attribute name must be appended with 
+      // `[]` for PHP to be able to read an array of files
+      echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
+          'options' => ['multiple' => true, 'accept' => 'image/*'],
+          'pluginOptions' => ['previewFileType' => 'image','showCaption' => false]
+      ]);
+          ?>
   		</div>
 	</div>
 <!-- 图片显示与更新结束 -->
