@@ -14,9 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-         	<h1 class="page-header"><?= Html::encode($this->title) ?></h1>
+            <div class="page-header">
+         	<h1 ><?= Html::encode($this->title) ?></h1>
+            </div>
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-                <?= $form->field($model, 'username') ?>
+                <?= $form->field($model, 'username')->textInput(['placeholder'=>''])?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
                 <div style="color:#999;margin:1em 0">

@@ -27,9 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		<h1 class='text-left'><?= Html::encode($model->en_name) ?></h1>
 		<p class='text-left'><?= Html::encode($model->introduction) ?></p>
 		<p class='text-left'>
-			<a class="btn btn-primary btn-lg"
-				href="<?= Html::encode($model->baidubaike) ?>" role="button">Learn
-				more</a>
+			<a class="btn btn-default btn-lg" target="_blank"
+				href="<?= Html::encode($model->baidubaike) ?>" role="button">更多...</a>
 			<?php if($model->isStared()):?>
 				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="取消收藏"><span
@@ -42,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		</p>
 
 	</div>
+	<hr>
 	<?php Pjax::begin();?>
     <p class='text-center'>
 		<a data-pjax="0" href="<?= Url::to(['thumbsup','id' => $model->id])?>">
@@ -85,10 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?php if ($ecommerces) :?>
 				<?php foreach ($ecommerces as $ecommerce) :?>
 					<?php if($ecommerce->accept_order):?>
-					<a class="btn btn-success"
+					<a class="btn btn-success" target="_blank"
 							href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 					<?php else :?>
-					<a class="btn btn-warning"
+					<a class="btn btn-warning" target="_blank"
 							href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 					<?php endif;?>
 				<?php endforeach;?>

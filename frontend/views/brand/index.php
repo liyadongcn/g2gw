@@ -35,6 +35,7 @@ const ROW_ITEMS_COUNT=3;
 		</div>
 		
 <!-- 品牌促销活动轮播开始 -->
+<?php if ($this->beginCache('CACHE_POST_PROMOTION', ['duration' => 60])): ?>
 <?php $promotions=Posts::getPromotions(10)->all();?>
 <?php if($promotions):?>
 	<?php foreach ($promotions as $promotion):?>
@@ -67,8 +68,9 @@ const ROW_ITEMS_COUNT=3;
 // 				],
 // 		]
 // ]);
-?>		
-
+?>
+<?php $this->endCache();?>		
+<?php endif;?>
 <!-- 品牌促销活动轮播结束 -->
 
 <hr>
@@ -201,6 +203,68 @@ $this->registerCss($css);
 <!-- 页面右半部分开始 -->
 	<div class="col-lg-3 ">
 
+<!-- 热门标签开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">热门标签</h3>
+	</div>
+	<div class="panel-body">
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,30)->all();?>
+	<?php if($hotestTags):?>
+		<p>
+		<?php foreach ($hotestTags as $tag):?>			
+			<a href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
+			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)
+			</span>
+			</a>&nbsp;
+		<?php endforeach;?>
+		</p>
+	<?php endif;?>
+	</div>
+</div>
+<!-- 热门标签结束 -->
+	
+<!-- 热门品牌开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">热门品牌</h3>
+	</div>
+	<div class="panel-body">
+		<ul class="list-group">
+	<?php $hotestBrands=Brand::getHotestBrands(5)->all();?>
+	<?php //var_dump($relatedBrands); die();?>
+	<?php if($hotestBrands):?>
+		<?php foreach ($hotestBrands as $hotestdBrand):?>
+			<a href=<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?> class="list-group-item">
+			<?= html::encode($hotestdBrand->en_name)?><span class="pull-right"><?= html::encode($hotestdBrand->cn_name)?></span>
+			</a>
+		<?php endforeach;?>
+	<?php endif;?>
+	</ul>
+	</div>
+</div>
+<!-- 热门品牌结束 -->
+
+<!-- 最新品牌开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">最新品牌</h3>
+	</div>
+	<div class="panel-body">
+		<ul class="list-group">
+	<?php $brands=Brand::getLatestBrands(5)->all();?>
+	<?php //var_dump($relatedBrands); die();?>
+	<?php if($brands):?>
+		<?php foreach ($brands as $brand):?>
+			<a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"
+				class="list-group-item"><?= html::encode($brand->en_name)?><span class="pull-right"><?= html::encode($brand->cn_name)?></span></a>
+		<?php endforeach;?>
+	<?php endif;?>
+	</ul>
+	</div>
+</div>
+<!-- 最新品牌结束 -->
+
 <!-- 用户收藏品牌开始 -->
 	<?php if(!yii::$app->user->isGuest):?>
 	<?php $user=User::findIdentity(yii::$app->user->id);?>
@@ -237,69 +301,6 @@ $this->registerCss($css);
 	<?php endif;?>
 	<?php endif;?>
 <!-- 用户收藏品牌结束 -->
-	
-<!-- 热门品牌开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门品牌</h3>
-	</div>
-	<div class="panel-body">
-		<ul class="list-group">
-	<?php $hotestBrands=Brand::getHotestBrands(5)->all();?>
-	<?php //var_dump($relatedBrands); die();?>
-	<?php if($hotestBrands):?>
-		<?php foreach ($hotestBrands as $hotestdBrand):?>
-			<a href=<?= Url::to(['brand/view','id'=>$hotestdBrand->id])?> class="list-group-item">
-			<?= html::encode($hotestdBrand->en_name)?><span class="pull-right"><?= html::encode($hotestdBrand->cn_name)?></span>
-			</a>
-		<?php endforeach;?>
-	<?php endif;?>
-	</ul>
-	</div>
-</div>
-<!-- 热门品牌结束 -->
-
-
-<!-- 热门标签开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门标签</h3>
-	</div>
-	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,30)->all();?>
-	<?php if($hotestTags):?>
-		<p>
-		<?php foreach ($hotestTags as $tag):?>			
-			<a href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)
-			</span>
-			</a>&nbsp;
-		<?php endforeach;?>
-		</p>
-	<?php endif;?>
-	</div>
-</div>
-<!-- 热门标签结束 -->
-
-<!-- 最新品牌开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">最新品牌</h3>
-	</div>
-	<div class="panel-body">
-		<ul class="list-group">
-	<?php $brands=Brand::getLatestBrands(5)->all();?>
-	<?php //var_dump($relatedBrands); die();?>
-	<?php if($brands):?>
-		<?php foreach ($brands as $brand):?>
-			<a href="<?= Url::to(['brand/view','id'=>$brand->id])?>"
-				class="list-group-item"><?= html::encode($brand->en_name)?><span class="pull-right"><?= html::encode($brand->cn_name)?></span></a>
-		<?php endforeach;?>
-	<?php endif;?>
-	</ul>
-	</div>
-</div>
-<!-- 最新品牌结束 -->
 
 	</div>
 <!-- 页面右半部分结束 -->

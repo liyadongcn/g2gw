@@ -187,7 +187,7 @@ use kartik\widgets\Select2;
   				<?php foreach ($tagMaps as $tagMap):?>  			
   					<span class="label label-success"><?= $tagMap->tag->name?>
   					<a href=<?= url::to(['tagmap/delete','id'=>$tagMap->id])?>>
-  					<span class="glyphicon glyphicon-remove"><span>
+            <span class="glyphicon glyphicon-remove"></span>
   					</a>  
   					</span>&nbsp;
   				<?php endforeach;?>	

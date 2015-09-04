@@ -30,6 +30,7 @@ class Posts extends base\ActiveRecord
 {
 	const POST_TYPE_PROMOTION=37;
 	const POST_TYPE_ARTICLE=38;
+	const DEFAULT_EXPIRED_TIMELONG=604800;//缺省过期时间长度为7天 3600*24*7 
 //	const POST_TYPE_OTHER='other';
 	
 
@@ -57,6 +58,7 @@ class Posts extends base\ActiveRecord
         [
             [['post_content'], 'string'],
             [['created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
+        	[['expired_date'], 'default', 'value' => date('Y-m-d  H:i:s',time()+self::DEFAULT_EXPIRED_TIMELONG)],
             [['userid', 'brand_id','comment_count', 'thumbsup', 'thumbsdown', 'view_count', 'star_count'], 'integer'],
             [['post_title', 'url'], 'string', 'max' => 100],
             ['url','url'],
@@ -217,11 +219,15 @@ class Posts extends base\ActiveRecord
 //     	->orderBy(['updated_date' => SORT_DESC])
 //     	->limit($n);
     	//$categoryMaps=CategoryMap::find()->where(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
-    	$query=self::find()
-    	->joinWith('categoryMap')->where(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
+    	$query=self::find()    	
+    	->orWhere(['is','expired_date',null])
+    	->orWhere(['>=','expired_date',date('Y-m-d H:i:s',time())]);
+    	$query->joinWith('categoryMap')->andWhere(['model_type'=>MODEL_TYPE_POSTS,'category_id'=>self::POST_TYPE_PROMOTION]);
     	$query->orderBy(['updated_date' => SORT_DESC])
     	->limit($n);
-     	//var_dump($query->all());
+    	//$command = $query->createCommand();
+    	//$command->sql returns the actual SQL
+     	//var_dump($command->sql );
      	//die();
     	return $query;
     

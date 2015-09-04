@@ -34,7 +34,7 @@ class PostsController extends Controller
 	    						'roles' => ['@'],
     						],
     						[
-    							'actions' => ['update'],
+    							'actions' => ['update','create'],
     							'allow' => true,
     							'roles' => ['author','editor','admin'],
     						],

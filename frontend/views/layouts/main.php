@@ -24,6 +24,15 @@ AppAsset::register($this);
 <head>
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?69390d9765f773424e6912ceecbe0ba3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 <meta property="qc:admins" content="146706762767277636" />
 <meta property="wb:webmaster" content="ef03646278077715" />
 
@@ -178,7 +187,7 @@ AppAsset::register($this);
 
 	<footer class="footer">
 		<div class="container">
-			<p class="pull-left">&copy; G2GW <?= date('Y') ?></p>
+			<p class="pull-left">&copy; G2GW <?= date('Y') ?> 京ICP备13027276号</p>
 			<p class="pull-right"><?= Yii::powered() ?></p>
 		</div>
 	</footer>

@@ -1,4 +1,9 @@
 <?php
+
+//use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -10,7 +15,7 @@ $this->title = 'My Yii Application';
 
         <p class="lead">G2GW will guid you to the offical website shopping.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p><a class="btn btn-lg btn-success" href=<?= Html::encode(\Yii::$app->params['frontend']) ?>>Get started with G2GW</a></p>
     </div>
 
     <div class="body-content">

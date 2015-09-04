@@ -67,7 +67,7 @@ class GoodsSearch extends Goods
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         		'pagination'=>[
-        				'pagesize'=>15,
+        				'pagesize'=>18,
         		],
         		'sort' => [
         				'defaultOrder' => [

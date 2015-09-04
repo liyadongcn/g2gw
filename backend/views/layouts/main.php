@@ -79,6 +79,11 @@ AppAsset::register($this);
                 <a class="list-group-item " href=<?= url::to(['/admin/assignment'])?>>&nbsp;&nbsp;--分配（Assignment）</a>
                 <a class="list-group-item " href=<?= url::to(['/admin/rule'])?>>&nbsp;&nbsp;--规则（Rule）</a>
                 <!-- <a class="list-group-item " href=<?= url::to(['/admin/menu'])?>>&nbsp;&nbsp;--菜单（Menu）</a> -->
+                <a class="list-group-item list-group-item-success" href="">网站管理</a>
+                <a class="list-group-item " target="_blank" href=<?= url::to('http://union.baidu.com')?>>&nbsp;&nbsp;--百度联盟</a>
+                <a class="list-group-item " target="_blank" href=<?= url::to('http://lianmeng.360.cn')?>>&nbsp;&nbsp;--360联盟</a>
+                <a class="list-group-item " target="_blank" href=<?= url::to('http://union.sogou.com')?>>&nbsp;&nbsp;--搜狗联盟</a>
+                <a class="list-group-item " target="_blank" href=<?= url::to('http://tongji.baidu.com')?>>&nbsp;&nbsp;--百度统计</a>
         	</div>
         </div>
         <div class="col-lg-10"><!--right part  -->

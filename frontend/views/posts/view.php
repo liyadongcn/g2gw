@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php if(!empty($album)):?>
 			
 			<?php foreach ($album as $image): ?>
-				<a href=<?= Url::to($model->url)?>>
+				<a target="_blank" href=<?= Url::to($model->url)?>>
 				<?= html::img($image->filename,['class'=>'img-responsive center-block'])?>	
 				</a>			
 			
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <!-- 收藏开始 -->
 <p class="text-center">
-<a class="btn btn-success btn-lg" href=<?= Url::to($model->url)?>><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+<a class="btn btn-success btn-lg" target="_blank" href=<?= Url::to($model->url)?>><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
 <?php if($model->isStared()):?>
 				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="收藏"><span

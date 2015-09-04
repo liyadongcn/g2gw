@@ -15,15 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'keyWords') ?>
 
-    <?= $form->field($model, 'post_title') ?>
+<?php // echo $form->field($model, 'post_title') ?>
 
-    <?= $form->field($model, 'post_content') ?>
+<?php // echo $form->field($model, 'post_content') ?>
 
-    <?= $form->field($model, 'post_type') ?>
+<?php // echo $form->field($model, 'post_type') ?>
 
-    <?= $form->field($model, 'post_status') ?>
+<?php // echo $form->field($model, 'post_status') ?> 
 
     <?php // echo $form->field($model, 'url') ?>
 

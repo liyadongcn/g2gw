@@ -126,6 +126,24 @@ echo LinkPager::widget([
 <!-- 页面右半部分开始 -->
 	<div class="col-lg-3 ">
 
+<!-- 热门标签开始 -->
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">热门标签</h3>
+	</div>
+	<div class="panel-body">
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_POSTS,30)->all();?>
+	<?php if($hotestTags):?>
+		<?php foreach ($hotestTags as $tag):?>			
+			<a href="<?= Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>">
+			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)</span>
+			</a>&nbsp;
+		<?php endforeach;?>
+	<?php endif;?>
+	</div>
+</div>
+<!-- 热门标签结束 -->	
+
 <!-- 用户收藏的帖子开始 -->
 	<?php if(!yii::$app->user->isGuest):?>
 	<?php $user=User::findIdentity(yii::$app->user->id);?>
@@ -182,24 +200,6 @@ echo LinkPager::widget([
 	</div>
 </div>
 <!-- 热门文章结束 -->
-
-<!-- 热门标签开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门标签</h3>
-	</div>
-	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_POSTS,10)->all();?>
-	<?php if($hotestTags):?>
-		<?php foreach ($hotestTags as $tag):?>			
-			<a href="<?= Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)</span>
-			</a>&nbsp;
-		<?php endforeach;?>
-	<?php endif;?>
-	</div>
-</div>
-<!-- 热门标签结束 -->
 
 <!-- 最新文章开始 -->
 <div class="panel panel-primary">

@@ -41,6 +41,7 @@ use common\models\Posts;
             [['id', 'userid', 'brand_id','comment_count', 'thumbsup', 'thumbsdown', 'view_count'], 'integer'],
             [['post_title', 'post_content', 'post_status', 'url', 'created_date', 'updated_date', 'effective_date', 'expired_date'], 'safe'],
         	[['relationship','relationship_userid'],'safe'],
+            [['keyWords'],'safe'],
         ];
     }
 

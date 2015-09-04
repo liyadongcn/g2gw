@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<h2 class='text-left'><?= Html::encode($model->title) ?><small></small></h2>
 		<p class='text-left'><?= Html::encode($model->description) ?></p>
 		<p class='text-left'>
-			<a class="btn btn-success btn-lg"
+			<a class="btn btn-success btn-lg" target="_blank"
 				href="<?= Html::encode($model->url) ?>" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
 			<?php if($model->isStared()):?>
 				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
