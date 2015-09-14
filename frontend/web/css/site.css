@@ -96,6 +96,12 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
+.redactor-show img {
+	max-width: 100%;
+ 	width: auto;
+ 	height: auto;
+}
+
 /* 主导航开始 */
 /* .navbar-brand { padding-top: 0; padding-right: 0; } */
 /*.navbar-inverse { background:  #373942; }*/
@@ -110,7 +116,7 @@ a.desc:after {
 .board span { width: 33.33%; float: left; text-align: center; border-right: #ddd solid 1px; font-size: 18px; }
 .board span:last-child { border-right: none; }
 .board span em { font-style: normal; font-size: 24px; color: #D8582B; line-height: 1.6em; }
-
+ 
 
 .media-profile .media-object { margin-right: 10px; width: 130px; height: 130px; border-radius: 4px; padding: 2px; border: #ddd solid 1px; }
 .media-profile h1 { border-bottom: #eee solid 1px; padding-bottom: 10px; margin-bottom: 15px; font-size: 18px;}

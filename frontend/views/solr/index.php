@@ -9,6 +9,8 @@ use common\models\Goods;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 use common\models\Ecommerce;
+use common\advertisement\ADManager;
+use common\models\helper\BrowserHelper;
 
 /* @var $this yii\web\View */
 $this->title = '官网商品';
@@ -149,6 +151,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <!-- 相关商品结束 -->
 
+<!-- 广告位开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php endif;?>
+<!-- 广告位结束 -->
+    
 <!-- 热门商品开始 -->
 <div class="panel panel-primary">
     <div class="panel-heading">

@@ -149,9 +149,9 @@ use kartik\widgets\FileInput;
 	
     
 
-    <?php //echo $form->field($model, 'thumbsup')->textInput() ?>
+    <?php echo $form->field($model, 'thumbsup')->textInput() ?>
 
-    <?php //echo $form->field($model, 'thumbsdown')->textInput() ?>     		
+    <?php echo $form->field($model, 'thumbsdown')->textInput() ?>     		
 
     <?php //echo $form->field($model, 'comment_count')->textInput() ?>
 
@@ -163,7 +163,7 @@ use kartik\widgets\FileInput;
 
     <?php //echo $form->field($model, 'recomended_count')->textInput() ?>
 
-    <?php //echo $form->field($model, 'view_count')->textInput() ?>
+    <?php echo $form->field($model, 'view_count')->textInput() ?>
 <!-- 标签开始 -->
     <div class="panel panel-default">
   		<div class="panel-heading">

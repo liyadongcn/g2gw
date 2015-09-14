@@ -53,3 +53,6 @@ phpunit.phar
 /common/rbac/AuthorRule
 /frontend/web/3102672f80d64fa08c5ae5a0cec01fa3.html
 /frontend/web/bdunion.txt
+/frontend/web/css/redactor.css
+/frontend/web/jd_root.txt
+/frontend/web/root.txt

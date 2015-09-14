@@ -65,7 +65,7 @@ use kartik\widgets\Select2;
     				
    			 ]) ?>
 
-    <?php echo $form->field($model, 'url')->textInput(['maxlength' => 100]) ?>
+    <?php echo $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
     <?php //echo $form->field($model, 'created_date')->textInput() ?>
 

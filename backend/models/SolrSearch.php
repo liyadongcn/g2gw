@@ -150,7 +150,7 @@ class SolrSearch extends Model
 				'solr' => $client,
 				'query' => $query,
 				'pagination' => [
-						'pagesize' => '15',
+						'pagesize' => '30',
 				],
 // 				'sort' => [
 // 						'defaultOrder' => [

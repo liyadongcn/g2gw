@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="goods-view">
 
-    <h1><?php //echo  Html::encode($this->title) ?></h1>
+    <!-- <h1><?php //echo  Html::encode($this->title) ?></h1> -->
     
      <div class="jumbotron " >
 	  <h1 class='text-left'><?= Html::encode($model->title) ?></h1>
@@ -80,22 +80,27 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
     
 <!-- 商品分类列表开始 -->
-    <div class='goods-category'>
-	<?php $categoryMaps=$model->getCategoryMap()->all();?>
-		<?php if($categoryMaps):?>
-			<?php foreach ($categoryMaps as $categoryMap): ?>
-<!-- 			echo $this->renderAjax('@app/views/category-map/view.php',['model'=>$categoryMap]); -->
-				<blockquote class="bg-primary">
-				    <p ><?= $categoryMap->category->name?></p>
-				</blockquote>
-			<?php endforeach;?>
-		<?php endif;?>
+    <div class='panel panel-default goods-category'>
+        <div class="panel-heading">
+            <h3 class="panel-title">分类</h3>
+        </div>
+        <div class="panel-body">
+        	<?php $categoryMaps=$model->getCategoryMap()->all();?>
+        		<?php if($categoryMaps):?>
+        			<?php foreach ($categoryMaps as $categoryMap): ?>
+        <!-- 			echo $this->renderAjax('@app/views/category-map/view.php',['model'=>$categoryMap]); -->
+        			<!-- 	<blockquote class="bg-primary"> -->
+        				    <span ><?= $categoryMap->category->name?></span>
+        				<!-- </blockquote> -->
+        			<?php endforeach;?>
+        		<?php endif;?>
+        </div>
 	</div>
 <!-- 商品分类列表结束	 -->
 
 
 <div class='goods-comment_status'>
-	  <blockquote class="bg-primary">
+	  <blockquote class="bg-default">
 		<?php 
 			echo $model->getDropDownListData('comment_status')[$model->comment_status];
 		?>

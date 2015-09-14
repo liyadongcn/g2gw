@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
 use yii\web\NotAcceptableHttpException;
 use yii\web\ForbiddenHttpException;
 
+
 /**
  * PostsController implements the CRUD actions for Posts model.
  */
@@ -34,7 +35,7 @@ class PostsController extends Controller
 	    						'roles' => ['@'],
     						],
     						[
-    							'actions' => ['update','create'],
+    							'actions' => ['update','create','upload'],
     							'allow' => true,
     							'roles' => ['author','editor','admin'],
     						],
@@ -52,6 +53,24 @@ class PostsController extends Controller
                 ],
             ],
         ];
+    }
+    
+    public function actions()
+    {
+    	return [
+    			'upload' => [
+    					'class' => 'kucha\ueditor\UEditorAction',
+    					'config' => [
+    							"imageUrlPrefix"  => Yii::$app->request->hostInfo,//图片访问路径前缀
+    							"imagePathFormat" => "/uploads/posts/{yyyy}{mm}{dd}/{time}{rand:6}" //上传保存路径
+    					],
+    			] 
+    			/* 'image-upload' => [
+    					'class' => 'vova07\imperavi\actions\UploadAction',
+    					'url' =>  'http://back/uploads/posts/', // Directory URL address, where files are stored.
+    					'path' => '@backend/web/uploads/posts' // Or absolute path to directory where files are stored.
+    			],    */ 			 
+    	];
     }
 
     /**

@@ -13,6 +13,8 @@ use common\models\Tag;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 use yii\data\Sort;
+use common\advertisement\ADManager;
+use common\models\helper\BrowserHelper;
 
 
 /* @var $this yii\web\View */
@@ -180,21 +182,7 @@ echo LinkPager::widget([
 <!-- 搜索结果展示结束 -->
 
 <!-- 马赛克显示效果开始 -->
-<?php \yii2masonry\yii2masonry::begin([
-    'clientOptions' => [
-        'columnWidth' => '_col-md-4',
-        'itemSelector' => '._mthumbnail',
-        'percentPosition' => true
-    ]
-]); ?>
 
-<?php \yii2masonry\yii2masonry::end(); ?>
-<?php $css= <<<CSS
-	._thumbnail { float: left;}
-  	._thumbnail.w2 { width: 50%; }
-CSS;
-$this->registerCss($css);
-?>
 <!-- 马赛克显示效果结束 -->
 
 </div>
@@ -213,8 +201,8 @@ $this->registerCss($css);
 	<?php if($hotestTags):?>
 		<p>
 		<?php foreach ($hotestTags as $tag):?>			
-			<a href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)
+			<a  class="btn btn-success btn-xs" href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
+			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?>
 			</span>
 			</a>&nbsp;
 		<?php endforeach;?>
@@ -301,6 +289,17 @@ $this->registerCss($css);
 	<?php endif;?>
 	<?php endif;?>
 <!-- 用户收藏品牌结束 -->
+	
+<!-- 广告位开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php endif;?>
+<!-- 广告位结束 -->
 
 	</div>
 <!-- 页面右半部分结束 -->

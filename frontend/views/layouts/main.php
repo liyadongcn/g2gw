@@ -187,7 +187,7 @@ var _hmt = _hmt || [];
 
 	<footer class="footer">
 		<div class="container">
-			<p class="pull-left">&copy; G2GW <?= date('Y') ?> 京ICP备13027276号</p>
+			<p class="pull-left">&copy; G2GW.cn <?= date('Y') ?> 京ICP备13027276号</p>
 			<p class="pull-right"><?= Yii::powered() ?></p>
 		</div>
 	</footer>

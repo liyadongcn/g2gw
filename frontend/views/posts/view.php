@@ -8,6 +8,9 @@ use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
 use yii\i18n\Formatter;
 use common\models\helper\TimeHelper;
+use common\models\helper\BrowserHelper;
+use common\advertisement\ADManager;
+use vova07\imperavi\Widget;
 
 
 /* @var $this yii\web\View */
@@ -45,11 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php endforeach;?>
 	<?php endif;?>
 <!-- 文章图片列表结束 -->
-	<blockquote>
-	<p class="lead">
-		<?= html::encode($model->post_content)?>
-	</p>
-	</blockquote>
+<!-- 	<blockquote > -->
+	<div class="redactor-show">		
+		<?= $model->post_content?>			
+	</div>
+<!-- 	</blockquote> -->
 </div>
 
 <!-- 点赞吐槽开始 -->
@@ -137,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php $latestPosts=$model->getLatestPosts(5)->all();?>
 	<?php if($latestPosts):?>
 		<?php foreach ($latestPosts as $post):?>
-			<a href="<?= Url::to(['posts/view','id'=>$post->id])?>" class="list-group-item">
+			<a href=<?= Url::to(['posts/view','id'=>$post->id])?> class="list-group-item">
 			<div class="row">
             		<div class="col-md-9"><?= html::encode($post->post_title)?></div>
             		<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($post->updated_date)?></span></div>
@@ -149,6 +152,16 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <!-- 最新文章结束 -->
+
+<!-- 广告条开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90);?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_1000_90);?>
+<?php endif;?>
+<!-- 广告条结束 -->
 
 <!-- 百度分享功能开始 -->
 <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>

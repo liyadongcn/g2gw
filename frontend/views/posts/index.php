@@ -10,6 +10,8 @@ use common\models\User;
 use common\models\tag;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
+use common\advertisement\ADManager;
+use common\models\helper\BrowserHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\PostsSearch */
@@ -49,12 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						<?php if($image):?>
 								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="...">
 						<?php else :?>
-								<img class=" media-object img-rounded" src=""	alt="..." >
+<!-- 								<img class=" media-object img-rounded" src=""	alt="..." > -->
 						<?php endif;?>
 						</a>
       <div class="caption">
-        <h3 ><?= html::encode($model->post_title)?></h3>
-        <p><?= html::encode($model->post_content)?></p>
+        <h3 ><a href="<?= Url::to(['posts/view','id'=>$model->id])?>"><?= html::encode($model->post_title)?></a></h3>
         <p class="text-right">
 							<?php if ($model->url) :?>
 								<a class="btn btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
@@ -135,8 +136,8 @@ echo LinkPager::widget([
 	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_POSTS,30)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
-			<a href="<?= Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)</span>
+			<a class="btn btn-success btn-xs" href="<?= Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>">
+			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?></span>
 			</a>&nbsp;
 		<?php endforeach;?>
 	<?php endif;?>
@@ -218,6 +219,17 @@ echo LinkPager::widget([
 	</div>
 </div>
 <!-- 最新文章结束 -->
+
+<!-- 广告位开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php endif;?>
+<!-- 广告位结束 -->
 
 	</div>
 <!-- 页面右半部分结束 -->

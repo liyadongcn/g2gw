@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use common\models\helper\BrowserHelper;
 use common\models\goods;
 use common\models\Category;
 use common\models\User;
@@ -11,6 +12,7 @@ use common\models\tag;
 use common\models\Relationships;
 use common\models\RelationshipsMap;
 use common\models\helper\TimeHelper;
+use common\advertisement\ADManager;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\GoodsSearch */
@@ -64,15 +66,16 @@ const ROW_ITEMS_COUNT=2;
 							<h3 class="media-heading"><?= html::encode($model->title)?></h3>
 						</a>
 						<p>
-							<?= html::encode($model->description)?>
+							<?= html::encode(mb_substr( $model->description, 0, 100, 'utf-8').'……')?>
+							<span><a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
+							[详细]</a></span>						
 						</p>
-						
-					</div>
-					<p class="text-right">
+						<p class="text-right">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
+								<a class="btn btn-sm btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
 							<?php endif;?>
-					</p>
+						</p>
+					</div>					
 				</div>
 				<!-- <div > -->
 				<div class="row">
@@ -146,11 +149,11 @@ echo LinkPager::widget([
 		<h3 class="panel-title">热门标签</h3>
 	</div>
 	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS)->all();?>
+	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS,30)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
-			<a href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">
-			<span class="label label-success"><?= html::encode($tag->name)?>(<?= html::encode($tag->count)?>)</span>
+			<a  class="btn btn-success btn-xs" href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">
+			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?></span>
 			</a>&nbsp;
 		<?php endforeach;?>
 	<?php endif;?>
@@ -269,6 +272,18 @@ echo LinkPager::widget([
 	</div>
 </div>
 <!-- 最新商品结束 -->
+
+<!-- 广告位开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php endif;?>
+<!-- 广告位结束 -->
+
 	</div>
 <!-- 页面右半部分结束 -->
 </div>

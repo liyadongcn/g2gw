@@ -8,6 +8,8 @@ use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use backend\assets\AppAsset;
 use yii\widgets\LinkPager;
+use common\models\helper\BrowserHelper;
+use common\advertisement\ADManager;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Brand */
@@ -190,6 +192,16 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <!-- 相关品牌结束 -->
+
+<!-- 广告条开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90);?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_1000_90);?>
+<?php endif;?>
+<!-- 广告条结束 -->
 
 <!-- 百度分享功能开始 -->
 <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
