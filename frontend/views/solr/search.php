@@ -11,7 +11,7 @@ use common\models\Posts;
 /* @var $model */
 
 
-$this->title = yii::$app->name;
+$this->title = Yii::$app->name.'-'.'搜索官网商品';
 ?>
 <div class="solr-search">
 

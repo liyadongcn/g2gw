@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use common\models\Goods;
 use common\models\Comment;
+use common\models\Links;
+use common\models\base\Model;
 use backend\models\GoodsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +32,24 @@ class GoodsController extends Controller
                 ],
             ],
         ];
+    }
+    
+    public function actions()
+    {
+    	return [
+    			'upload' => [
+    					'class' => 'kucha\ueditor\UEditorAction',
+    					'config' => [
+    							"imageUrlPrefix"  => Yii::$app->request->hostInfo,//图片访问路径前缀
+    							"imagePathFormat" => "/uploads/goods/{yyyy}{mm}{dd}/{time}{rand:6}" //上传保存路径
+    					],
+    			]
+    			/* 'image-upload' => [
+    			 'class' => 'vova07\imperavi\actions\UploadAction',
+    					'url' =>  'http://back/uploads/posts/', // Directory URL address, where files are stored.
+    					'path' => '@backend/web/uploads/posts' // Or absolute path to directory where files are stored.
+    			],    */
+    	];
     }
 
     /**
@@ -80,28 +100,69 @@ class GoodsController extends Controller
         $model->loadDefaultValues();
         //$model->comment_status=Goods::COMMENT_STATUS_OPEN;
        
+        $modelLinks = [new Links()];
+
         if ($model->load(Yii::$app->request->post())) {
-        	// Get the goods pictures and save to the album
-        	$model->file = UploadedFile::getInstances($model, 'file');        	
-        	if ($model->save() && $model->validate()) 
-        	{
-        		if($model->file)
-        		{
-        			foreach ($model->file as $key=>$file)
-        			{
-        				$key==0?$model->saveToAlbum($file,DEFAULT_IMAGE):$model->saveToAlbum($file);
-        			}
-        		}
-        		//set the categories of this model.
-        		$model->setCategories();
-        		return $this->redirect(['view', 'id' => $model->id]);
+        	
+        	$modelLinks = Model::createMultiple(Links::classname());
+        	Model::loadMultiple($modelLinks, Yii::$app->request->post());
+        	
+        	// ajax validation
+        	if (Yii::$app->request->isAjax) {
+        		Yii::$app->response->format = Response::FORMAT_JSON;
+        		return ArrayHelper::merge(
+        				ActiveForm::validateMultiple($modelLinks),
+        				ActiveForm::validate($model)
+        		);
         	}
-            
-        } else {
+        	
+        	//Get the current user
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+        	 
+        	// Get the pictures and save to the album
+        	$model->file = UploadedFile::getInstances($model, 'file');
+        	
+        	// validate all models
+        	$valid = $model->validate();
+        	$valid = Model::validateMultiple($modelLinks) && $valid;
+        	
+        	if ($valid) {
+        		$transaction = \Yii::$app->db->beginTransaction();
+        		try {
+        			if ($flag = $model->save(false)) {
+        				foreach ($modelLinks as $modelLink) {
+        					$modelLink->model_id = $model->id;
+        					$modelLink->model_type = MODEL_TYPE_GOODS;
+        					if (! ($flag = $modelLink->save(false))) {
+        						$transaction->rollBack();
+        						break;
+        					}
+        				}
+        			}
+        			if ($flag) {
+        				$transaction->commit();
+        				// save the uploaded images
+        				if($model->file){
+	        				foreach ($model->file as $key=>$file) {
+	        					$key==0?$model->saveToAlbum($file,1):$model->saveToAlbum($file);
+	        				}
+        				}
+        				//set the categories of this model.
+        				$model->setCategories();
+        				return $this->redirect(['view', 'id' => $model->id]);
+        			}
+        		} catch (Exception $e) {
+        			$transaction->rollBack();
+        		}
+        	}      	
+        	
+        } 
+        
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
             return $this->render('create', [
                 'model' => $model,
+            	'modelLinks' => (empty($modelLinks)) ? [new Links] : $modelLinks
             ]);
-        }
     }
 
     /**
@@ -113,31 +174,74 @@ class GoodsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');
+        $model->categories=ArrayHelper::map($model->getCategories()->all(), 'name','id');        
+        $modelLinks = $model->links;
         
         if ($model->load(Yii::$app->request->post())) {
-        	// Get the goods pictures and save to the album
-        	$model->file = UploadedFile::getInstances($model, 'file');        	
-        	if ($model->save() && $model->validate()) {
-        		if($model->file){
-        			foreach ($model->file as $file) {
-        				$model->saveToAlbum($file);
+        	 
+        	// Get deleted links ids
+        	$oldIDs = ArrayHelper::map($modelLinks, 'id', 'id');
+        	$modelLinks = Model::createMultiple(Links::classname(), $modelLinks);
+        	Model::loadMultiple($modelLinks, Yii::$app->request->post());
+        	$deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelLinks, 'id', 'id')));
+        	 
+        	// ajax validation
+        	if (Yii::$app->request->isAjax) {
+        		Yii::$app->response->format = Response::FORMAT_JSON;
+        		return ArrayHelper::merge(
+        				ActiveForm::validateMultiple($modelLinks),
+        				ActiveForm::validate($model)
+        		);
+        	}
+        
+        	// Get the current user
+        	$model->userid=!empty(Yii::$app->user->identity->id)?Yii::$app->user->identity->id:0;
+        	 
+        	// Get the pictures and save to the album
+        	$model->file = UploadedFile::getInstances($model, 'file');
+        
+        	// validate all models
+        	$valid = $model->validate();
+        	$valid = Model::validateMultiple($modelLinks) && $valid;
+        	 
+        	if ($valid) {
+        		$transaction = \Yii::$app->db->beginTransaction();
+        		try {
+        			if ($flag = $model->save(false)) {
+        				if (! empty($deletedIDs)) {
+        					Links::deleteAll(['id' => $deletedIDs]);
+        				}
+        				foreach ($modelLinks as $modelLink) {
+        					$modelLink->model_id = $model->id;
+        					$modelLink->model_type = MODEL_TYPE_GOODS;
+        					if (! ($flag = $modelLink->save(false))) {
+        						$transaction->rollBack();
+        						break;
+        					}
+        				}
         			}
+        			if ($flag) {
+        				$transaction->commit();
+        				// save the loaded images
+        				if($model->file){
+        					foreach ($model->file as $file) {
+        						$model->saveToAlbum($file);
+        					}
+        				}
+        				//set the categories of this model.
+        				$model->setCategories();
+        				return $this->redirect(['view', 'id' => $model->id]);
+        			}
+        		} catch (Exception $e) {
+        			$transaction->rollBack();
         		}
-        		//set the categories of this model.
-        		$model->setCategories();
-        		return $this->redirect(['view', 'id' => $model->id]);
         	}
-        	else{
-        		return $this->render('error',['name'=>'商品信息修改失败','message'=>'数据验证或保存错误！'.implode('|',$model->errors)]);
-        	}
-            
-        } else {        	
-        	//$model->file=$model->getAlbum();
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('update', [
+        		'model' => $model,
+        		'modelLinks' => (empty($modelLinks)) ? [new Links] : $modelLinks
+        ]);
+        
     }
 
     /**

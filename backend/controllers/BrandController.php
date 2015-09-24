@@ -77,7 +77,7 @@ class BrandController extends Controller
      */
     public function actionCreate()
     {
-    	if(yii::$app->user->can('create-brand')){
+    	if(yii::$app->user->can('createBrand')){
     	
         $model = new Brand;
         $modelEcommerces = [new Ecommerce()];

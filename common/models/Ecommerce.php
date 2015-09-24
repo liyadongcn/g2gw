@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
  * @property string $name
  * @property integer $is_domestic
  * @property integer $accept_order
+ * @property string $link_promotion
  */
 class Ecommerce extends \yii\db\ActiveRecord
 {
@@ -35,7 +36,7 @@ class Ecommerce extends \yii\db\ActiveRecord
     {
         return [
             [['brand_id', 'is_domestic', 'accept_order'], 'integer'],
-            [['website'], 'string', 'max' => 255],
+            [['website','link_promotion'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 30],
             [['name','website'], 'required'],
         	[['is_domestic', 'accept_order'], 'default','value'=>true],

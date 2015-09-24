@@ -9,6 +9,7 @@ use common\models\Category;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\Select2;
 use kartik\widgets\FileInput;
+use wbraganca\dynamicform\DynamicFormWidget;
 //use yii\widgets\InputWidget;
 
 /* 
@@ -37,7 +38,7 @@ use kartik\widgets\FileInput;
 
 <div class="goods-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'dynamic-form','options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?php //echo $form->field($model, 'id')->textInput() ?>
 
@@ -66,7 +67,8 @@ use kartik\widgets\FileInput;
      
      <?php echo $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
-    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?php //echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($model,'description')->widget('kucha\ueditor\UEditor',[]);?>
     
      <?php //echo $form->field($model, 'comment_status')->textInput(['maxlength' => 20]) ?>
     <?php  echo $form->field($model, 'comment_status')->dropDownList(
@@ -202,6 +204,71 @@ use kartik\widgets\FileInput;
 	</div>
 <!-- 品牌分类结束 -->
 
+<!--  网络连接开始 -->
+              <?php DynamicFormWidget::begin([
+                'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+                'widgetBody' => '.container-items', // required: css class selector
+                'widgetItem' => '.item', // required: css class
+                'limit' => 4, // the maximum times, an element can be cloned (default 999)
+                'min' => 0, // 0 or 1 (default 1)
+                'insertButton' => '.add-item', // css class
+                'deleteButton' => '.remove-item', // css class
+                'model' => $modelLinks[0],
+                'formId' => 'dynamic-form',
+                'formFields' => [
+                    'link_name',
+                	'link_url',
+                	'link_promotion',
+                    'link_description',
+                ],
+            ]); ?>
+
+        
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>
+                <i class="glyphicon glyphicon-link"></i> 商品网络链接
+                <button type="button" class="add-item btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Add</button>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <div class="container-items"><!-- widgetBody -->
+            <?php foreach ($modelLinks as $i => $modelLink): ?>
+                <div class="item panel panel-default"><!-- widgetItem -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-left">链接</h3>
+                        <div class="pull-right">
+                            <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <?php
+                            // necessary for update action.
+                            if (! $modelLink->isNewRecord) {
+                                echo Html::activeHiddenInput($modelLink, "[{$i}]id");
+                            }
+                        ?>
+                       
+                        <?= $form->field($modelLink, "[{$i}]link_name")->textInput(['maxlength' => 30]) ?>
+
+                        <?= $form->field($modelLink, "[{$i}]link_url")->textInput(['maxlength' => 500]) ?>
+                        
+                        <?= $form->field($modelLink, "[{$i}]link_promotion")->textInput(['maxlength' => 500]) ?>
+                        
+                        <?= $form->field($modelLink, "[{$i}]link_description") ->textarea(['rows' => 6]) ?>
+        
+                              </div>
+                          </div>
+                      <?php endforeach; ?>
+                      </div>
+                  </div>
+              </div><!-- .panel -->
+        
+            <?php DynamicFormWidget::end(); ?>
+    
+<!--  网络连接结束 -->
+	
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

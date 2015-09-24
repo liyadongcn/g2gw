@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			
 			<?php foreach ($album as $image): ?>
 				<a target="_blank" href=<?= Url::to($model->url)?>>
-				<?= html::img($image->filename,['class'=>'img-responsive center-block'])?>	
+				<?= html::img($image->filename,['class'=>'img-responsive center-block','alt'=>$model->post_title])?>	
 				</a>			
 			
 		<?php endforeach;?>
@@ -73,20 +73,28 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 <!-- 点赞吐槽结束 -->
 
-<!-- 收藏开始 -->
+<!-- 去购买收藏开始 -->
 <p class="text-center">
-<a class="btn btn-success btn-lg" target="_blank" href=<?= Url::to($model->url)?>><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+<?php if ($model->url) :?>
+		<a class="btn btn-default btn-lg" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
+<?php endif;?>
+<?php $links = $model->links?>
+<?php if($links):?>
+	<?php foreach ($links as $link):?>
+	<a class="btn btn-default btn-lg" target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
+	<?php endforeach;?>
+<?php endif;?>
 <?php if($model->isStared()):?>
-				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
+				<a class="btn btn-default btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="收藏"><span
 					class="glyphicon glyphicon-star">取消收藏</span> </a>
 			<?php else :?>
-				<a class="btn btn-primary btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"
+				<a class="btn btn-default btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="收藏"><span
 					class="glyphicon glyphicon-star-empty">收藏</span> </a>
 			<?php endif;?>
 </p>
-<!-- 收藏结束 -->
+<!-- 去购买收藏结束 -->
 			
 <!-- 文章标签开始 -->
 	<div class="panel panel-default">
@@ -106,6 +114,16 @@ $this->params['breadcrumbs'][] = $this->title;
   		 </div>
 	</div>
 <!-- 文章标签结束 -->
+	
+<!-- 广告条开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_960_90);?>
+<?php endif;?>
+<!-- 广告条结束 -->
 	
 <!-- 相关同品牌活动及文章开始 -->
 <div class="panel panel-primary">

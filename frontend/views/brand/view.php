@@ -18,7 +18,7 @@ use common\advertisement\ADManager;
 //$this->registerCssFile('@web/css/font-awesome.min.css',['depends'=>['api\assets\AppAsset']]);
 $this->registerJsFile('@web/js/yiichina.js');//,['depends'=>['app\assets\AppAsset']]);
 
-$this->title =  Yii::$app->name.'-'.$model->en_name;
+$this->title =  Yii::$app->name.'-'.$model->en_name.$model->cn_name;
 $this->params['breadcrumbs'][] = ['label' => 'Brands', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="brand-view">
 
 	<div class="jumbotron ">
-		<h1 class='text-left'><?= Html::encode($model->en_name) ?></h1>
+		<h1 class='text-left'><?= Html::encode($model->en_name) ?> <small><?= Html::encode($model->cn_name) ?></small></h1>
 		<p class='text-left'><?= Html::encode($model->introduction) ?></p>
 		<p class='text-left'>
 			<a class="btn btn-default btn-lg" target="_blank"
@@ -86,12 +86,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?php $ecommerces=$model->ecommerces;?>
 				<?php if ($ecommerces) :?>
 				<?php foreach ($ecommerces as $ecommerce) :?>
+					<?php empty($ecommerce->link_promotion) ? $link=$ecommerce->website : $link=$ecommerce->link_promotion;?>
 					<?php if($ecommerce->accept_order):?>
 					<a class="btn btn-success" target="_blank"
-							href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+							href="<?= html::encode($link);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 					<?php else :?>
 					<a class="btn btn-warning" target="_blank"
-							href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
+							href="<?= html::encode($link);?>" role="button"><?= html::encode($ecommerce->name);?></a>
 					<?php endif;?>
 				<?php endforeach;?>
 				<?php endif;?>
@@ -142,6 +143,16 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <!-- 标签结束 -->
 
+<!-- 广告条开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_960_90);?>
+<?php endif;?>
+<!-- 广告条结束 -->
+
 <!-- 相关发帖开始 -->
 <?php $postsProvider=$model->getRelatedPosts();?>
 <div class="panel panel-primary">
@@ -162,14 +173,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif;?>
     </ul>
     </div>
-    <div class="panel-footer">
     	<span>
     	<?php echo LinkPager::widget([
             'pagination' => $postsProvider->getPagination(),
             ]);
         ?>
     	</span>
-    </div>
 </div>
 <!-- 相关发帖结束 -->
 

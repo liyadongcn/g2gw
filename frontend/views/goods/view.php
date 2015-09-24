@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			foreach ($album as $image){
 				//echo '<div class="col-sm-6 col-md-3 col-lg-2"">';
 				//echo '<div class="thumbnail">';
-				echo '<img src="'.$image->filename.'" class="img-responsive" alt="Responsive image" >';
+				echo '<div class="block-center thumbnail"s><img src="'.$image->filename.'" class="img-responsive" alt="'.$model->title.'" ></div>';
 				echo '<div class="caption">';
 				//echo '<h3>Thumbnail label</h3>';
 				//echo '<p>...</p>';
@@ -70,48 +70,67 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-md-6">
 		<div class="jumbotron ">
 		<h2 class='text-left'><?= Html::encode($model->title) ?><small></small></h2>
-		<p class='text-left'><?= Html::encode($model->description) ?></p>
+		
 		<p class='text-left'>
-			<a class="btn btn-success btn-lg" target="_blank"
-				href="<?= Html::encode($model->url) ?>" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+			<?php if ($model->url) :?>
+				<a class="btn btn-default " href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
+			<?php endif;?>
+			<?php $links = $model->links?>
+			<?php if($links):?>
+				<?php foreach ($links as $link):?>
+				<a class="btn btn-default" target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
+				<?php endforeach;?>
+			<?php endif;?>
 			<?php if($model->isStared()):?>
-				<a class="btn btn-primary btn-lg" href="<?= Url::to(['remove-star','id' => $model->id])?>"
+				<a class="btn btn-default" href="<?= Url::to(['remove-star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="收藏"><span
 					class="glyphicon glyphicon-star">取消收藏</span> </a>
 			<?php else :?>
-				<a class="btn btn-primary btn-lg" href="<?= Url::to(['star','id' => $model->id])?>"
+				<a class="btn btn-default" href="<?= Url::to(['star','id' => $model->id])?>"
 					data-toggle="tooltip" data-placement="top" title="收藏"><span
 					class="glyphicon glyphicon-star-empty">收藏</span> </a>
 			<?php endif;?>
 				
 			</p>
-			<p>
-			
-		</p>
+			<hr>
+			<!-- 点赞吐槽开始 -->
+			<p class="text-center">	
+				<a class="up"
+				href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
+				data-toggle="tooltip" data-original-title="顶">
+				<span style="font-size:36px;color:#F00" class="glyphicon glyphicon-thumbs-up"></span><em><?= Html::encode($model->thumbsup) ?></em>
+				</a>
+				&nbsp;&nbsp;&nbsp;
+				<a
+				class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>"
+				title="" data-toggle="tooltip" data-original-title="踩">
+				<span style="font-size:36px;color:#999" class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em>
+				</a>	
+			</p>
+			<!-- 点赞吐槽结束 -->
+			<hr>
 	</div>
 	</div>
 </div>
 </div>	
 <!-- 商品详情展示结束 -->
 
-<!-- 点赞吐槽开始 -->
-<p class="text-center">
-	
-			<a class="up"
-			href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
-			data-toggle="tooltip" data-original-title="顶">
-			<span style="font-size:36px;color:#F00" class="glyphicon glyphicon-thumbs-up"></span><em><?= Html::encode($model->thumbsup) ?></em>
-			</a>
-			&nbsp;&nbsp;&nbsp;
-			<a
-			class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>"
-			title="" data-toggle="tooltip" data-original-title="踩">
-			<span style="font-size:36px;color:#999" class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em>
-			</a>
-	
-</p>
-<!-- 点赞吐槽结束 -->
 
+
+<!-- 商品详情开始 -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">商品详情</h3>
+  </div>
+  <div class="panel-body">
+    <div class="redactor-show">		
+		<?= $model->description?>			
+	</div>
+  </div>
+</div>
+	
+<!-- 商品详情结束 -->
+	
 <!-- 商品标签列表开始 -->
 <div class="panel panel-primary">
 	<div class="panel-heading">
@@ -133,6 +152,16 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <!-- 商品标签列表结束	 -->
+
+<!-- 广告条开始 -->
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
+<?php else:?>
+<!-- pc device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_960_90);?>
+<?php endif;?>
+<!-- 广告条结束 -->
 
 	<!-- 相关发帖开始 -->
 <?php $postsProvider=$model->getRelatedPosts();?>

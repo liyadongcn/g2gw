@@ -29,10 +29,11 @@ class Country extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'en_name', 'cn_name'], 'required'],
+            [['code', 'en_name'], 'required'],
             // [['population'], 'default','value'=>0],
         	[['population'], 'integer','message'=>'必须是数字'],
             [['code'], 'string', 'max' => 3],
+        	[['alpha2_code'], 'string', 'max' => 2],
             [['en_name', 'cn_name'], 'string', 'max' => 20],
             [['flag'], 'string', 'max' => 255]
         ];

@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
-    'name' => '官网购',
+    'name' => '去官网',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language' => 'zh-CN', // <- here!
@@ -32,6 +32,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+		'view' => [
+			/* 'theme' => [
+					'basePath' => '@app/themes/basic',
+					'baseUrl' => '@web/themes/basic',
+					'pathMap' => [
+							'@app/views' => '@app/themes/basic',
+					],
+			], */
+		],
     	'authClientCollection' => [
     		'class' => 'yii\authclient\Collection',
     		'clients' => [

@@ -17,7 +17,7 @@ use common\models\helper\BrowserHelper;
 /* @var $searchModel backend\models\PostsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '发帖';
+$this->title = Yii::$app->name.'-'.'促销活动 文章';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -49,19 +49,30 @@ $this->params['breadcrumbs'][] = $this->title;
       <a href="<?= Url::to(['posts/view','id'=>$model->id])?>">
 						<?php $image=$model->albumDefaultImg;?>
 						<?php if($image):?>
-								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="...">
+								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="<?= html::encode($model->post_title)?>">
 						<?php else :?>
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." > -->
 						<?php endif;?>
 						</a>
       <div class="caption">
         <h3 ><a href="<?= Url::to(['posts/view','id'=>$model->id])?>"><?= html::encode($model->post_title)?></a></h3>
-        <p class="text-right">
+       <div class="row">
+       <div class="col-md-6 col-sm-6">
+       </div>
+       <div class="col-md-6 col-sm-6">
+        			<div class="btn-group pull-right" role="group" aria-label="...">
 							<?php if ($model->url) :?>
-								<a class="btn btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart">去购买</span></a>
+								<a class="btn btn-default" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
 							<?php endif;?>
-					</p>
-				
+							<?php $links = $model->links?>
+							<?php if($links):?>
+								<?php foreach ($links as $link):?>
+								<a class="btn btn-default " target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
+								<?php endforeach;?>
+							<?php endif;?>
+					</div>
+		</div>
+		</div>			
 				<div class="row">
 				<div class="col-md-6 col-sm-6">
 					<div class='text-left'>
@@ -72,11 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	  						<a href="<?= Url::to(['posts/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
 	  					<?php endforeach;?>	
 	  					<?php endif;?>		
-	<!-- 			<span class="label label-primary">Primary</span> -->
-						<!-- 			<span class="label label-success">Success</span> -->
-						<!-- 			<span class="label label-info">Info</span> -->
-						<!-- 			<span class="label label-warning">Warning</span> -->
-						<!-- 			<span class="label label-danger">Danger</span> -->
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-6">
@@ -170,14 +176,14 @@ echo LinkPager::widget([
         <?php endif;?>
     </ul>
     </div>
-    <div class="panel-footer">
+    <!-- div class="panel-footer"> -->
         <span>
-    	<?php echo LinkPager::widget([
+    	<?php  echo LinkPager::widget([
             'pagination' => $starPostsProvider->getPagination(),
             ]);
         ?>
     	</span>
-    </div>
+   <!--  </div> -->
 </div>
 	<?php endif;?>
 	<?php endif;?>
@@ -223,11 +229,13 @@ echo LinkPager::widget([
 <!-- 广告位开始 -->
 <?php if(BrowserHelper::is_mobile()):?>
 <!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
 <?php else:?>
 <!-- pc device -->
 <?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php endif;?>
 <!-- 广告位结束 -->
 

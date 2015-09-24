@@ -24,6 +24,8 @@ AppAsset::register($this);
 <head>
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="去官网购物,去官网,官网购,购物导航,购物决策,购物搜索"/>
+<meta name="description" content="购物导航网站 汇集各大品牌 引导用户到厂家的官方网站购物 我们不卖东西 我们让购物更有保障" />
 <script>
 var _hmt = _hmt || [];
 (function() {
@@ -48,7 +50,7 @@ var _hmt = _hmt || [];
                 'brandLabel' => '去官网购物G2GW',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
+                    'class' => 'navbar-inverse navbar-default navbar-fixed-top',
                 ],
             ]);
             $menuItems = [

@@ -14,7 +14,11 @@ class ADManager
 	// 广告尺寸
 	const AD_SIZE_320_90  = '320_90';
 	const AD_SIZE_1000_90 = '1000_90';
+	const AD_SIZE_960_90  = '960_90';
+	const AD_SIZE_468_90  = '468_90';
 	const AD_SIZE_250_250 = '250_250';
+	const AD_SIZE_300_250 = '300_250';
+	const AD_SIZE_336_280 = '336_280';
 	// 广告展现设备
 	const AD_MOBILE = 'mobile';
 	const AD_PC     = 'pc';
@@ -66,7 +70,31 @@ JS
 JS
 					],
 			],
-			'jd' => [],
+			'jd' => [
+					'pc' => [
+							'960_90' => <<<JS
+							<script type="text/javascript">var jd_union_unid="335137776",jd_ad_ids="505:6",jd_union_pid="COTRt6L/KRDwl+efARoAINS0lKIBKgA=";var jd_width=960;var jd_height=90;var jd_union_euid="";var p="ABcGVB1SFAUTNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyT1EqZVlsB1lnExgSQWtaRTZuGRFDVAtZK1kXCxAEVRhZEjIQBVEbWRMEFABlKwRRX083HnVaJV1WWggrWxAHEQ9VGF0dAxQDXCta";</script><script type="text/javascript" charset="utf-8" src="http://u.x.jd.com/static/js/auto.js"></script>
+JS
+							,
+							'250_250' => <<<JS
+							<script type="text/javascript">var jd_union_unid="335137776",jd_ad_ids="520:6",jd_union_pid="CP6LwKL/KRDwl+efARoAIJzElKIBKgA=";var jd_width=250;var jd_height=250;var jd_union_euid="";var p="ABcGVB1fFAAWNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyVUBTQwJjY3FkD0MmFXZsYBd5EBIAcgtZK1kXCxAEVRhZEjIQBVEbWRMEFABlKwRRX083HnVaJV1WWggrWxAHEQ9VGFMWChEOVCta";</script><script type="text/javascript" charset="utf-8" src="http://u.x.jd.com/static/js/auto.js"></script>
+JS
+					],
+					'mobile' => [
+							'468_90' => <<<JS
+							<script type="text/javascript">var jd_union_unid="335137776",jd_ad_ids="508:6",jd_union_pid="CPugu6L/KRDwl+efARoAIKy8lKIBKgA=";var jd_width=468;var jd_height=90;var jd_union_euid="";var p="ABcGVB1eFAEUNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyRUYOeBtDfVRlKWkQYHkIWTJ8KW9lVAtZK1kXCxAEVRhZEjIQBVEbWRMEFABlKwRRX083HnVaJV1WWggrWxAHEQ9VGFIRAxMCUSta";</script><script type="text/javascript" charset="utf-8" src="http://u.x.jd.com/static/js/auto.js"></script>
+JS
+							,
+							'300_250' => <<<JS
+							<script type="text/javascript">var jd_union_unid="335137776",jd_ad_ids="513:6",jd_union_pid="CJaAkKP/KRDwl+efARoAIK68lKIBKgA=";var jd_width=300;var jd_height=250;var jd_union_euid="";var p="ABcGVB1TFAYTNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyFHACUwVSRG1nKWEJQ3dEcAofLkpFRAtZK1kXCxAEVRhZEjIQBVEbWRMEFABlKwRRX083HnVaJV1WWggrWxAHEQ9VHlgXCxcOXSta";</script><script type="text/javascript" charset="utf-8" src="http://u.x.jd.com/static/js/auto.js"></script>
+JS
+							,
+							'336_280' => <<<JS
+							<script type="text/javascript">var jd_union_unid="335137776",jd_ad_ids="512:6",jd_union_pid="CITiqKP/KRDwl+efARoAII2JmKIBKgA=";var jd_width=336;var jd_height=280;var jd_union_euid="";var p="ABcGVRlZFAMXNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyTQICRCdQA1JlDlMAHHpQWSJSPmB%2FRAtZK1kXCxAEVRhZEjIQBVEbWRMEFABlKwRRX083HnVaJV1WWggrWxAHEQ9VHlwQBxEFVyta";</script><script type="text/javascript" charset="utf-8" src="http://u.x.jd.com/static/js/auto.js"></script>
+JS
+							,
+					],					
+			],
 			'baidu' => [],
 			'360' => [],
 			'sogou' => [

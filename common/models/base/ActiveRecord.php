@@ -10,6 +10,7 @@ use common\models\Category;
 use common\models\Company;
 use common\models\Brand;
 use common\models\Country;
+use common\models\Links;
 use backend\models\PostsSearch;
 use yii\helpers\StringHelper;
 use yii\behaviors\TimestampBehavior;
@@ -692,5 +693,17 @@ class ActiveRecord extends \yii\db\ActiveRecord
 		return $dataProvider;
 	}
 	
+	/**
+	 * This function is to get all the links records related to the model.
+	 * 得到数据模型相关的链接 例如：一个商品会对应网络上几个链接 有的指向官网 有的指向淘宝 有的指向京东等等
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function getLinks()
+	{
+		return $this->hasMany(Links::className(),['model_id'=>'id'])
+		->where(['model_type'=> $this->modelType()]);
+	}
 	
 }

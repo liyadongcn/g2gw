@@ -15,15 +15,19 @@ use common\models\RelationshipsMap;
 use yii\data\Sort;
 use common\advertisement\ADManager;
 use common\models\helper\BrowserHelper;
+use kartik\icons\Icon;
 
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\BrandSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '品牌';
+$this->title = Yii::$app->name.'-'.'品牌';
 $this->params['breadcrumbs'] [] = $this->title;
 
+Icon::map($this, Icon::FI); // Maps the Elusive icon font framework
+
+// 每行显示品牌的数量
 const ROW_ITEMS_COUNT=3;
 ?>
     		
@@ -44,7 +48,7 @@ const ROW_ITEMS_COUNT=3;
 		<?php $img=$promotion->getAlbumDefaultImg();?>
 		<?php if($img):?>		
 			<?php $items[]=[
-					'content'=>'<a href="'.url::to(['posts/view','id'=>$promotion->id]).'">'.html::img($img->filename).'</a>',
+					'content'=>'<a href="'.url::to(['posts/view','id'=>$promotion->id]).'">'.html::img($img->filename,['alt'=>$promotion->post_title]).'</a>',
 					'caption'=>'<h4 >'.html::encode($promotion->post_title).'</h4>',
 					'options'=>'',
 				];				
@@ -102,26 +106,26 @@ const ROW_ITEMS_COUNT=3;
 		<?php if($modelIndex+1>$dataProvider->count) break;?>
 		<div class="col-md-4">
 		<div class="thumbnail">
-      		<a href="<?= Url::to(['brand/view','id'=>$models[$modelIndex]->id])?>"> <img src="<?= html::encode($models[$modelIndex]->logo)?>" alt="..."></a>
+      		<a href="<?= Url::to(['brand/view','id'=>$models[$modelIndex]->id])?>"> <img src="<?= html::encode($models[$modelIndex]->logo)?>" alt="<?= html::encode($models[$modelIndex]->en_name.' '.$models[$modelIndex]->cn_name)?>"></a>
       		<div class="caption">
         	<h3><?= html::encode($models[$modelIndex]->cn_name)?>
         		<?php if($models[$modelIndex]->country):?>
         			<a href="<?= url::to(['brand/search-by-country','country_code'=>$models[$modelIndex]->country_code])?>">
-        			<span class="pull-right" data-toggle="tooltip" data-placement="top" title=<?= html::encode($models[$modelIndex]->country->cn_name)?>><?= html::img($models[$modelIndex]->country->flag,['width'=>30])?></span>
+        			<span class="pull-right" data-toggle="tooltip" data-placement="top" title=<?= html::encode($models[$modelIndex]->country->cn_name)?>><?= Icon::show(strtolower($models[$modelIndex]->country->alpha2_code), [], Icon::FI) ?></span>
         			</a>
         		<?php endif;?> 
         	</h3>       		
         		<div class="btn-group " role="group" aria-label="...">
 									<?php $ecommerces=$models[$modelIndex]->ecommerces;?>
-									<?php if ($ecommerces) :?>
-										
+									<?php if ($ecommerces) :?>										
 									<?php foreach ($ecommerces as $ecommerce) :?>
+										<?php empty($ecommerce->link_promotion) ? $link=$ecommerce->website : $link=$ecommerce->link_promotion;?>
 										<?php if($ecommerce->accept_order):?>
 										<a class="btn btn-success btn-xs"
-												href="<?= html::encode($ecommerce->website);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
+												href="<?= html::encode($link);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php else :?>
 										<a class="btn btn-warning btn-xs"
-												href="<?= html::encode($ecommerce->website);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
+												href="<?= html::encode($link);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
 										<?php endif;?>
 									<?php endforeach;?>
 										
@@ -293,11 +297,13 @@ echo LinkPager::widget([
 <!-- 广告位开始 -->
 <?php if(BrowserHelper::is_mobile()):?>
 <!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
 <?php else:?>
 <!-- pc device -->
 <?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php endif;?>
 <!-- 广告位结束 -->
 

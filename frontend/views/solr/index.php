@@ -13,7 +13,7 @@ use common\advertisement\ADManager;
 use common\models\helper\BrowserHelper;
 
 /* @var $this yii\web\View */
-$this->title = '官网商品';
+$this->title = Yii::$app->name.'-'.'搜索官网商品';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -154,11 +154,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 广告位开始 -->
 <?php if(BrowserHelper::is_mobile()):?>
 <!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
 <?php else:?>
 <!-- pc device -->
 <?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php endif;?>
 <!-- 广告位结束 -->
     

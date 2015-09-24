@@ -18,7 +18,7 @@ use common\advertisement\ADManager;
 /* @var $searchModel backend\models\GoodsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '商品';
+$this->title = Yii::$app->name.'-'.'精品 超值 特惠';
 $this->params['breadcrumbs'][] = $this->title;
 
 const ROW_ITEMS_COUNT=2;
@@ -55,7 +55,7 @@ const ROW_ITEMS_COUNT=2;
 						<a href=<?= Url::to(['goods/view','id'=>$model->id])?>>
 						<?php $image=$model->albumDefaultImg;?>
 						<?php if($image):?>
-								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="..." width="120px">
+								<img class=" media-object img-rounded" src="<?= html::encode($image->filename)?>"	alt="<?= html::encode($model->title)?>" width="120px">
 						<?php //else :?>
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." width="200"> -->
 						<?php endif;?>
@@ -66,15 +66,23 @@ const ROW_ITEMS_COUNT=2;
 							<h3 class="media-heading"><?= html::encode($model->title)?></h3>
 						</a>
 						<p>
-							<?= html::encode(mb_substr( $model->description, 0, 100, 'utf-8').'……')?>
+							<?= html::encode(mb_substr( strip_tags($model->description), 0, 100, 'utf-8').'……')?>
 							<span><a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
 							[详细]</a></span>						
 						</p>
-						<p class="text-right">
+						
+							<div class="btn-group pull-right" role="group" aria-label="...">
 							<?php if ($model->url) :?>
-								<a class="btn btn-sm btn-success" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="glyphicon glyphicon-shopping-cart"></span>去购买</a>
+								<a class="btn btn-default" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
 							<?php endif;?>
-						</p>
+							<?php $links = $model->links?>
+							<?php if($links):?>
+								<?php foreach ($links as $link):?>
+								<a class="btn btn-default " target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
+								<?php endforeach;?>
+							<?php endif;?>
+							</div>
+						
 					</div>					
 				</div>
 				<!-- <div > -->
@@ -276,11 +284,13 @@ echo LinkPager::widget([
 <!-- 广告位开始 -->
 <?php if(BrowserHelper::is_mobile()):?>
 <!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_MOBILE, ADManager::AD_SIZE_336_280);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90)?>
 <?php else:?>
 <!-- pc device -->
 <?php echo ADManager::getAd(ADManager::AD_SOGOU, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
+<?php echo ADManager::getAd(ADManager::AD_JD, ADManager::AD_PC, ADManager::AD_SIZE_250_250);?>
 <?php endif;?>
 <!-- 广告位结束 -->
 
