@@ -23,7 +23,7 @@ use common\models\Category;
  */
 class BrandController extends Controller
 {
-	const UPLOAD_FILE_PATH='uploads\\brand\\';
+	const UPLOAD_FILE_PATH='uploads/brand/';
 	
     public function behaviors()
     {
@@ -117,7 +117,7 @@ class BrandController extends Controller
             
             if ($model->file ) {
                 $model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
-                $model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
+                $model->logo='/'.self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
             }
 
             // validate all models
@@ -194,7 +194,7 @@ class BrandController extends Controller
             
             if ($model->file && $model->validate()) {
                 $model->file->saveAs(self::UPLOAD_FILE_PATH . $model->en_name. '.' . $model->file->extension);
-                $model->logo=self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
+                $model->logo='/'.self::UPLOAD_FILE_PATH. $model->en_name. '.' . $model->file->extension;
             }
 
             // validate all models

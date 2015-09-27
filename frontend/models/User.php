@@ -20,7 +20,7 @@ use yii\swiftmailer\Message;
  */
 class User extends \common\models\User
 {
-	const USER_FACE_FILEPATH='uploads/user';
+	const USER_FACE_FILEPATH='/uploads/user';
    
     public $password_repeat;
     public $original_password;

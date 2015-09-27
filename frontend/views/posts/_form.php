@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use common\models\Posts;
@@ -9,6 +10,7 @@ use kartik\widgets\datepicker;
 use kartik\widgets\DateTimePicker;
 use kartik\widgets\FileInput;
 use kartik\widgets\Select2;
+use vova07\imperavi\Widget;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
@@ -33,7 +35,19 @@ use kartik\widgets\Select2;
 
     <?= $form->field($model, 'post_title')->textInput(['maxlength' => 100]) ?>
 
-    <?= $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
+    <?php //echo  $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
+    
+    <?php echo $form->field($model, 'post_content')->widget(Widget::className(), [
+	    'settings' => [
+	        'lang' => 'zh_cn',
+	        'minHeight' => 200,
+	    	'imageUpload' => Url::to(['/posts/image-upload']),
+	        'plugins' => [
+	            'clips',
+	            'fullscreen'
+	        ]
+	    ]
+	]);?>
 
     <?php 
 //     echo $form->field($model, 'brand_id')->dropDownList(

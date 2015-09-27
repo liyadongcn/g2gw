@@ -367,12 +367,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 */
 	public function saveToAlbum($file,$is_defaut=0)
 	{
-		$fileName='uploads\\'.$this->modelType() .'\\'. uniqid() . '.' . $file->extension;
+		$fileName='uploads/'.$this->modelType() .'/'. uniqid() . '.' . $file->extension;
 		$file->saveAs($fileName);
 		$album = new Album();
 		$album->model_id=$this->id;
 		$album->model_type=$this->modelType();
-		$album->filename=$fileName;
+		$album->filename='/'.$fileName;
 		$album->is_default=$is_defaut;
 		$album->save();
 	}

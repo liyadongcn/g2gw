@@ -261,7 +261,7 @@ class UserController extends Controller
 	    	
 	    	$model->scenario='UpdateAvatar';
 	    	
-	    	$model->face = $crop -> getResult();
+	    	$model->face = '/'.$crop -> getResult();
 	
 	    	$model->save();
 	    	

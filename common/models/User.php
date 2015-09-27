@@ -31,7 +31,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
     const STATUS_ONLINE =20;
-    const DEFAULT_USER_FACE='uploads\user\default_small.png';
+    const DEFAULT_USER_FACE='/uploads/user/default_small.png';
     
     const MODEL_TYPE_GOODS='goods';
     const MODEL_TYPE_COMMENT='comment';

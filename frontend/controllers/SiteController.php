@@ -164,7 +164,7 @@ class SiteController extends Controller
             $model->file = UploadedFile::getInstance($model, 'file');
 
             if ($model->file) {                
-                $model->file->saveAs('uploads\\' . $model->username. '.' . $model->file->extension);
+                $model->file->saveAs('/uploads/user/' . $model->username. '.' . $model->file->extension);
             }
             
             if ($user = $model->signup()) {

@@ -48,6 +48,24 @@ class GoodsController extends Controller
             ],
         ];
     }
+    
+    public function actions()
+    {
+    	return [
+    			/* 'upload' => [
+    			 'class' => 'kucha\ueditor\UEditorAction',
+    					'config' => [
+    							"imageUrlPrefix"  => Yii::$app->request->hostInfo,//图片访问路径前缀
+    							"imagePathFormat" => "/uploads/posts/{yyyy}{mm}{dd}/{time}{rand:6}" //上传保存路径
+    					],
+    			] */
+    			'image-upload' => [
+    					'class' => 'vova07\imperavi\actions\UploadAction',
+    					'url' =>  Yii::$app->request->hostInfo.'/uploads/goods/', // Directory URL address, where files are stored.
+    					'path' => '@frontend/web/uploads/goods' // Or absolute path to directory where files are stored.
+    			],
+    	];
+    }
 
     /**
      * Lists all Goods models.

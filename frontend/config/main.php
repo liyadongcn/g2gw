@@ -32,6 +32,11 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+    	'urlManager' => [
+    		//'enablePrettyUrl' => true,
+    		//'showScriptName' => false,    			
+    		// create the .htaccess file in the web root directory
+    	],
 		'view' => [
 			/* 'theme' => [
 					'basePath' => '@app/themes/basic',
