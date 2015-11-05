@@ -30,17 +30,17 @@ const ROW_ITEMS_COUNT=2;
 	<div class="goods-index">
 
 <!-- 搜索结果数量及排序开始 -->
-<?php $sort=$dataProvider->sort;?>
-<div class="row">
-<div class="col-md-6 col-sm-12">
+<?php //$sort=$dataProvider->sort;?>
+<!-- <div class="row"> -->
+<!-- <div class="col-md-6 col-sm-12"> -->
 <!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
-</div>
-<div class="col-md-6 col-sm-12">
-	<p class="action pull-right">
-	<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
-	</p>
-</div>
-</div>
+<!-- </div> -->
+<!-- <div class="col-md-6 col-sm-12"> -->
+<!-- 	<p class="action pull-right"> -->
+<?php //echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>   
+<!-- 	</p> -->
+<!-- </div> -->
+<!-- </div> -->
 <!-- 搜索结果数量及排序结束 -->
 
 <?php $models=$dataProvider->models;?>
@@ -63,7 +63,13 @@ const ROW_ITEMS_COUNT=2;
 					</div>
 					<div class="media-body">
 						<a href="<?= Url::to(['goods/view','id'=>$model->id])?>">
+							<?php if(BrowserHelper::is_mobile()):?>
+							<!-- mobile device display -->
+							<h4 class="media-heading"><?= html::encode($model->title)?></h4>
+							<?php else :?>
+							<!-- pc device display -->
 							<h3 class="media-heading"><?= html::encode($model->title)?></h3>
+							<?php endif;?>							
 						</a>
 						<p>
 							<?= html::encode(mb_substr( strip_tags($model->description), 0, 100, 'utf-8').'……')?>
@@ -96,11 +102,6 @@ const ROW_ITEMS_COUNT=2;
 	  						<a href="<?= Url::to(['goods/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
 	  					<?php endforeach;?>	
 	  					<?php endif;?>		
-	<!-- 			<span class="label label-primary">Primary</span> -->
-						<!-- 			<span class="label label-success">Success</span> -->
-						<!-- 			<span class="label label-info">Info</span> -->
-						<!-- 			<span class="label label-warning">Warning</span> -->
-						<!-- 			<span class="label label-danger">Danger</span> -->
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-6">
@@ -152,21 +153,21 @@ echo LinkPager::widget([
 <div class="col-lg-3 ">
 
 <!-- 热门标签开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门标签</h3>
-	</div>
-	<div class="panel-body">
+<!-- <div class="panel panel-primary"> -->
+<!-- 	<div class="panel-heading"> -->
+<!-- 		<h3 class="panel-title">热门标签</h3> -->
+<!-- 	</div> -->
+<!-- 	<div class="panel-body"> -->
 	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_GOODS,30)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
-			<a  class="btn btn-success btn-xs" href="<?= Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>">
-			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?></span>
-			</a>&nbsp;
+			<?php //echo Url::to(['goods/search-by-tag','tagid'=>$tag->id])?>
+			<?php //echo html::encode($tag->name)?>
+			<?php //echo html::encode($tag->count)?>
 		<?php endforeach;?>
 	<?php endif;?>
-	</div>
-</div>
+<!-- 	</div> -->
+<!-- </div> -->
 <!-- 热门标签结束 -->
 
 <!-- 用户收藏的商品开始 -->

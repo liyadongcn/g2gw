@@ -47,7 +47,7 @@ var _hmt = _hmt || [];
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => '去官网购物G2GW',
+                'brandLabel' => '去官网购物&nbsp;&nbsp;&nbsp;<small>最新的官网购物信息</small>',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-default navbar-fixed-top',
@@ -99,7 +99,7 @@ var _hmt = _hmt || [];
                 ];
             }
          ?>
-			<p class="navbar-text">最新的官网购物信息</p>
+<!-- 			<p class="navbar-text">最新的官网购物信息</p> -->
 			
 <!-- 分类菜单开始 -->
 			<?php $searchModelType=yii::$app->session->get('SEARCH_MODEL_TYPE');?>

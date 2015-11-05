@@ -6,10 +6,12 @@ use yii\widgets\ActiveForm;
 //use common\models\Brand;
 //use common\models\Album;
 use common\models\Category;
+use common\models\helper\BrowserHelper;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\Select2;
 use kartik\widgets\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
+use vova07\imperavi\Widget;
 //use yii\widgets\InputWidget;
 
 /* 
@@ -68,7 +70,22 @@ use wbraganca\dynamicform\DynamicFormWidget;
      <?php echo $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
     <?php //echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-    <?php echo $form->field($model,'description')->widget('kucha\ueditor\UEditor',[]);?>
+    
+    <?php if(BrowserHelper::is_mobile()):?>
+     <?php echo $form->field($model, 'description')->widget(Widget::className(), [
+	    'settings' => [
+	        'lang' => 'zh_cn',
+	        'minHeight' => 200,
+	    	'imageUpload' => Url::to(['/goods/image-upload']),
+	        'plugins' => [
+	            'clips',
+	            'fullscreen'
+	        ]
+	    ]
+	]);?>
+	<?php else:?>
+	<?php echo $form->field($model,'description')->widget('kucha\ueditor\UEditor',[]);?>
+	<?php endif;?>
     
      <?php //echo $form->field($model, 'comment_status')->textInput(['maxlength' => 20]) ?>
     <?php  echo $form->field($model, 'comment_status')->dropDownList(

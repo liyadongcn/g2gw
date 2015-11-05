@@ -14,7 +14,7 @@ use common\advertisement\ADManager;
 /* @var $this yii\web\View */
 /* @var $model common\models\Goods */
 
-$this->title =  Yii::$app->name.'-'.$model->title;
+$this->title =  $model->title.'-'.Yii::$app->name;
 $this->params['breadcrumbs'][] = ['label' => 'Goods', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -32,13 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		<span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>"
 			data-toggle="tooltip" data-placement="top" title="收藏"><span
 				class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?>人收藏</em></a></span>
-		<span class="vote"><a class="up"
-			href="<?= Url::to(['thumbsup','id' => $model->id])?>" title=""
-			data-toggle="tooltip" data-original-title="顶"><span
-				class="glyphicon glyphicon-thumbs-up"></span> <em><?= Html::encode($model->thumbsup) ?></em></a><a
-			class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>"
-			title="" data-toggle="tooltip" data-original-title="踩"><span
-				class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em></a></span>
+		<?php if($model->brand):?>
+            <span class="vote"><a class="up" href="<?= Url::to(['brand/view','id' => $model->brand->id])?>" title="" data-toggle="tooltip" data-original-title="顶"><span class="label label-default"><?= html::encode($model->brand->en_name)?></span></a></span>
+        <?php endif;?>
 	</div>
 <!-- 详情表头结束 -->
 

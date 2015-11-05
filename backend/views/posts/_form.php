@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 use common\models\Posts;
 use common\models\Category;
 use common\models\Links;
+use common\models\helper\BrowserHelper;
 use kartik\widgets\datepicker;
 use kartik\widgets\DateTimePicker;
 use kartik\widgets\FileInput;
@@ -26,21 +27,23 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
     <?= $form->field($model, 'post_title')->textInput(['maxlength' => 100]) ?>
 
-    <?php //echo $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
+    <?php //echo $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>   
     
-    <?php echo $form->field($model,'post_content')->widget('kucha\ueditor\UEditor',[]);?>
-    
-    <?php /* echo $form->field($model, 'post_content')->widget(Widget::className(), [
-	    'settings' => [
-	        'lang' => 'zh_cn',
-	        'minHeight' => 200,
-	    	'imageUpload' => Url::to(['/posts/image-upload']),
-	        'plugins' => [
-	            'clips',
-	            'fullscreen'
-	        ]
-	    ]
-	]); */?>
+    <?php if(BrowserHelper::is_mobile()):?>    
+	    <?php echo $form->field($model, 'post_content')->widget(Widget::className(), [
+		    'settings' => [
+		        'lang' => 'zh_cn',
+		        'minHeight' => 200,
+		    	'imageUpload' => Url::to(['/posts/image-upload']),
+		        'plugins' => [
+		            'clips',
+		            'fullscreen'
+		        ]
+		    ]
+		]); ?>	
+	<?php else:?>	
+		<?php echo $form->field($model,'post_content')->widget('kucha\ueditor\UEditor',[]);?>	
+	<?php endif;?>
     
 
     <?php 
@@ -83,7 +86,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
     				
    			 ]) ?>
 
-    <?php //echo $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
+    <?php echo $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
     <?php //echo $form->field($model, 'created_date')->textInput() ?>
 

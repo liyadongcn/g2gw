@@ -27,17 +27,17 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="posts-index">
 	
 <!-- 搜索结果数量及排序开始 -->
-<div class="row">
-	<div class="col-md-6 col-sm-12">
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-6 col-sm-12"> -->
 	<!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
-	</div>
-	<div class="col-md-6 col-sm-12">
-		<p class="action pull-right">
-		<?php $sort=$dataProvider->sort;?>
-		<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
-		<p>
-	</div>
-</div>
+<!-- 	</div> -->
+<!-- 	<div class="col-md-6 col-sm-12"> -->
+<!-- 		<p class="action pull-right"> -->
+		<?php //$sort=$dataProvider->sort;?>
+		<?php //echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>    
+<!-- 		<p> -->
+<!-- 	</div> -->
+<!-- </div> -->
 <!-- 搜索结果数量及排序结束 -->
 
 <?php $models=$dataProvider->models;?>
@@ -134,21 +134,21 @@ echo LinkPager::widget([
 	<div class="col-lg-3 ">
 
 <!-- 热门标签开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门标签</h3>
-	</div>
-	<div class="panel-body">
+<!-- <div class="panel panel-primary"> -->
+<!-- 	<div class="panel-heading"> -->
+<!-- 		<h3 class="panel-title">热门标签</h3> -->
+<!-- 	</div> -->
+<!-- 	<div class="panel-body"> -->
 	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_POSTS,30)->all();?>
 	<?php if($hotestTags):?>
 		<?php foreach ($hotestTags as $tag):?>			
-			<a class="btn btn-success btn-xs" href="<?= Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>">
-			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?></span>
-			</a>&nbsp;
+			<?php //echo Url::to(['posts/search-by-tag','tagid'=>$tag->id])?>
+			<?php //echo html::encode($tag->name)?>
+			<?php //echo html::encode($tag->count)?>
 		<?php endforeach;?>
 	<?php endif;?>
-	</div>
-</div>
+<!-- 	</div> -->
+<!-- </div> -->
 <!-- 热门标签结束 -->	
 
 <!-- 用户收藏的帖子开始 -->

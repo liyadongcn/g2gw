@@ -58,3 +58,7 @@ phpunit.phar
 /frontend/web/root.txt
 /frontend/web/360navi.txt
 /frontend/web/baidu_verify_ljmFhpED0K.html
+/backend/web/adminlte
+
+/frontend/themes/basic/goods/_index.php
+/frontend/web/1.htaccess

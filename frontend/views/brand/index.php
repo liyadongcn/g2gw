@@ -41,7 +41,7 @@ const ROW_ITEMS_COUNT=3;
 		</div>
 		
 <!-- 品牌促销活动轮播开始 -->
-<?php if ($this->beginCache('CACHE_POST_PROMOTION', ['duration' => 60])): ?>
+<?php //if ($this->beginCache('CACHE_POST_PROMOTION', ['duration' => 60])): ?>
 <?php $promotions=Posts::getPromotions(10)->all();?>
 <?php if($promotions):?>
 	<?php foreach ($promotions as $promotion):?>
@@ -75,24 +75,24 @@ const ROW_ITEMS_COUNT=3;
 // 		]
 // ]);
 ?>
-<?php $this->endCache();?>		
-<?php endif;?>
+<?php //$this->endCache();?>		
+<?php //endif;?>
 <!-- 品牌促销活动轮播结束 -->
 
 <hr>
 
 <!-- 搜索结果数量及排序开始 -->
-<?php $sort=$dataProvider->sort;?>
-<div class="row ">
-<div class="col-md-6 col-sm-12">
+<?php //$sort=$dataProvider->sort;?>
+<!-- <div class="row "> -->
+<!-- <div class="col-md-6 col-sm-12"> -->
 <!-- <span class="glyphicon glyphicon-search"><?= html::encode('找到'.$dataProvider->totalCount).'条'?></span> -->
-</div>
-<div class="col-md-6 col-sm-12">
-<p class="action pull-right">
-<?php echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
-</p>
-</div>
-</div>
+<!-- </div> -->
+<!-- <div class="col-md-6 col-sm-12"> -->
+<!-- <p class="action pull-right"> -->
+<?php //echo $sort->link('view_count') . ' | ' . $sort->link('thumbsup'). ' | ' . $sort->link('star_count'). ' | ' . $sort->link('comment_count'). ' | ' . $sort->link('updated_date');?>
+<!-- </p> -->
+<!-- </div> -->
+<!-- </div> -->
 <!-- 搜索结果数量及排序结束 -->
 
 <!-- 搜索结果展示开始 -->

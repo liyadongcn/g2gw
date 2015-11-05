@@ -16,7 +16,7 @@ use vova07\imperavi\Widget;
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
 
-$this->title = Yii::$app->name.'-'.$model->post_title;
+$this->title = $model->post_title.'-'.Yii::$app->name;
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,12 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	
 	<div class="action">
-            <span class="user"><a href="<?= Url::to(['user/view','id'=>$model->userid])?>"><span class="glyphicon glyphicon-user"></span><?= html::encode($model->user->username)?></a></span>
+            <span class="user"><a href="<?= Url::to(['user/view','id'=>$model->userid])?>"><span class="glyphicon glyphicon-user"></span><?= html::encode($model->user->displayName)?></a></span>
             <span class="time"><span class="glyphicon glyphicon-time"></span> <?= html::encode(TimeHelper::getRelativeTime($model->updated_date))?></span>
             <span class="views"><span class="glyphicon glyphicon-eye-open"></span><?= Html::encode($model->view_count) ?>次浏览</span>
             <span class="comments"><a href="#comments"><span class="glyphicon glyphicon-comment"></span> <?= Html::encode($model->comment_count) ?>条评论</a></span>
             <span class="favourites"><a href="<?= Url::to(['star','id' => $model->id])?>" data-toggle="tooltip" data-placement="top" title="收藏" ><span class="glyphicon glyphicon-star"></span> <em><?= Html::encode($model->star_count) ?>人收藏</em></a></span>
-            <span class="vote"><a class="up" href="<?= Url::to(['thumbsup','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="顶"><span class="glyphicon glyphicon-thumbs-up"></span> <em><?= Html::encode($model->thumbsup) ?></em></a><a class="down" href="<?= Url::to(['thumbsdown','id' => $model->id])?>" title="" data-toggle="tooltip" data-original-title="踩"><span class="glyphicon glyphicon-thumbs-down"></span> <em><?= Html::encode($model->thumbsdown) ?></em></a></span>
+            <?php if($model->brand):?>
+            <span class="vote"><a class="up" href="<?= Url::to(['brand/view','id' => $model->brand->id])?>" title="" data-toggle="tooltip" data-original-title="顶"><span class="label label-default"><?= html::encode($model->brand->en_name)?></span></a></span>
+            <?php endif;?>
     </div>
 	<!-- 文章图片列表开始 -->
 	<?php $album=$model->album;?>

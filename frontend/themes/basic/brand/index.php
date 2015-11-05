@@ -35,7 +35,6 @@ const ROW_ITEMS_COUNT=3;
 <div class="col-lg-9 ">
 
 <!-- 品牌促销活动轮播开始 -->
-<?php if ($this->beginCache('CACHE_POST_PROMOTION', ['duration' => 60])): ?>
 <?php $promotions=Posts::getPromotions(10)->all();?>
 <?php if($promotions):?>
 	<?php foreach ($promotions as $promotion):?>
@@ -49,24 +48,105 @@ const ROW_ITEMS_COUNT=3;
 			?>
 		<?php endif;?>
 	<?php endforeach;?>	
-	<?php //var_dump($items);?>
-	<?php //die();?>
 	<?php echo Carousel::widget(['items'=>$items]);?>
-<?php endif;?>
-<?php $this->endCache();?>		
 <?php endif;?>
 <!-- 品牌促销活动轮播结束 -->
 <hr>
-<!-- 马赛克显示效果开始 -->
+
 <?php $models=$dataProvider->models;?>
 <?php if($models) :?>
+<?php if(BrowserHelper::is_mobile()):?>
+<!-- mobile device display -->
+<?php foreach ($models as $model):?>	
+  	<div class="col-md-4 col-sx-12" >
+	<div class="thumbnail">
+      		<a href="<?= Url::to(['brand/view','id'=>$model->id])?>"> <img src="<?= html::encode($model->logo)?>"  alt="<?= html::encode($model->en_name.' '.$model->cn_name)?>"></a>
+      		<div class="caption">
+        	<h3><?= html::encode($model->cn_name)?>
+        		<?php if($model->country):?>
+        			<a href="<?= url::to(['brand/search-by-country','country_code'=>$model->country_code])?>">
+        			<span class="pull-right" data-toggle="tooltip" data-placement="top" title=<?= html::encode($model->country->cn_name)?>><?= Icon::show(strtolower($model->country->alpha2_code), [], Icon::FI) ?></span>
+        			</a>
+        		<?php endif;?> 
+        	</h3>       		
+        		<div class="btn-group " role="group" aria-label="...">
+									<?php $ecommerces=$model->ecommerces;?>
+									<?php if ($ecommerces) :?>										
+									<?php foreach ($ecommerces as $ecommerce) :?>
+										<?php empty($ecommerce->link_promotion) ? $link=$ecommerce->website : $link=$ecommerce->link_promotion;?>
+										<?php if($ecommerce->accept_order):?>
+										<a class="btn btn-success btn-xs"
+												href="<?= html::encode($link);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
+										<?php else :?>
+										<a class="btn btn-warning btn-xs"
+												href="<?= html::encode($link);?>" target="_blank" role="button"><?= html::encode($ecommerce->name);?></a>
+										<?php endif;?>
+									<?php endforeach;?>
+										
+									<?php endif;?>
+				</div>
+				
+				<p>
+				  					<?php $tagMaps=$model->getTagMaps()->all();?>
+				  					<?php if($tagMaps):?>
+				  					<hr>
+				  					<span class="glyphicon glyphicon-tags">&nbsp;</span>
+				  					<?php foreach ($tagMaps as $tagMap):?>  			
+				  						<a href="<?= Url::to(['brand/search-by-tag','tagid' =>  $tagMap->tag->id])?>"><span class="label label-default"><?= $tagMap->tag->name?></span></a>
+				  					<?php endforeach;?>	
+				  					<?php endif;?>		
+				</p>
+				<hr>
+				<p>
+									<a href="<?= Url::to(['brand/thumbsup','id' => $model->id])?>">
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+									</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsup) ?></span>
+									<a
+										href="<?= Url::to(['brand/thumbsdown','id' => $model->id])?>">
+										<span class="glyphicon glyphicon-thumbs-down"
+										aria-hidden="true"></span>
+									</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsdown) ?></span>
+									<span class="glyphicon glyphicon-comment"
+										aria-hidden="true"></span> <span class="badge"
+										aria-hidden="true"><?= Html::encode($model->comment_count) ?></span>
+									<span class="glyphicon glyphicon-eye-open"></span> <span
+										class="badge"><?= Html::encode($model->view_count) ?></span>
+									<a href="<?= Url::to(['brand/star','id' => $model->id])?>">
+									<?php if($model->isStared()):?>
+										<span class="glyphicon glyphicon-star"></span>
+									<?php else :?>
+										<span class="glyphicon glyphicon-star-empty"></span>
+									<?php endif;?>
+										
+									</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
+				</p>
+      		</div>
+    	</div>
+	</div>	
+	<?php endforeach;?>
+	<nav>
+		<?php 
+		// 显示分页
+		echo LinkPager::widget([
+				'pagination' => $dataProvider->getPagination(),
+				'options' => ['class'=>'pager'],
+				'maxButtonCount'=>3,
+				//'disabledPageCssClass'=>true,
+				'nextPageLabel' => '下一页',
+				'prevPageLabel' => '上一页',
+		]);
+		?>
+	</nav>
+<?php else :?>
+<!-- pc device display -->
+<!-- 马赛克显示效果开始 -->
 <?php \yii2masonry\yii2masonry::begin([ // 无效果 请检查js文件是否加载
 	'options' => [
 			'id' => 'masonry_brand',
 	],
 	'clientOptions' => [
-		'itemSelector' => '.M_item',
-        'columnWidth' => '.row',        
+		'itemSelector' => 'thumbnail',
+        'columnWidth' => 'thumbnail',        
 		//'percentPosition' => true,
 		'isFitWidth' => true
     ]
@@ -140,41 +220,28 @@ const ROW_ITEMS_COUNT=3;
 	<?php endforeach;?>	
 <?php \yii2masonry\yii2masonry::end(); ?>
 <!-- 马赛克显示效果结束 -->
+	<nav>
+		<?php 
+		// 显示分页
+		echo LinkPager::widget([
+				'pagination' => $dataProvider->getPagination(),
+				'options' => ['class'=>'pager'],
+				//'maxButtonCount'=>0,
+				//'disabledPageCssClass'=>true,
+				'nextPageLabel' => '下一页',
+				'prevPageLabel' => '上一页',
+		]);
+		?>
+	</nav>
+<?php endif;?>
 	<?php else:?>
 		<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign"></span>抱歉！啥也没找到！</div>
 	<?php endif;?>	
-	<?php 
-	// 显示分页
-	echo LinkPager::widget([
-			'pagination' => $dataProvider->getPagination(),
-	]);
-	?>
 </div>
 <!-- 页面左半部分结束 -->
 	
 <!-- 页面右半部分开始 -->
 <div class="col-lg-3 ">
-
-<!-- 热门标签开始 -->
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">热门标签</h3>
-	</div>
-	<div class="panel-body">
-	<?php $hotestTags=Tag::getHotestTags(MODEL_TYPE_BRAND,30)->all();?>
-	<?php if($hotestTags):?>
-		<div >
-		<?php foreach ($hotestTags as $tag):?>			
-			<a  class="btn btn-success btn-xs" href="<?= Url::to(['brand/search-by-tag','tagid'=>$tag->id])?>">
-			<?= html::encode($tag->name)?><span class="badge"><?= html::encode($tag->count)?>
-			</span>
-			</a>&nbsp;
-		<?php endforeach;?>
-		</div>
-	<?php endif;?>
-	</div>
-</div>
-<!-- 热门标签结束 -->
 	
 <!-- 热门品牌开始 -->
 <div class="panel panel-primary">

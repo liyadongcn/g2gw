@@ -38,13 +38,13 @@ return [
     		// create the .htaccess file in the web root directory
     	],
 		'view' => [
-			/* 'theme' => [
+			'theme' => [
 					'basePath' => '@app/themes/basic',
 					'baseUrl' => '@web/themes/basic',
 					'pathMap' => [
 							'@app/views' => '@app/themes/basic',
 					],
-			], */
+			],
 		],
     	'authClientCollection' => [
     		'class' => 'yii\authclient\Collection',

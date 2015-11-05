@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
     
      <div class="jumbotron " >
 	  <h1 class='text-left'><?= Html::encode($model->title) ?></h1>
-	  <p class='text-left'><?= Html::encode($model->description) ?></p>
 	  <p class='text-left'><a class="btn btn-primary btn-lg" href="<?= Html::encode($model->url) ?>" role="button">去购买</a></p>
 	</div>
 
