@@ -36,7 +36,8 @@ class Ecommerce extends \yii\db\ActiveRecord
     {
         return [
             [['brand_id', 'is_domestic', 'accept_order'], 'integer'],
-            [['website','link_promotion'], 'string', 'max' => 255],
+            [['website'], 'string', 'max' => 255],
+        	[['link_promotion'], 'string'],
             [['name'], 'string', 'max' => 30],
             [['name','website'], 'required'],
         	[['is_domestic', 'accept_order'], 'default','value'=>true],

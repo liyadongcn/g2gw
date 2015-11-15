@@ -34,9 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'code',
             'en_name',
-            'population',
+            //'population',
             'cn_name',
-            'flag',
+            //'flag',
+            'alpha2_code',
+        	'numeric_code',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

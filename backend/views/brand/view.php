@@ -83,10 +83,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($ecommerces as $ecommerce) :?>
           <?php if($ecommerce->accept_order):?>
           <a class="btn btn-success"
-              href="<?= html::encode($ecommerce->website);?>" role="button">去<?= html::encode($ecommerce->name);?>购物</a>
+              href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
           <?php else :?>
           <a class="btn btn-warning"
-              href="<?= html::encode($ecommerce->website);?>" role="button">去<?= html::encode($ecommerce->name);?></a>
+              href="<?= html::encode($ecommerce->website);?>" role="button"><?= html::encode($ecommerce->name);?></a>
           <?php endif;?>
         <?php endforeach;?>
         <?php endif;?>

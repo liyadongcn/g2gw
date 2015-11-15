@@ -24,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php 
     	echo  GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => false,//$searchModel,
+        //'filterModel' => false,//$searchModel,    			
+    	'options' => ['class' => 'grid-view table-responsive'],
+        'tableOptions' => ['class' => ' table table-hover'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -35,9 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'cn_name',
             //'introduction:ntext',
             //'baidubaike',
-           // 'thumbsup',
-            //'thumbsdown',
-            'company.name',
+            'thumbsup',
+            'thumbsdown',
+            //'company.name',
             'comment_count',
             'view_count',
 

@@ -7,6 +7,7 @@ use common\models\Posts;
 use common\models\Goods;
 use common\models\Brand;
 use common\models\User;
+use common\models\common\models;
 
 /* @var $this yii\web\View */
 
@@ -19,8 +20,9 @@ $this->title = 'G2GW Admin Application';
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><?= (new Posts())->find()->count()?></h3>
-
+              <?php $staPost=new Posts()?>
+              <h3><?= $staPost->find()->count()?></h3>
+			  <p>昨日新增: <?= $staPost->getNewAdded(1)?></p>
               <p>活动促销 新闻 购物经验</p>
             </div>
             <div class="icon">

@@ -36,9 +36,9 @@ class Links extends \yii\db\ActiveRecord
         return [
             //[['id', 'model_type', 'model_id'], 'required'],
             [['id', 'model_id', 'status'], 'integer'],
-            [['link_description'], 'string'],
+            [['link_description', 'link_promotion'], 'string'],
             [['created_date', 'updated_date'], 'safe'],
-            [['link_url', 'link_promotion'], 'string', 'max' => 500],
+            [['link_url'], 'string', 'max' => 500],
             [['link_name', 'model_type'], 'string', 'max' => 30]
         ];
     }

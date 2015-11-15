@@ -26,7 +26,7 @@ AdminLTEAsset::register($this);
    <div class="wrapper">
     <header class="main-header">
     <!-- Logo -->
-    <a href="index.html" class="logo">
+    <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
@@ -239,17 +239,17 @@ AdminLTEAsset::register($this);
           <?php else:?>
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="adminlte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <img src=<?= html::encode(Yii::$app->user->identity->face) ?> class="user-image" alt="User Image">
+              <span class="hidden-xs"> <?= Yii::$app->user->identity->displayName?> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
+<!--                 <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+				<?=  html::img(Yii::$app->user->identity->face,['class'=>'img-circle','alt'=>Yii::$app->user->identity->username]);?>
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <?= html::encode(Yii::$app->user->identity->displayName)?> - Web Developer
+                  <small>注册时间 <?= html::encode(date('Y-m-d H:i:s',Yii::$app->user->identity->created_at))?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -270,10 +270,10 @@ AdminLTEAsset::register($this);
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href=<?= url::to(['/user/view','id'=>yii::$app->user->id])?> class="btn btn-default btn-flat">简介</a>
                 </div>
                 <div class="pull-right">
-                  <a href=<?= url::to(['/site/logout'])?> class="btn btn-default btn-flat">Sign out</a>
+                  <a href=<?= url::to(['/site/logout'])?> class="btn btn-default btn-flat">退出</a>
                 </div>
               </li>
             </ul>
@@ -295,10 +295,10 @@ AdminLTEAsset::register($this);
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src= <?= html::encode(Yii::$app->user->identity->face) ?> class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><?= html::encode(Yii::$app->user->identity->displayName)?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -462,7 +462,7 @@ AdminLTEAsset::register($this);
 	    <section class="content-header">
 	      <h1>
 	        控制面板
-	        <small>Control panel</small>
+	        <small><?= $this->title?> Control panel</small>
 	      </h1>
 <!-- 	      <ol class="breadcrumb"> -->
 <!-- 	        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li> -->

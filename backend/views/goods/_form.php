@@ -271,7 +271,7 @@ use vova07\imperavi\Widget;
 
                         <?= $form->field($modelLink, "[{$i}]link_url")->textInput(['maxlength' => 500]) ?>
                         
-                        <?= $form->field($modelLink, "[{$i}]link_promotion")->textInput(['maxlength' => 500]) ?>
+                        <?= $form->field($modelLink, "[{$i}]link_promotion")->textarea(['rows' => 3]) ?>
                         
                         <?= $form->field($modelLink, "[{$i}]link_description") ->textarea(['rows' => 6]) ?>
         

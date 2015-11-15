@@ -214,7 +214,7 @@ use common\models\Category;
 
                         <?= $form->field($modelEcommerce, "[{$i}]name")->textInput(['maxlength' => 30]) ?>
                         
-                        <?= $form->field($modelEcommerce, "[{$i}]link_promotion")->textInput(['maxlength' => 255]) ?>
+                        <?= $form->field($modelEcommerce, "[{$i}]link_promotion")->textarea(['rows' => 3]) ?>
 
                         <?= $form->field($modelEcommerce, "[{$i}]is_domestic")->dropDownList(
                                                 Ecommerce::getDropDownListData('is_domestic'),

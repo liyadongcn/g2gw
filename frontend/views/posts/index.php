@@ -87,16 +87,25 @@ $this->params['breadcrumbs'][] = $this->title;
 				</div>
 				<div class="col-md-6 col-sm-6">
 					<p class='text-right'>
+						<?php if($model->thumbsup!=0):?>
 						<a href="<?= Url::to(['posts/thumbsup','id' => $model->id])?>"> <span
 							class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsup) ?></span>
+						<?php endif;?>
+						<?php if($model->thumbsdown!=0):?>
 						<a href="<?= Url::to(['posts/thumbsdown','id' => $model->id])?>">
 							<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 						</a> <span class="badge" aria-hidden="true"><?= Html::encode($model->thumbsdown) ?></span>
+						<?php endif;?>
+						<?php if($model->comment_count!=0):?>
 						<span class="glyphicon glyphicon-comment"
 							aria-hidden="true"></span> <span class="badge" aria-hidden="true"><?= Html::encode($model->comment_count) ?></span>
+						<?php endif;?>
+						<?php if($model->view_count!=0):?>
 						<span class="glyphicon glyphicon-eye-open"></span> <span
 							class="badge"><?= Html::encode($model->view_count) ?></span>
+						<?php endif;?>
+						<?php if($model->star_count!=0):?>
 						<a href="<?= Url::to(['posts/star','id' => $model->id])?>">
 							<?php if($model->isStared()):?>
 										<span class="glyphicon glyphicon-star"></span>
@@ -104,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 										<span class="glyphicon glyphicon-star-empty"></span>
 									<?php endif;?>
 							</a> <span class="badge"><?= Html::encode($model->star_count) ?></span>
+						<?php endif;?>
 						<span class="glyphicon glyphicon-time"></span><span class="badge" aria-hidden="true"><?= html::encode(yii::$app->formatter->asRelativeTime($model->updated_date,time()+8*3600))?></span>
 					</p>
 				</div>

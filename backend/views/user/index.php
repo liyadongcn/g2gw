@@ -22,6 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+    	'options' => ['class' => 'grid-view table-responsive'],
+    	'tableOptions' => ['class' => ' table table-hover'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

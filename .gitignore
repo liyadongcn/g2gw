@@ -62,3 +62,4 @@ phpunit.phar
 
 /frontend/themes/basic/goods/_index.php
 /frontend/web/1.htaccess
+/frontend/web/*.ico

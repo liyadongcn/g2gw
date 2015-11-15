@@ -22,6 +22,10 @@ use common\models\Relationships;
 use common\models\RelationshipsMap;
 use backend\models\CommentSearch;
 use yii\helpers\ArrayHelper;
+use common\models\helper\TimeHelper;
+use common\models\Goods;
+use common\models\Posts;
+
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
@@ -706,4 +710,34 @@ class ActiveRecord extends \yii\db\ActiveRecord
 		->where(['model_type'=> $this->modelType()]);
 	}
 	
+	/**
+	 * This function is to get the statistic records count number to the model.
+	 * 得到数据模型相关某一时间段内的新增数量
+	 *
+	 * @author Wintermelon
+	 * @since  1.0
+	 */
+	public function getNewAdded($days=1,$to=NULL,$from=NULL)
+	{
+		if($days)
+		{
+			$from = date('Y-m-d',time());
+			$to = date('Y-m-d',time()-3600*24*$days);
+		}
+		else{
+			if ($from ===NULL) $from = date('Y-m-d',time());
+		}
+		
+		switch ($this->modelType())
+		{
+			case MODEL_TYPE_BRAND:
+				return Brand::find()->where(['<','created_date',$from])->andWhere(['>','created_date',$to])->count();
+			case MODEL_TYPE_GOODS:
+				return Goods::find()->where(['<','created_date',$from])->andWhere(['>','created_date',$to])->count();
+			case MODEL_TYPE_POSTS:
+				return Posts::find()->where(['<','created_date',$from])->andWhere(['>','created_date',$to])->count();
+			default:
+				return 0;
+		}
+	}
 }
