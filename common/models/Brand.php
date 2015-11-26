@@ -181,13 +181,22 @@ class Brand extends base\ActiveRecord
      */
     public function getRelatedBrands($n=10)
     {
-    	$query=$this->find();
+    	/* $query=$this->find();
     	$query->orFilterWhere(['like','country_code',$this->country_code])
     		  ->orFilterWhere(['=','company_id',$this->company_id])
     		  ->andFilterWhere(['!=','id',$this->id])
     		  ->orderBy(['view_count' => SORT_DESC, 'thumbsup' => SORT_DESC])
     		  ->limit($n);
-    	return $query;    	
+    	return $query;  */
+
+    	$result=$this->getRecordsWithSameTag();
+    	if($result)
+    	{
+    		return $result->limit($n)->andFilterWhere(['!=','id',$this->id]);
+    	}else{
+    		// 若没有相关记录则返回一个空ActiveQuery对象
+    		return $this->find()->where('0=1');;
+    	}
     }
     
 

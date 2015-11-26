@@ -6,6 +6,7 @@ use Yii;
 use common\models\Brand;
 use common\models\Comment;
 use common\models\Ecommerce;
+use common\models\Category;
 use common\models\base\Model;
 use backend\models\BrandSearch;
 use yii\web\Controller;
@@ -22,6 +23,14 @@ class BrandController extends Controller
 {
 	const UPLOAD_FILE_PATH='uploads\\brand\\logo\\';
 	
+	const SHOW_STYLE_LIST=0;
+	
+	const SHOW_STYLE_GRID=1;
+	
+	public function init(){
+		
+	}
+		
     public function behaviors()
     {
         return [
@@ -58,13 +67,7 @@ class BrandController extends Controller
     {
     	$model= $this->findModel($id);
     	$model->updateCounters(['view_count'=>1]);
-    	$model->comment=new Comment();
-    	
-    	if ($model->comment->load(Yii::$app->request->post()) && $model->comment->validate())
-    	{
-    		$model->submitComment();
-    	}
-    	
+    	    	
         return $this->render('view', [
             'model' =>$model,
         ]);
@@ -274,5 +277,119 @@ class BrandController extends Controller
     	$model->updateCounters(['thumbsdown'=>1]);
     
     	return $this->redirect(yii::$app->request->referrer);
+    }
+    
+    /**
+     * Search the models with the same tag id.
+     *
+     * @param integer $tagid
+     * @return mixed
+     */
+    public function actionSearchByTag($tagid)
+    {
+    	$searchModel = new BrandSearch();
+    	$searchModel->tagid=$tagid;
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    
+    	return $this->render('results', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    			'showStyle' =>$this->showStyle,
+    	]);
+    }
+    
+    /**
+     * Search the models with the same category id.
+     *
+     * @param integer $tagid
+     * @return mixed
+     */
+    public function actionSearchByCategory($category_id)
+    {
+    	$searchModel = new BrandSearch();
+    	$searchModel->category_id=Category::getChildIDs($category_id,Category::MODEL_TYPE_BRAND);
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    
+    	return $this->render('results', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    			'showStyle' =>$this->showStyle,
+    	]);
+    }
+    
+    /**
+     * Search the models with the same country code.
+     *
+     * @param integer $tagid
+     * @return mixed
+     */
+    public function actionSearchByCountry($country_code)
+    {
+    	$searchModel = new BrandSearch();
+    	$searchModel->country_code=$country_code;
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    
+    	return $this->render('results', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    			'showStyle' =>$this->showStyle,
+    	]);
+    }
+    
+    /**
+     * Search the models with keyWords.
+     *
+     * 
+     * @return mixed
+     */
+    public function actionSearchByKeyWords()
+    {
+    	$searchModel = new BrandSearch();
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    
+    	return $this->render('results', [
+    			'searchModel' => $searchModel,
+    			'dataProvider' => $dataProvider,
+    			'showStyle' =>$this->showStyle,
+    	]);
+    }
+    
+    /**
+     * Change the results show style.
+     *
+     *
+     * @return mixed
+     */
+    public function actionChangeShowStyle()
+    {
+    	if ($this->showStyle===self::SHOW_STYLE_LIST){
+    		$this->showStyle=self::SHOW_STYLE_GRID;
+    	}else{
+    		$this->showStyle=self::SHOW_STYLE_LIST;    	
+    	}
+    
+    	return $this->redirect(Yii::$app->request->referrer);
+    }
+    
+    /**
+     * Set show style.
+     *
+     *
+     * @return mixed
+     */
+    public function setShowStyle($showStyle)
+    {
+    	$session=yii::$app->session->set('SHOW_STYLE',$showStyle);
+    }
+    
+    /**
+     * Get show style.
+     *
+     *
+     * @return mixed
+     */
+    public function getShowStyle()
+    {
+    	return yii::$app->session->get('SHOW_STYLE',self::SHOW_STYLE_LIST);
     }
 }

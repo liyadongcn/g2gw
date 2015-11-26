@@ -8,7 +8,7 @@ class ADManager
 	// 广告来源
 	const AD_TAOBAO = 'taobao';
 	const AD_JD = 'jd';
-	const AD_BAIDU = 'baidu';
+	const AD_BAIDU_TUIJIAN = 'baidu_tuijian';
 	const AD_360 = '360';
 	const AD_SOGOU = 'sogou';
 	// 广告尺寸
@@ -22,7 +22,7 @@ class ADManager
 	// 广告展现设备
 	const AD_MOBILE = 'mobile';
 	const AD_PC     = 'pc';
-	
+	// 广告JS代码
 	static private  $_ADJS = [
 			'taobao' => [
 					'pc' => [
@@ -95,7 +95,14 @@ JS
 							,
 					],					
 			],
-			'baidu' => [],
+			'baidu_tuijian' => [
+					'pc' => [],
+					'mobile' => [
+							'goods_channel_bottom' => <<<JS
+							<script>document.write(unescape('%3Cdiv id="hm_t_84612"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://crs.baidu.com/t.js?siteId=69390d9765f773424e6912ceecbe0ba3&planId=84612&async=0&referer=') + encodeURIComponent(document.referrer) + '&title=' + encodeURIComponent(document.title) + '&rnd=' + (+new Date) + unescape('"%3E%3C/script%3E'));</script>
+JS
+					],
+			],
 			'360' => [],
 			'sogou' => [
 					'pc' => [

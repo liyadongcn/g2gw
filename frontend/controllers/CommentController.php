@@ -20,10 +20,10 @@ class CommentController extends Controller
         return [
         		'access' => [
         				'class' => AccessControl::className(),
-        				'only' => ['report'],
+        				'only' => ['report','create'],
         				'rules' => [
         						[
-        								'actions' => ['report'],
+        								'actions' => ['report','create'],
         								'allow' => true,
         								'roles' => ['@'],
         						],
@@ -75,11 +75,14 @@ class CommentController extends Controller
         $model = new Comment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        	return $this->redirect(yii::$app->request->referrer);
+            //return $this->redirect(['view', 'id' => $model->id]);
+        } 
+        else {
+        	return $this->redirect(yii::$app->request->referrer);
+//             return $this->render('create', [
+//                 'model' => $model,
+//             ]);
         }
     }
 

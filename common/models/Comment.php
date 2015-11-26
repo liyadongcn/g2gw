@@ -61,9 +61,9 @@ class Comment extends \yii\db\ActiveRecord
     				'value' => new Expression('NOW()'),
     			],
     			[
-    			'class' => BlameableBehavior::className(),
-    			'createdByAttribute' => 'userid',
-    			'updatedByAttribute' => false,
+	    			'class' => BlameableBehavior::className(),
+	    			'createdByAttribute' => 'userid',
+	    			'updatedByAttribute' => false,
     			],
     	];
     }
@@ -157,7 +157,7 @@ class Comment extends \yii\db\ActiveRecord
      * @author Wintermelon
      * @since  1.0
      */
-    public function addComment($model)
+    /* public function addComment($model)
     {
     	if($this->validate())
     	{
@@ -181,10 +181,62 @@ class Comment extends \yii\db\ActiveRecord
     		return true;
     	}
     	return false;
-    }
+    } */
     
     public function getStatus()
     {
     	return $this->approved;
+    }
+    
+    public function beforeSave($insert)
+    {
+    	if (parent::beforeSave($insert)) {
+    		// ...custom code here...
+    		// Insert action 
+    		if($insert){
+    			// comment author name
+    			$this->author=User::findIdentity(yii::$app->user->id)->displayName;
+    			// comment from IP
+    			$this->author_ip= Yii::$app->request->userIP;
+    			// update commented model comment counts
+    			$model=$this->getModel($this->model_type, $this->model_id);
+    			//var_dump($model);
+    			//die();
+    			if($model){
+    				$model->updateCounters(['comment_count'=>1]);
+    			}
+    		}    		
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public function afterSave($insert,$changedAttributes)
+    {
+    	if (parent::afterSave($insert,$changedAttributes)) {
+    		// ...custom code here...    		
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public function getModel($modelType,$modelId)
+    {
+    	switch ($modelType){
+    		case MODEL_TYPE_BRAND:
+    			$model=Brand::findOne(['id'=>$modelId]);
+    			break;
+    		case MODEL_TYPE_GOODS:
+    			$model=Goods::findOne(['id'=>$modelId]);
+    			break;
+    		case MODEL_TYPE_POSTS:
+    			$model=Posts::findOne(['id'=>$modelId]);
+    			break;
+    		default:
+    			return false;
+    	}
+    	return $model;
     }
 }

@@ -99,13 +99,7 @@ class PostsController extends Controller
     {
     	$model= $this->findModel($id);
     	$model->updateCounters(['view_count'=>1]);
-    	$model->comment=new Comment();
-    	
-    	if ($model->comment->load(Yii::$app->request->post()) && $model->comment->validate())
-    	{
-    		$model->submitComment();
-    	}
-    	
+    	   	
         return $this->render('view', [
             'model' =>$model,
         ]);

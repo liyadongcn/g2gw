@@ -10,6 +10,7 @@ use common\models\Album;
 use common\models\Category;
 use common\models\CategoryMap;
 use common\models\Pricehistory;
+use yii\db\ActiveQuery;
 
 
 /**
@@ -121,16 +122,31 @@ class Goods extends base\ActiveRecord
     
     /**
      * This function is to get the related of this goods.
+     * 具有相同标签的相关商品
      *
      * @param integer the number of the records needed. the default is 10.
-     * @return array|null the model objects
+     * @return ActiveQuery 
      *
      * @author Wintermelon
      * @since  1.0
      */
     public function getRelatedGoods($n=10,$keyWords=null)
     {
-    	$query=$this->find();
+    	/* $query=$this->find();
+    	$query->andFilterWhere(['!=','id',$this->id])
+    	->andFilterWhere(['=','brand_id',$this->brand_id])
+    	->orderBy(['view_count' => SORT_DESC, 'thumbsup' => SORT_DESC])
+    	->limit($n);
+    	return $query; */
+    	$result=$this->getRecordsWithSameTag();
+    	if($result)
+    	{
+    		return $result->limit($n)->andFilterWhere(['!=','id',$this->id])->orderBy(['updated_date' => SORT_DESC, 'view_count' => SORT_DESC]);
+    	}else{
+    		// 若没有相关记录则返回一个空ActiveQuery对象
+    		return $this->find()->where('0=1');;
+    	}
+      	
     	
     	//$cateGories=$this->getCategories();
     	
@@ -146,11 +162,7 @@ class Goods extends base\ActiveRecord
 //     		}
 //     	}	
     	
-    	$query->andFilterWhere(['!=','id',$this->id])
-    	      ->andFilterWhere(['=','brand_id',$this->brand_id])
-    		  ->orderBy(['view_count' => SORT_DESC, 'thumbsup' => SORT_DESC])
-    		  ->limit($n);
-    	return $query;   
+    	
     	 
     }
     
@@ -160,7 +172,7 @@ class Goods extends base\ActiveRecord
      * @param $keyWords string 
      * @param $conditions array of the conditions
      * @param integer the number of the records needed. the default is 10.
-     * @return array|null the model objects
+     * @return ActiveQuery 
      *
      * @author Wintermelon
      * @since  1.0

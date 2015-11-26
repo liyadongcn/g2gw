@@ -29,8 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'brand_id',
+            'brand.en_name',
             'website',
+        	'link_promotion',
             'name',
             'is_domestic',
             'accept_order',

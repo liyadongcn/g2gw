@@ -64,28 +64,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 								<img class=" media-object img-rounded" src=""	alt="..." > -->
 						<?php endif;?>
 						</a>
-      	
-       <ul class="list-inline">
-       <li >
-        <h3 ><a href="<?= Url::to(['posts/view','id'=>$model->id])?>"><?= html::encode($model->post_title)?></a>
-        		
-        </h3>
+
+        	<h3 ><a href="<?= Url::to(['posts/view','id'=>$model->id])?>"><?= html::encode($model->post_title)?></a></h3>
         
-        </li>
-       <li class="pull-right" >
-        		<div class=" btn-group btn-sm" role="group" aria-label="...">
-							<?php if ($model->url) :?>
-								<a class="btn btn-info btn-flat" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
-							<?php endif;?>
-							<?php $links = $model->links?>
-							<?php if($links):?>
-								<?php foreach ($links as $link):?>
-								<a class="btn btn-info btn-flat" target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
-								<?php endforeach;?>
-							<?php endif;?>
-					</div>	
-		</li>
-		</ul>			
+		        	<div class="btn-group btn-sm" role="group" aria-label="...">
+						<?php if ($model->url) :?>
+							<a class="btn btn-info btn-flat" href="<?= html::encode($model->url);?>" target="_blank" role="button"><span class="">去购买</span></a>
+						<?php endif;?>
+						<?php $links = $model->links?>
+						<?php if($links):?>
+							<?php foreach ($links as $link):?>
+							<a class="btn btn-info btn-flat" target="_blank" href=<?= Url::to($link->link)?>><span class=""><?= $link->link_name ?></span></a>
+							<?php endforeach;?>
+						<?php endif;?>
+					</div>
+			
+
 				<ul class="list-inline">
 				<li>
 	  					<?php $tagMaps=$model->getTagMaps()->all();?>

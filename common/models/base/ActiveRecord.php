@@ -388,26 +388,26 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	 * @author Wintermelon
 	 * @since  1.0
 	 */
-	public function submitComment()
+	/* public function submitComment()
 	{
 		if($this->comment)
 		{
-			/* $this->comment->model_type=self::modelType();
-			$this->comment->model_id=$this->id;
-			if(yii::$app->user->isGuest)
-			{
-				$this->comment->userid=0;
-				$this->comment->author='匿名用户';
-			}
-			else
-			{
-				$this->comment->userid=yii::$app->user->id;
-				$this->comment->author=User::findIdentity(yii::$app->user->id)->username;				
-			}
-			$this->comment->save();
-			$this->updateCounters(['comment_count'=>1]);
-			$this->comment->content='';
-			return true; */
+// 			$this->comment->model_type=self::modelType();
+// 			$this->comment->model_id=$this->id;
+// 			if(yii::$app->user->isGuest)
+// 			{
+// 				$this->comment->userid=0;
+// 				$this->comment->author='匿名用户';
+// 			}
+// 			else
+// 			{
+// 				$this->comment->userid=yii::$app->user->id;
+// 				$this->comment->author=User::findIdentity(yii::$app->user->id)->username;				
+// 			}
+// 			$this->comment->save();
+// 			$this->updateCounters(['comment_count'=>1]);
+// 			$this->comment->content='';
+// 			return true;
 			if($this->comment->addComment($this))
 			{
 				$this->comment->content='';
@@ -417,7 +417,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 			
 		}
 		return false;
-	}
+	} */
 
 	/**
 	 * This function is to get the model categories through the category map table .
@@ -712,7 +712,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	
 	/**
 	 * This function is to get the statistic records count number to the model.
-	 * 得到数据模型相关某一时间段内的新增数量
+	 * 统计函数，得到数据模型相关某一时间段内的新增数量
 	 *
 	 * @author Wintermelon
 	 * @since  1.0
@@ -740,4 +740,58 @@ class ActiveRecord extends \yii\db\ActiveRecord
 				return 0;
 		}
 	}
+	
+
+	/**
+	 * This function find all records that has the same tags with this model instance.
+	 * 找出与该记录含有相同标签的所有记录
+	 *  
+	 * @return NULL| ActiveQury
+	 * 
+	 * @author wintermelon
+	 * @version 1.0
+	 */
+	public function getRecordsWithSameTag()
+	{
+		// 找出该记录包含的所有标签id
+		$tagMaps=$this->tagMaps;
+		if($tagMaps){
+			foreach ($tagMaps as $tagMap)
+			{
+				$tagIDs[]=$tagMap->tagid;
+			}
+		}
+		else{
+			return null;
+		}	
+				
+		// 找出所有含有目标id的tagmap记录，并且modeltype与目标相同的model_id集
+		$tagMapsT= Tagmap::find()->where(['tagid'=>$tagIDs,'model_type'=>$this->modelType()])->all();
+		//var_dump($tagIDs);
+		//var_dump($tagMapsT);
+		//die();
+		if($tagMapsT){
+			foreach ($tagMapsT as $tagMap)
+			{
+				$modelIDs[]=$tagMap->model_id;
+			}
+		}
+		
+		if(empty($modelIDs)) return null;
+		//var_dump($modelIDs);
+		//die();
+		// 返回modeltype对应的结果记录ActivQuery
+		switch ($this->modelType())
+		{
+			case MODEL_TYPE_BRAND:
+				return Brand::find()->where(['id'=>$modelIDs]);
+			case MODEL_TYPE_GOODS:
+				return Goods::find()->where(['id'=>$modelIDs]);
+			case MODEL_TYPE_POSTS:
+				return Posts::find()->where(['id'=>$modelIDs]);
+			default:
+				return null;
+		}
+	}
+	
 }

@@ -23,7 +23,7 @@ use common\models\Category;
  */
 class BrandController extends Controller
 {
-	const UPLOAD_FILE_PATH='uploads/brand/';
+	const UPLOAD_FILE_PATH='uploads/brand/logo/';
 	
     public function behaviors()
     {
@@ -74,12 +74,12 @@ class BrandController extends Controller
     {
     	$model= $this->findModel($id);
     	$model->updateCounters(['view_count'=>1]);
-    	$model->comment=new Comment();
+    	/* $model->comment=new Comment();
     	
     	if ($model->comment->load(Yii::$app->request->post()) && $model->comment->validate())
     	{
 			$model->submitComment();
-    	}
+    	} */
     	
         return $this->render('view', [
             'model' =>$model,

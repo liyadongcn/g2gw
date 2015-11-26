@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
     		) ?>
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => 255]) ?>
+    
+     <?= $form->field($model, "link_promotion")->textarea(['rows' => 3]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 30]) ?>
 

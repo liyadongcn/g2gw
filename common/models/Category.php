@@ -193,4 +193,10 @@ class Category extends \yii\db\ActiveRecord
     	//die();
     	return $menuItems;
     }
+    
+    public static function getCategories($pid,$model_type)
+    {
+    	return self::findAll(['parent_id'=>$pid,'model_type'=>$model_type]);
+    	
+    }
 }

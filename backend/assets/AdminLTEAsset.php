@@ -20,7 +20,9 @@ class AdminLTEAsset extends AssetBundle
 	public $css = [			
 			'adminlte/bootstrap/css/bootstrap.min.css',
 			'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css',
+			//'adminlte/dist/css/font-awesome.min.css',
 			'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css',
+			//'adminlte/dist/css/ionicons.min.css',
 			'adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.css',
 			'adminlte/dist/css/AdminLTE.min.css',
 			'adminlte/dist/css/skins/_all-skins.min.css',
@@ -40,6 +42,7 @@ class AdminLTEAsset extends AssetBundle
 			//'adminlte/plugins/chartjs/Chart.min.js',
 			//'adminlte/dist/js/pages/dashboard.js',//开启后select2不工作
 			//'adminlte/dist/js/demo.js',
+			'js/main.js',
 	];
 	public $depends = [
 			'yii\web\YiiAsset',

@@ -37,7 +37,7 @@ $this->title = 'G2GW Admin Application';
           <div class="small-box bg-green">
             <div class="inner">
               <h3><?= (new Goods())->find()->count()?></h3>
-
+			  <p>昨日新增: </p>
               <p>精品</p>
             </div>
             <div class="icon">
@@ -52,7 +52,7 @@ $this->title = 'G2GW Admin Application';
           <div class="small-box bg-red">
             <div class="inner">
               <h3><?= (new Brand())->find()->count()?></h3>
-
+			  <p>昨日新增: </p>
               <p>品牌</p>
             </div>
             <div class="icon">
@@ -67,7 +67,7 @@ $this->title = 'G2GW Admin Application';
           <div class="small-box bg-yellow">
             <div class="inner">
               <h3><?= (new User())->find()->count()?></h3>
-
+			 <p>昨日新增: </p>
               <p>用户</p>
             </div>
             <div class="icon">

@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
+use common\models\Comment;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
@@ -123,8 +124,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="comment-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
+     <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post']); ?>
+    
+    <?php $modelComment=new Comment();?>
+    
+    <?php echo $form->field($modelComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_POSTS])->label(false) ?>
+    
+    <?php echo $form->field($modelComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
+    
     <?php // echo $form->field($model, 'parent_id')->textInput() ?>
 
     <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
@@ -137,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
 
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($modelComment, 'content')->textarea(['rows' => 6]) ?>
 
     <?php // echo $form->field($model, 'created_date')->textInput() ?>
 
@@ -150,44 +157,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
     
     <?php //隐藏的回复框?>
     
-     <?php $form = ActiveForm::begin(['options'=>['class' => 'reply-form hidden']]); ?>
+     <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post','options'=>['class' => 'reply-form hidden']]); ?>
+     
+     <?php $modelSubComment=new Comment();?>
+     
+    <?php echo $form->field($modelSubComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_POSTS])->label(false) ?>
+    
+    <?php echo $form->field($modelSubComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
+     
+    <?php echo $form->field($modelSubComment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
 
-    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput() ?>
-
-    <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'model_id')->textInput() ?>
-
-    <?php // echo $form->field($model, 'approved')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'thumbsup')->textInput() ?>
-
-    <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
-
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3]) ?>
-
-    <?php // echo $form->field($model, 'created_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'updated_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'userid')->textInput() ?>
-
-    <?php // echo $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
-
+    <?php echo $form->field($modelSubComment, 'content')->textarea(['rows' =>3])->label(false) ?>
+    
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('回复评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
-

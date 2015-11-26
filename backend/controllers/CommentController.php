@@ -8,6 +8,7 @@ use backend\models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CommentController implements the CRUD actions for Comment model.
@@ -17,6 +18,17 @@ class CommentController extends Controller
     public function behaviors()
     {
         return [
+        		'access' => [
+        				'class' => AccessControl::className(),
+        				'only' => ['report','create'],
+        				'rules' => [
+        						[
+        								'actions' => ['report','create'],
+        								'allow' => true,
+        								'roles' => ['@'],
+        						],
+        				],
+        		],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -63,11 +75,14 @@ class CommentController extends Controller
         $model = new Comment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        	return $this->redirect(yii::$app->request->referrer);
+            //return $this->redirect(['view', 'id' => $model->id]);
+        } 
+        else {
+        	return $this->redirect(yii::$app->request->referrer);
+//             return $this->render('create', [
+//                 'model' => $model,
+//             ]);
         }
     }
 
@@ -130,7 +145,7 @@ class CommentController extends Controller
     	$model=$this->findModel($id);
     	$model->updateCounters(['thumbsup'=>1]);
     
-    	return $this->redirect(Yii::$app->user->returnUrl);
+    	return $this->redirect(Yii::$app->request->referrer);
     }
     
     /**
@@ -142,8 +157,17 @@ class CommentController extends Controller
     public function actionThumbsdown($id)
     {
     	$model=$this->findModel($id);
-    	$model->updateCounters(['thumbsdwon'=>1]);
+    	$model->updateCounters(['thumbsdown'=>1]);
     
-    	return $this->redirect(Yii::$app->user->returnUrl);
+    	return $this->redirect(Yii::$app->request->referrer);
+    }
+    
+    public function actionReport($id)
+    {
+    	$model=$this->findModel($id);
+    	$model->approved=COMMENT_STATUS_REPORTED;
+    	$model->save();
+    
+    	return $this->redirect(Yii::$app->request->referrer);
     }
 }

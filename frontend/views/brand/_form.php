@@ -7,6 +7,7 @@ use common\models\Country;
 use common\models\Company;
 use common\models\Ecommerce;
 use kartik\widgets\FileInput;
+use kartik\widgets\Select2;
 use wbraganca\dynamicform\DynamicFormWidget;
 use common\models\Category;
 
@@ -99,11 +100,15 @@ use common\models\Category;
 	</div>
 <!-- 图片显示与上传结束     -->
 
-    <?= $form->field($model, 'country_code')->dropDownList(
-                            $model->getDropDownListData(MODEL_TYPE_COUNTRY),
-                                                ['prompt' => '选择国家......']
-        
-        ); ?>
+    <?php 
+	    echo $form->field($model, 'country_code')->widget(Select2::classname(), [
+	   		'data' => $model->getDropDownListData(MODEL_TYPE_COUNTRY),
+	   		'options' => ['placeholder' => '选择国家......'],
+	   		'pluginOptions' => [
+	   				'allowClear' => true
+	   		],
+	   ]);    
+   ?> 
 
     
 
@@ -207,17 +212,17 @@ use common\models\Category;
 
                         <?= $form->field($modelEcommerce, "[{$i}]name")->textInput(['maxlength' => 30]) ?>
                         
-                        <?= $form->field($modelEcommerce, "[{$i}]link_promotion")->textInput(['maxlength' => 255]) ?>
+                        <?php //echo $form->field($modelEcommerce, "[{$i}]link_promotion")->textarea(['rows' => 3]) ?>
 
                         <?= $form->field($modelEcommerce, "[{$i}]is_domestic")->dropDownList(
                                                 Ecommerce::getDropDownListData('is_domestic'),
-                                                ['prompt' => '国内网还是国际网']
+                                                ['prompt' => '国内网还是国际网...']
         
                         ) ?>
 
                         <?= $form->field($modelEcommerce, "[{$i}]accept_order")->dropDownList(
                                                 Ecommerce::getDropDownListData('accept_order'),
-                                                ['prompt' => '能否在线购买']
+                                                ['prompt' => '能否在线购买...']
           
                         ) ?>
                               </div>

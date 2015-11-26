@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\models\Album;
+use common\models\Comment;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
@@ -298,6 +299,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 广告条开始 -->
 <?php if(BrowserHelper::is_mobile()):?>
 <!-- mobile device -->
+<?php echo ADManager::getAd(ADManager::AD_BAIDU_TUIJIAN, ADManager::AD_MOBILE, 'goods_channel_bottom');?>
 <?php echo ADManager::getAd(ADManager::AD_TAOBAO, ADManager::AD_MOBILE, ADManager::AD_SIZE_320_90);?>
 <?php else:?>
 <!-- pc device -->
@@ -337,7 +339,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 评论发表框开始 -->
 <div class="comment-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post']); ?>
+    
+    <?php $modelComment=new Comment();?>
+    
+    <?php echo $form->field($modelComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_GOODS])->label(false) ?>
+    
+    <?php echo $form->field($modelComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
 
     <?php // echo $form->field($model, 'parent_id')->textInput() ?>
 
@@ -351,7 +359,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
 
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($modelComment, 'content')->textarea(['rows' => 6]) ?>
 
     <?php // echo $form->field($model, 'created_date')->textInput() ?>
 
@@ -371,11 +379,17 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php //隐藏的回复框?>
     
-     <?php $form = ActiveForm::begin(['options'=>['class' => 'reply-form hidden']]); ?>
+     <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post','options'=>['class' => 'reply-form hidden']]); ?>
+     
+     <?php $modelSubComment=new Comment();?>
+     
+    <?php echo $form->field($modelSubComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_GOODS])->label(false) ?>
+    
+    <?php echo $form->field($modelSubComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
+     
+    <?php echo $form->field($modelSubComment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
 
-    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
-
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3])->label(false) ?>
+    <?php echo $form->field($modelSubComment, 'content')->textarea(['rows' =>3])->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton('回复评论', ['class' => 'btn btn-primary']) ?>

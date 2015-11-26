@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\models\Album;
+use common\models\Comment;
 use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
 use yii\widgets\LinkPager;
@@ -129,6 +130,68 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 <!-- 商品标签列表结束	 -->
 	
+<!-- 相关商品开始 -->
+<?php $relatedGoods=$model->getRelatedGoods(10)->all();?>
+			<div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">相关商品</h3>
+                  <div class="box-tools pull-right">
+                    <span class="label label-danger"> <?= html::encode(count($relatedGoods))?></span>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body ">
+                	<ul class="products-list product-list-in-box">
+	                <?php if($relatedGoods):?>
+	                <?php foreach ($relatedGoods as $goods):?>
+	                <li class="item">
+	                    <div class="product-img">
+	                    	<img src="<?= html::encode($goods->albumDefaultImg->filename)?>" alt="Product Image">
+	                  	</div>
+	                  	<div class="product-info">
+	                  		<a href=<?= Url::to(['goods/view','id'=>$goods->id])?> class="product-title"><?= html::encode($goods->title)?></a>
+	                  		<span class='product-description'><?= html::encode($goods->updated_date)?></span>
+	                    </div>
+	                 </li>
+	                <?php endforeach;?>
+					<?php endif;?>  
+					</ul>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                  <a href="javascript::" class="uppercase">View All Users</a>
+                </div>
+                <!-- /.box-footer -->
+              </div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">相关商品</h3>
+	</div>
+	<div class="panel-body">
+		<ul class="list-group">
+	<?php $relatedGoods=$model->getRelatedGoods(5)->all();?>
+	<?php //var_dump($relatedBrands); die();?>
+	<?php if($relatedGoods):?>
+		<?php foreach ($relatedGoods as $goods):?>
+			<a href="<?= Url::to(['goods/view','id'=>$goods->id])?>" class="list-group-item">
+			<div class="row">
+            		<div class="col-md-9"><?= html::encode($goods->title)?></div>
+            		<div class="col-md-3"><span class='glyphicon glyphicon-time pull-right'><?= html::encode($goods->updated_date)?></span></div>
+             </div>
+			</a>
+		<?php endforeach;?>
+	<?php endif;?>
+	</ul>
+	</div>
+</div>
+<!-- 相关商品结束 -->
+	
+	
 <!-- 评论列表开始 -->
 <div id="comments">
 	<div class="page-header">
@@ -161,68 +224,38 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- 评论发表框开始 -->
 <div class="comment-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post']); ?>
+    
+    <?php $modelComment=new Comment();?>
+    
+    <?php echo $form->field($modelComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_GOODS])->label(false) ?>
+    
+    <?php echo $form->field($modelComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
 
-    <?php // echo $form->field($model, 'parent_id')->textInput() ?>
-
-    <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'model_id')->textInput() ?>
-
-    <?php // echo $form->field($model, 'approved')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'thumbsup')->textInput() ?>
-
-    <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
-
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' => 6]) ?>
-
-    <?php // echo $form->field($model, 'created_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'updated_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'userid')->textInput() ?>
-
-    <?php // echo $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($modelComment, 'content')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('发表评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
     
     <?php //隐藏的回复框?>
     
-     <?php $form = ActiveForm::begin(['options'=>['class' => 'reply-form hidden']]); ?>
+     <?php $form = ActiveForm::begin(['action' => ['comment/create'],'method'=>'post','options'=>['class' => 'reply-form hidden']]); ?>
+     
+     <?php $modelSubComment=new Comment();?>
+     
+    <?php echo $form->field($modelSubComment, 'model_type')->hiddenInput(['value'=>MODEL_TYPE_GOODS])->label(false) ?>
+    
+    <?php echo $form->field($modelSubComment, 'model_id')->hiddenInput(['value'=>$model->id])->label(false)  ?>
+     
+    <?php echo $form->field($modelSubComment, 'parent_id')->hiddenInput(['class'=>'parent_id'])->label(false) ?>
 
-    <?php  echo $form->field($model->comment, 'parent_id')->hiddenInput() ?>
-
-    <?php // echo $form->field($model, 'model_type')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'model_id')->textInput() ?>
-
-    <?php // echo $form->field($model, 'approved')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'thumbsup')->textInput() ?>
-
-    <?php // echo $form->field($model, 'thumbsdown')->textInput() ?>
-
-    <?php echo $form->field($model->comment, 'content')->textarea(['rows' =>3]) ?>
-
-    <?php // echo $form->field($model, 'created_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'updated_date')->textInput() ?>
-
-    <?php // echo $form->field($model, 'userid')->textInput() ?>
-
-    <?php // echo $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'author_ip')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($modelSubComment, 'content')->textarea(['rows' =>3])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('回复评论', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -10,6 +10,7 @@ use common\models\Ecommerce;
 use kartik\widgets\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
 use common\models\Category;
+use kartik\widgets\Select2;
 
 
 /* @var $this yii\web\View */
@@ -25,11 +26,20 @@ use common\models\Category;
 
     <?php //echo $form->field($model, 'country_code')->textInput(['maxlength' => 3]) ?>
     
-    <?= $form->field($model, 'country_code')->dropDownList(
-    												$model->getDropDownListData(MODEL_TYPE_COUNTRY),
-    		                                        ['prompt' => '选择国家......']
+    <?php //echo  $form->field($model, 'country_code')->dropDownList(
+    	//											$model->getDropDownListData(MODEL_TYPE_COUNTRY),
+    	//	                                        ['prompt' => '选择国家......']
     		
-    		); ?>
+    	//	); ?>
+    <?php 
+    echo $form->field($model, 'country_code')->widget(Select2::classname(), [
+   		'data' => $model->getDropDownListData(MODEL_TYPE_COUNTRY),
+   		'options' => ['placeholder' => '选择国家......'],
+   		'pluginOptions' => [
+   				'allowClear' => true
+   		],
+   ]);    
+   ?> 
 
     <?php //echo $form->field($model, 'logo')->textInput(['maxlength' => 255]) ?>
     <?php //echo $form->field($model, 'file')->fileInput() ?>

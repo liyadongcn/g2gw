@@ -242,7 +242,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <!-- 用户发表的所有贴子开始 -->
             <?php Pjax::begin();?>
             <?php $postsProvider=$model->getPosts();?>
-                    <h3 class="panel-title"><span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
+                <h3 class="panel-title"><span class="badge pull-right"><?= html::encode($postsProvider->totalCount)?></span></h3>
                 <ul class="posts-list post-list-in-box">
                     <?php $posts=$postsProvider->models;?>
                     <?php //var_dump($comments);?>
@@ -254,7 +254,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     				<img src="<?= html::encode($post->albumDefaultImg->filename)?>" alt="Product Image">
                     				<?php endif;?>
                   			</div>
-                  			<div class="product-info">
+                  			<div class="post-info">
                   					<a href=<?= Url::to(['posts/view','id'=>$post->id])?> class="post-title"><?= html::encode($post->post_title)?>
 				                    </a>
 				                    <span class="post-description">
@@ -265,6 +265,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endforeach;?>
                     <?php endif;?>
                 </ul>
+                
                 <?php echo LinkPager::widget([
                         'pagination' => $postsProvider->getPagination(),
                         ]);

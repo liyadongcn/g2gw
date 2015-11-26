@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -21,12 +22,16 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php foreach ($comments as $comment) :?>
 				<div class="media">
 					<div class="media-left">
-						<a href="/user/27646" rel="author" data-original-title="" title="">
-							<img class="media-object" src="/uploads/avatar/000/02/76/46_avatar_small.jpg" alt="webclz"></a>
+					<?php if($comment->user):?>
+						<a href=<?=Url::to(['/user/view','id'=>$comment->userid])?> rel="author" data-original-title="" title="">
+							<img class="media-object" src=<?= html::encode($comment->user->face)?> alt=""></a>
+					<?php else:?>
+						<img class="media-object" src=<?= html::encode(DEFAULT_USER_FACE)?> alt="">
+					<?php endif;?>
 					</div>
 					<div class="media-body">
 						<div class="media-heading">
-							<a href="/user/27646" rel="author" data-original-title="" title=""><?= Html::encode($comment->author)?></a>
+							<?= Html::encode($comment->author)?>
 							回复于 <?= html::encode($comment->created_date)?>
 							<span class="pull-right">
 								<a class="reply-btn" href="#">回复</a>

@@ -6,6 +6,8 @@ use Yii;
 
 /**
  * This is the model class for table "links".
+ * 
+ * This is used by the goods,posts model. Any goods or post can has one or more links.
  *
  * @property integer $id
  * @property string $link_url
@@ -34,7 +36,6 @@ class Links extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['id', 'model_type', 'model_id'], 'required'],
             [['id', 'model_id', 'status'], 'integer'],
             [['link_description', 'link_promotion'], 'string'],
             [['created_date', 'updated_date'], 'safe'],
@@ -62,6 +63,13 @@ class Links extends \yii\db\ActiveRecord
         ];
     }
     
+    /**
+     * Get the model link string. If the model has the promotion link, it will return the promotion link
+     * otherwise it will return the oringinal link.
+     * 
+     * @author wintermelon
+     * @return string
+     */
     public function getLink()
     {
     	return (empty($this->link_promotion)) ? $this->link_url : $this->link_promotion;
